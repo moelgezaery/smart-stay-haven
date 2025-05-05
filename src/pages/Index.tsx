@@ -1,23 +1,78 @@
 
-import React from "react";
-import Navbar from "@/components/Navbar";
-import Dashboard from "@/components/Dashboard";
+import { Layout } from "@/components/layout/Layout";
+import { StatusFilters } from "@/components/dashboard/StatusFilters";
+import { FloorSection } from "@/components/dashboard/FloorSection";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+
+// Mock data for demonstration
+const mockRooms = [
+  {
+    floorNumber: "1",
+    rooms: [
+      { roomNumber: "101", type: "Standard Single", status: "vacant" as const },
+      { roomNumber: "102", type: "Standard Double", status: "occupied" as const, guest: "Alex Johnson", checkIn: "May 2, 2025", checkOut: "May 5, 2025" },
+      { roomNumber: "103", type: "Standard Double", status: "reserved" as const, guest: "Sarah Williams", checkIn: "May 5, 2025", checkOut: "May 8, 2025" },
+      { roomNumber: "104", type: "Standard Twin", status: "cleaning" as const },
+      { roomNumber: "105", type: "Deluxe Double", status: "maintenance" as const },
+      { roomNumber: "106", type: "Junior Suite", status: "checkout" as const },
+    ]
+  },
+  {
+    floorNumber: "2",
+    rooms: [
+      { roomNumber: "201", type: "Standard Single", status: "vacant" as const },
+      { roomNumber: "202", type: "Standard Double", status: "occupied" as const, guest: "Michael Brown", checkIn: "May 1, 2025", checkOut: "May 4, 2025" },
+      { roomNumber: "203", type: "Standard Double", status: "vacant" as const },
+      { roomNumber: "204", type: "Standard Twin", status: "occupied" as const, guest: "Emily Davis", checkIn: "May 3, 2025", checkOut: "May 10, 2025" },
+      { roomNumber: "205", type: "Deluxe Double", status: "vacant" as const },
+      { roomNumber: "206", type: "Junior Suite", status: "reserved" as const, guest: "David Wilson", checkIn: "May 7, 2025", checkOut: "May 12, 2025" },
+    ]
+  },
+  {
+    floorNumber: "3",
+    rooms: [
+      { roomNumber: "301", type: "Deluxe Single", status: "vacant" as const },
+      { roomNumber: "302", type: "Deluxe Double", status: "occupied" as const, guest: "Jennifer Taylor", checkIn: "May 2, 2025", checkOut: "May 6, 2025" },
+      { roomNumber: "303", type: "Executive Suite", status: "reserved" as const, guest: "Robert Martinez", checkIn: "May 8, 2025", checkOut: "May 15, 2025" },
+      { roomNumber: "304", type: "Presidential Suite", status: "vacant" as const },
+    ]
+  },
+];
 
 const Index = () => {
+  const handleFilterChange = (filters: any) => {
+    console.log("Filters changed:", filters);
+  };
+  
+  const navigate = useNavigate();
+  
+  const handleCheckIn = (roomNumber?: string) => {
+    navigate("/checkin");
+  };
+  
+  const handleRoomDetailClick = (roomNumber: string) => {
+    // Navigate to room details page with the room number as a parameter
+    navigate(`/rooms?room=${roomNumber}`);
+  };
+  
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
-      <Navbar />
-      <main className="flex-1">
-        <Dashboard />
-      </main>
-      <footer className="bg-white border-t py-4">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-sm text-gray-500">
-            Smart Stay Hotel Management System © {new Date().getFullYear()}
-          </p>
-        </div>
-      </footer>
-    </div>
+    <Layout>
+      <StatusFilters onFilterChange={handleFilterChange} />
+      
+      <div className="flex justify-end mb-4">
+        <Button onClick={() => handleCheckIn()}>Check-In New Guest</Button>
+      </div>
+      
+      {mockRooms.map((floor) => (
+        <FloorSection 
+          key={floor.floorNumber} 
+          floorNumber={floor.floorNumber} 
+          rooms={floor.rooms} 
+          onRoomClick={handleRoomDetailClick}
+        />
+      ))}
+    </Layout>
   );
 };
 

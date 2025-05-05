@@ -63,33 +63,40 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Smart Stay custom colors
-				"hotel-blue": {
-					50: "#f0f7ff",
-					100: "#e0effe",
-					200: "#bae0fd",
-					300: "#7cc5fb",
-					400: "#36a7f6",
-					500: "#0c8ee9",
-					600: "#0271c7",
-					700: "#0259a1",
-					800: "#064b85",
-					900: "#0a406f",
-					950: "#072a4b",
+				hotel: {
+					50: '#e6f7ff',
+					100: '#b3e7ff',
+					200: '#80d7ff',
+					300: '#4dc6ff',
+					400: '#1ab6ff',
+					500: '#0ea5e9',
+					600: '#0b83ba',
+					700: '#08628c',
+					800: '#05415d',
+					900: '#03202f',
+					foreground: '#ffffff'
 				},
-				"hotel-accent": {
-					50: "#f0fdfa",
-					100: "#ccfbf1",
-					200: "#99f6e4",
-					300: "#5eead4",
-					400: "#2dd4bf",
-					500: "#14b8a6",
-					600: "#0d9488",
-					700: "#0f766e",
-					800: "#115e59",
-					900: "#134e4a",
-					950: "#042f2e",
+				navy: {
+					DEFAULT: '#1A1F2C',
+					50: '#f0f1f3',
+					100: '#d1d3da',
+					200: '#a3a8b5',
+					300: '#747d90',
+					400: '#46526b',
+					500: '#1A1F2C',
+					600: '#151923',
+					700: '#10131a',
+					800: '#0a0c11',
+					900: '#050608'
 				},
+				status: {
+					vacant: '#10b981',
+					occupied: '#ef4444',
+					reserved: '#f59e0b',
+					maintenance: '#6366f1',
+					cleaning: '#8b5cf6',
+					checkout: '#ec4899'
+				}
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
