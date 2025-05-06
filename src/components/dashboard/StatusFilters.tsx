@@ -1,23 +1,15 @@
-
 import { Button } from "@/components/ui/button";
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { StatusBadge } from "./StatusBadge";
 import { Search } from "lucide-react";
-
 interface StatusFiltersProps {
   onFilterChange: (filters: any) => void;
 }
-
-export function StatusFilters({ onFilterChange }: StatusFiltersProps) {
-  return (
-    <div className="mb-6 space-y-4">
+export function StatusFilters({
+  onFilterChange
+}: StatusFiltersProps) {
+  return <div className="mb-6 space-y-4">
       <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
         <h1 className="text-3xl font-bold text-navy-500">Room Status</h1>
         
@@ -87,9 +79,8 @@ export function StatusFilters({ onFilterChange }: StatusFiltersProps) {
         </div>
         
         <div>
-          <Button>+ Check In</Button>
+          
         </div>
       </div>
-    </div>
-  );
+    </div>;
 }
