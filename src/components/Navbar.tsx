@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "./ui/button";
+import { Toggle } from "./ui/toggle";
 import { SettingsModal } from "./settings/SettingsModal";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/context/ThemeContext";
@@ -21,11 +22,15 @@ const Navbar: React.FC = () => {
   const { language, setLanguage } = useLanguage();
 
   const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
+    const newTheme = theme === "dark" ? "light" : "dark";
+    console.log("Toggling theme to:", newTheme);
+    setTheme(newTheme);
   };
 
   const toggleLanguage = () => {
-    setLanguage(language === "en" ? "ar" : "en");
+    const newLanguage = language === "en" ? "ar" : "en";
+    console.log("Toggling language to:", newLanguage);
+    setLanguage(newLanguage);
   };
 
   return (
@@ -50,24 +55,24 @@ const Navbar: React.FC = () => {
             {/* Right-side items */}
             <div className="flex items-center space-x-4">
               {/* Quick theme toggle */}
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={toggleTheme}
+              <Toggle
+                pressed={theme === "dark"}
+                onPressedChange={toggleTheme}
+                aria-label="Toggle theme"
                 className="text-foreground"
               >
                 {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-              </Button>
+              </Toggle>
 
               {/* Quick language toggle */}
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={toggleLanguage}
+              <Toggle
+                pressed={language === "ar"}
+                onPressedChange={toggleLanguage}
+                aria-label="Toggle language"
                 className="text-foreground"
               >
                 {language === "en" ? <Languages className="h-5 w-5" /> : <Globe className="h-5 w-5" />}
-              </Button>
+              </Toggle>
 
               {/* Settings button */}
               <Button

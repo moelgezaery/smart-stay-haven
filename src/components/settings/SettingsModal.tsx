@@ -23,6 +23,16 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ open, onOpenChange
   const { theme, setTheme } = useTheme();
   const { language, setLanguage } = useLanguage();
 
+  const handleThemeChange = (newTheme: "light" | "dark" | "system") => {
+    console.log("Setting theme to:", newTheme);
+    setTheme(newTheme);
+  };
+
+  const handleLanguageChange = (newLanguage: "en" | "ar") => {
+    console.log("Setting language to:", newLanguage);
+    setLanguage(newLanguage);
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
@@ -39,7 +49,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ open, onOpenChange
               <Button 
                 variant={theme === "light" ? "default" : "outline"} 
                 size="sm"
-                onClick={() => setTheme("light")}
+                onClick={() => handleThemeChange("light")}
                 className="gap-2"
               >
                 <Sun className="h-4 w-4" />
@@ -48,7 +58,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ open, onOpenChange
               <Button 
                 variant={theme === "dark" ? "default" : "outline"} 
                 size="sm"
-                onClick={() => setTheme("dark")}
+                onClick={() => handleThemeChange("dark")}
                 className="gap-2"
               >
                 <Moon className="h-4 w-4" />
@@ -57,7 +67,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ open, onOpenChange
               <Button 
                 variant={theme === "system" ? "default" : "outline"} 
                 size="sm"
-                onClick={() => setTheme("system")}
+                onClick={() => handleThemeChange("system")}
                 className="gap-2"
               >
                 <Monitor className="h-4 w-4" />
@@ -71,7 +81,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ open, onOpenChange
               <Button 
                 variant={language === "en" ? "default" : "outline"} 
                 size="sm"
-                onClick={() => setLanguage("en")}
+                onClick={() => handleLanguageChange("en")}
                 className="gap-2"
               >
                 <Globe className="h-4 w-4" />
@@ -80,7 +90,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ open, onOpenChange
               <Button 
                 variant={language === "ar" ? "default" : "outline"} 
                 size="sm"
-                onClick={() => setLanguage("ar")}
+                onClick={() => handleLanguageChange("ar")}
                 className="gap-2"
               >
                 <Languages className="h-4 w-4" />

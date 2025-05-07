@@ -19,6 +19,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   });
 
   const setLanguage = (newLanguage: Language) => {
+    console.log("Setting language to:", newLanguage);
     setLanguageState(newLanguage);
     i18n.changeLanguage(newLanguage);
     localStorage.setItem('language', newLanguage);
@@ -28,7 +29,12 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   useEffect(() => {
     // Initialize language on first load
-    setLanguage(language);
+    const savedLanguage = localStorage.getItem('language') as Language;
+    if (savedLanguage) {
+      setLanguage(savedLanguage);
+    } else {
+      setLanguage(language);
+    }
   }, []);
 
   return (

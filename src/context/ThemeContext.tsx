@@ -11,24 +11,35 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [theme, setTheme] = useState<Theme>(() => {
+  const [theme, setThemeState] = useState<Theme>(() => {
     const savedTheme = localStorage.getItem('theme') as Theme;
     return savedTheme || 'system';
   });
 
-  useEffect(() => {
-    const root = window.document.documentElement;
-    localStorage.setItem('theme', theme);
+  const setTheme = (newTheme: Theme) => {
+    console.log("Setting theme to:", newTheme);
+    setThemeState(newTheme);
+    localStorage.setItem('theme', newTheme);
     
-    if (theme === 'system') {
+    if (newTheme === 'system') {
       const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      root.classList.remove('light', 'dark');
-      root.classList.add(systemTheme);
+      document.documentElement.classList.remove('light', 'dark');
+      document.documentElement.classList.add(systemTheme);
     } else {
-      root.classList.remove('light', 'dark');
-      root.classList.add(theme);
+      document.documentElement.classList.remove('light', 'dark');
+      document.documentElement.classList.add(newTheme);
     }
-  }, [theme]);
+  };
+
+  useEffect(() => {
+    // Initialize theme on first load
+    const savedTheme = localStorage.getItem('theme') as Theme;
+    if (savedTheme) {
+      setTheme(savedTheme);
+    } else {
+      setTheme(theme);
+    }
+  }, []);
 
   // Listen for system theme changes
   useEffect(() => {
