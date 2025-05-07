@@ -1,9 +1,7 @@
-
 export default {
-  // General
+  // App name
   appName: "Gravity Smart Stay",
-  dashboard: "Dashboard",
-  welcome: "Welcome to Gravity Smart Stay Hotel Management System",
+  dashboard: "Hotel Management Dashboard",
   
   // Navigation
   home: "Home",
@@ -12,9 +10,6 @@ export default {
   reservations: "Reservations",
   checkIn: "Check In",
   checkOut: "Check Out",
-  
-  // Management section
-  management: "Management",
   payments: "Payments",
   charges: "Charges",
   housekeeping: "Housekeeping",
@@ -22,74 +17,37 @@ export default {
   companies: "Companies",
   maintenance: "Maintenance",
   reports: "Reports",
-  
-  // Configuration section
-  configuration: "Configuration",
   setup: "Setup",
   
-  // Room statuses
-  roomStatus: "Room Status",
-  vacant: "Vacant",
-  occupied: "Occupied", 
-  reserved: "Reserved",
-  maintenanceStatus: "Maintenance",
-  cleaning: "Cleaning",
-  checkout: "Checkout",
+  // Management section label
+  management: "Management",
   
-  // Setup pages
-  hotelDetails: "Hotel Details",
-  usersPermissions: "Users & Permissions",
-  roomsFloors: "Rooms & Floors",
-  roomTypes: "Room Types",
-  currencies: "Currencies",
-  services: "Services",
-  housekeepingSetup: "Housekeeping",
-  maintenanceSetup: "Maintenance",
-  generalSettings: "General Settings",
+  // Configuration section label
+  configuration: "Configuration",
   
-  // Settings
+  // Profile and settings
+  profile: "Profile",
+  settingsMenu: "Settings",
   settings: "Settings",
+  signOut: "Sign Out",
+  logout: "Log out",
+  
+  // Themes
   theme: "Theme",
-  darkMode: "Dark Mode",
+  themeDescription: "Choose your preferred theme appearance",
   lightMode: "Light Mode",
+  darkMode: "Dark Mode",
   systemTheme: "System Theme",
+  
+  // Languages
   language: "Language",
+  languageDescription: "Choose your preferred language",
   english: "English",
   arabic: "العربية",
   
-  // Actions
-  search: "Search rooms...",
-  filterByStatus: "Filter by status",
-  filterByType: "Filter by type",
-  allStatuses: "All Statuses",
-  allTypes: "All Types",
-  
-  // Room types
-  standard: "Standard",
-  deluxe: "Deluxe",
-  suite: "Suite",
-  executive: "Executive",
-  presidential: "Presidential",
-  
-  // User menu
-  profile: "Your Profile",
-  settingsMenu: "Settings",
-  signOut: "Sign out",
-  
-  // Logout
-  logout: "Logout",
-  
-  // Common actions
-  save: "Save",
-  cancel: "Cancel",
-  edit: "Edit",
-  delete: "Delete",
-  add: "Add",
-  
-  // Floor section
-  floor: "Floor",
-  
-  // Notifications
+  // Other
   comingSoon: "Coming Soon",
-  featureAvailable: "The {{feature}} feature will be available in a future update."
+  featureAvailable: "This {feature} will be available soon",
+  generalSettings: "General Settings",
+  settingsDescription: "Configure your system preferences",
 };

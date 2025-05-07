@@ -1,9 +1,7 @@
-
 export default {
-  // General
+  // App name
   appName: "جرافيتي سمارت ستاي",
-  dashboard: "لوحة القيادة",
-  welcome: "مرحباً بك في نظام إدارة فنادق جرافيتي سمارت ستاي",
+  dashboard: "لوحة إدارة الفندق",
   
   // Navigation
   home: "الرئيسية",
@@ -12,9 +10,6 @@ export default {
   reservations: "الحجوزات",
   checkIn: "تسجيل الدخول",
   checkOut: "تسجيل الخروج",
-  
-  // Management section
-  management: "الإدارة",
   payments: "المدفوعات",
   charges: "الرسوم",
   housekeeping: "التدبير المنزلي",
@@ -22,74 +17,37 @@ export default {
   companies: "الشركات",
   maintenance: "الصيانة",
   reports: "التقارير",
-  
-  // Configuration section
-  configuration: "الإعدادات",
   setup: "الإعداد",
   
-  // Room statuses
-  roomStatus: "حالة الغرفة",
-  vacant: "شاغرة",
-  occupied: "مشغولة", 
-  reserved: "محجوزة",
-  maintenanceStatus: "صيانة",
-  cleaning: "تنظيف",
-  checkout: "مغادرة",
+  // Management section label
+  management: "الإدارة",
   
-  // Setup pages
-  hotelDetails: "تفاصيل الفندق",
-  usersPermissions: "المستخدمين والصلاحيات",
-  roomsFloors: "الغرف والطوابق",
-  roomTypes: "أنواع الغرف",
-  currencies: "العملات",
-  services: "الخدمات",
-  housekeepingSetup: "إعداد التدبير المنزلي",
-  maintenanceSetup: "إعداد الصيانة",
-  generalSettings: "الإعدادات العامة",
+  // Configuration section label
+  configuration: "التكوين",
   
-  // Settings
+  // Profile and settings
+  profile: "الملف الشخصي",
+  settingsMenu: "الإعدادات",
   settings: "الإعدادات",
-  theme: "السمة",
-  darkMode: "الوضع الداكن",
+  signOut: "تسجيل الخروج",
+  logout: "تسجيل الخروج",
+  
+  // Themes
+  theme: "المظهر",
+  themeDescription: "اختر مظهر التطبيق المفضل لديك",
   lightMode: "الوضع الفاتح",
-  systemTheme: "سمة النظام",
+  darkMode: "الوضع الداكن",
+  systemTheme: "نظام التشغيل",
+  
+  // Languages
   language: "اللغة",
+  languageDescription: "اختر لغتك المفضلة",
   english: "English",
   arabic: "العربية",
   
-  // Actions
-  search: "البحث عن غرف...",
-  filterByStatus: "تصفية حسب الحالة",
-  filterByType: "تصفية حسب النوع",
-  allStatuses: "جميع الحالات",
-  allTypes: "جميع الأنواع",
-  
-  // Room types
-  standard: "قياسية",
-  deluxe: "فاخرة",
-  suite: "جناح",
-  executive: "تنفيذية",
-  presidential: "رئاسية",
-  
-  // User menu
-  profile: "ملفك الشخصي",
-  settingsMenu: "الإعدادات",
-  signOut: "تسجيل الخروج",
-  
-  // Logout
-  logout: "تسجيل الخروج",
-  
-  // Common actions
-  save: "حفظ",
-  cancel: "إلغاء",
-  edit: "تعديل",
-  delete: "حذف",
-  add: "إضافة",
-  
-  // Floor section
-  floor: "الطابق",
-  
-  // Notifications
+  // Other
   comingSoon: "قريبًا",
-  featureAvailable: "ميزة {{feature}} ستكون متاحة في تحديث مستقبلي."
+  featureAvailable: "ستكون هذه {feature} متاحة قريبًا",
+  generalSettings: "الإعدادات العامة",
+  settingsDescription: "تكوين تفضيلات النظام الخاص بك",
 };

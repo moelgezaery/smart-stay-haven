@@ -2,6 +2,7 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { SidebarNav } from "./SidebarNav";
 import { Sidebar } from "@/components/ui/sidebar";
+import ThemeLanguageControl from "../common/ThemeLanguageControl";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -20,6 +21,7 @@ export function Layout({ children }: LayoutProps) {
               <SidebarTrigger />
             </div>
             <div className="flex items-center gap-4">
+              <ThemeLanguageControl />
               <div className="text-right">
                 <div className="text-sm font-medium">John Smith</div>
                 <div className="text-xs text-muted-foreground">Administrator</div>

@@ -3,6 +3,7 @@ import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Building2, Users, KeyRound, CreditCard, BedDouble, HomeIcon, Waypoints, Settings, Wrench } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 interface SetupCardProps {
   title: string;
@@ -30,6 +31,8 @@ const SetupCard = ({ title, description, icon, to }: SetupCardProps) => {
 };
 
 const Setup = () => {
+  const { t } = useTranslation();
+  
   const setupItems = [
     {
       title: "Hotel Details",
@@ -90,8 +93,8 @@ const Setup = () => {
   return (
     <Layout>
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-navy-500">Hotel Setup</h1>
-        <p className="text-muted-foreground mt-1">Configure all aspects of your hotel management system</p>
+        <h1 className="text-3xl font-bold text-navy-500">{t("setup")}</h1>
+        <p className="text-muted-foreground mt-1">{t("settingsDescription")}</p>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

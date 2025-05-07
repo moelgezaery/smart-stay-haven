@@ -28,6 +28,7 @@ import Floors from "./pages/setup/Floors";
 import Users from "./pages/setup/Users";
 import Currencies from "./pages/setup/Currencies";
 import Services from "./pages/setup/Services";
+import GeneralSettings from "./pages/setup/GeneralSettings";
 
 const queryClient = new QueryClient();
 
@@ -61,6 +62,7 @@ const App = () => (
           <Route path="/setup/users" element={<Users />} />
           <Route path="/setup/currencies" element={<Currencies />} />
           <Route path="/setup/services" element={<Services />} />
+          <Route path="/setup/settings" element={<GeneralSettings />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
