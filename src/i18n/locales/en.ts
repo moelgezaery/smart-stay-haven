@@ -1,7 +1,6 @@
 export default {
   // App name
   appName: "Gravity Smart Stay",
-  dashboard: "Hotel Management Dashboard",
   
   // Navigation
   home: "Home",
@@ -18,6 +17,8 @@ export default {
   maintenance: "Maintenance",
   reports: "Reports",
   setup: "Setup",
+  closeDay: "Close Day",
+  back: "Back",
   
   // Management section label
   management: "Management",
@@ -45,9 +46,29 @@ export default {
   english: "English",
   arabic: "العربية",
   
+  // Setup pages
+  hotelDetails: "Hotel Details",
+  hotelDetailsDescription: "Configure the basic information about your hotel.",
+  usersPermissions: "Users & Permissions",
+  usersPermissionsDescription: "Manage user accounts and access rights.",
+  roomsFloors: "Rooms & Floors",
+  roomsFloorsDescription: "Set up room numbers, floor plans, and extensions.",
+  roomTypes: "Room Types",
+  roomTypesDescription: "Define different types of rooms and their amenities.",
+  currencies: "Currencies",
+  currenciesDescription: "Set up currencies and exchange rates.",
+  services: "Services",
+  servicesDescription: "Configure room services and additional charges.",
+  housekeepingSetup: "Housekeeping",
+  housekeepingDescription: "Set up housekeeping schedules and procedures.",
+  maintenanceSetup: "Maintenance",
+  maintenanceDescription: "Configure maintenance schedules and procedures.",
+  generalSettings: "General Settings",
+  settingsDescription: "Configure system-wide settings and preferences.",
+  roomRates: "Room Rates",
+  roomRatesDescription: "Configure room pricing and rate plans.",
+  
   // Other
   comingSoon: "Coming Soon",
   featureAvailable: "This {feature} will be available soon",
-  generalSettings: "General Settings",
-  settingsDescription: "Configure your system preferences",
 };

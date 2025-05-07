@@ -1,7 +1,7 @@
 
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building2, Users, KeyRound, CreditCard, BedDouble, HomeIcon, Waypoints, Settings, Wrench } from "lucide-react";
+import { Building2, Users, KeyRound, CreditCard, BedDouble, HomeIcon, Waypoints, Settings, Wrench, DollarSign } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -35,56 +35,62 @@ const Setup = () => {
   
   const setupItems = [
     {
-      title: "Hotel Details",
-      description: "Configure the basic information about your hotel.",
+      title: t("hotelDetails"),
+      description: t("hotelDetailsDescription"),
       icon: <Building2 size={20} />,
       to: "/setup/hotel-details"
     },
     {
-      title: "Users & Permissions",
-      description: "Manage user accounts and access rights.",
+      title: t("usersPermissions"),
+      description: t("usersPermissionsDescription"),
       icon: <Users size={20} />,
       to: "/setup/users"
     },
     {
-      title: "Rooms & Floors",
-      description: "Set up room numbers, floor plans, and extensions.",
+      title: t("roomsFloors"),
+      description: t("roomsFloorsDescription"),
       icon: <BedDouble size={20} />,
       to: "/setup/rooms-floors"
     },
     {
-      title: "Room Types",
-      description: "Define different types of rooms and their amenities.",
+      title: t("roomTypes"),
+      description: t("roomTypesDescription"),
       icon: <HomeIcon size={20} />,
       to: "/setup/room-types"
     },
     {
-      title: "Currencies",
-      description: "Set up currencies and exchange rates.",
+      title: t("roomRates"),
+      description: t("roomRatesDescription"),
+      icon: <DollarSign size={20} />,
+      to: "/setup/room-rates"
+    },
+    {
+      title: t("currencies"),
+      description: t("currenciesDescription"),
       icon: <CreditCard size={20} />,
       to: "/setup/currencies"
     },
     {
-      title: "Services",
-      description: "Configure room services and additional charges.",
+      title: t("services"),
+      description: t("servicesDescription"),
       icon: <KeyRound size={20} />,
       to: "/setup/services"
     },
     {
-      title: "Housekeeping",
-      description: "Set up housekeeping schedules and procedures.",
+      title: t("housekeepingSetup"),
+      description: t("housekeepingDescription"),
       icon: <Waypoints size={20} />,
       to: "/setup/housekeeping"
     },
     {
-      title: "Maintenance",
-      description: "Configure maintenance schedules and procedures.",
+      title: t("maintenanceSetup"),
+      description: t("maintenanceDescription"),
       icon: <Wrench size={20} />,
       to: "/setup/maintenance"
     },
     {
-      title: "General Settings",
-      description: "Configure system-wide settings and preferences.",
+      title: t("generalSettings"),
+      description: t("settingsDescription"),
       icon: <Settings size={20} />,
       to: "/setup/settings"
     },

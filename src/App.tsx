@@ -21,6 +21,7 @@ import Maintenance from "./pages/Maintenance";
 import Reports from "./pages/Reports";
 import Login from "./pages/Login";
 import Reservations from "./pages/Reservations";
+import CloseDay from "./pages/CloseDay";
 
 // Setup pages
 import RoomTypes from "./pages/setup/RoomTypes";
@@ -29,6 +30,9 @@ import Users from "./pages/setup/Users";
 import Currencies from "./pages/setup/Currencies";
 import Services from "./pages/setup/Services";
 import GeneralSettings from "./pages/setup/GeneralSettings";
+import HousekeepingSetup from "./pages/setup/Housekeeping";
+import MaintenanceSetup from "./pages/setup/Maintenance";
+import RoomRates from "./pages/setup/RoomRates";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +57,7 @@ const App = () => (
           <Route path="/companies" element={<Companies />} />
           <Route path="/maintenance" element={<Maintenance />} />
           <Route path="/reports" element={<Reports />} />
+          <Route path="/closeday" element={<CloseDay />} />
           
           {/* Setup Routes */}
           <Route path="/setup" element={<Setup />} />
@@ -63,6 +68,9 @@ const App = () => (
           <Route path="/setup/currencies" element={<Currencies />} />
           <Route path="/setup/services" element={<Services />} />
           <Route path="/setup/settings" element={<GeneralSettings />} />
+          <Route path="/setup/housekeeping" element={<HousekeepingSetup />} />
+          <Route path="/setup/maintenance" element={<MaintenanceSetup />} />
+          <Route path="/setup/room-rates" element={<RoomRates />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
