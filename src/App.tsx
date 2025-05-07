@@ -27,6 +27,7 @@ import RoomTypes from "./pages/setup/RoomTypes";
 import Floors from "./pages/setup/Floors";
 import Users from "./pages/setup/Users";
 import Currencies from "./pages/setup/Currencies";
+import Services from "./pages/setup/Services";
 
 const queryClient = new QueryClient();
 
@@ -59,6 +60,7 @@ const App = () => (
           <Route path="/setup/rooms-floors" element={<Floors />} />
           <Route path="/setup/users" element={<Users />} />
           <Route path="/setup/currencies" element={<Currencies />} />
+          <Route path="/setup/services" element={<Services />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

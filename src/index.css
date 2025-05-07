@@ -91,7 +91,21 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground transition-colors;
+  }
+
+  /* RTL Support */
+  html[dir="rtl"] .sidebar-menu button svg,
+  html[dir="rtl"] .rtl-flip {
+    transform: scaleX(-1);
+  }
+
+  html[dir="rtl"] .ltr-only {
+    display: none;
+  }
+
+  html[dir="ltr"] .rtl-only {
+    display: none;
   }
 }
 
@@ -123,4 +137,14 @@
   .status-badge-checkout {
     @apply bg-status-checkout/20 text-status-checkout;
   }
+
+  /* Logo styles */
+  .app-logo {
+    @apply h-8 w-auto transition-transform hover:scale-105;
+  }
+}
+
+/* Utility classes for rtl support */
+.rtl-reverse {
+  @apply [direction:rtl];
 }

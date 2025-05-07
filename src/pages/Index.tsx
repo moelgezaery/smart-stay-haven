@@ -2,8 +2,8 @@
 import { Layout } from "@/components/layout/Layout";
 import { StatusFilters } from "@/components/dashboard/StatusFilters";
 import { FloorSection } from "@/components/dashboard/FloorSection";
-import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 // Mock data for demonstration
 const mockRooms = [
@@ -41,15 +41,12 @@ const mockRooms = [
 ];
 
 const Index = () => {
+  const { t } = useTranslation();
   const handleFilterChange = (filters: any) => {
     console.log("Filters changed:", filters);
   };
   
   const navigate = useNavigate();
-  
-  const handleCheckIn = (roomNumber?: string) => {
-    navigate("/checkin");
-  };
   
   const handleRoomDetailClick = (roomNumber: string) => {
     // Navigate to room details page with the room number as a parameter
@@ -59,10 +56,6 @@ const Index = () => {
   return (
     <Layout>
       <StatusFilters onFilterChange={handleFilterChange} />
-      
-      <div className="flex justify-end mb-4">
-        <Button onClick={() => handleCheckIn()}>Check-In New Guest</Button>
-      </div>
       
       {mockRooms.map((floor) => (
         <FloorSection 

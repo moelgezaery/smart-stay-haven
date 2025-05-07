@@ -27,23 +27,34 @@ import {
   CalendarRange,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "react-i18next";
 
 export function SidebarNav() {
   const location = useLocation();
   const { toast } = useToast();
+  const { t } = useTranslation();
   
   const handleUnimplementedFeature = (feature: string) => {
     toast({
-      title: "Coming Soon",
-      description: `The ${feature} feature will be available in a future update.`
+      title: t("comingSoon"),
+      description: t("featureAvailable", { feature })
     });
   };
   
   return (
     <>
-      <div className="py-4 px-6 border-b">
-        <h2 className="text-lg font-semibold">HMS</h2>
-        <p className="text-xs text-muted-foreground">Hotel Management System</p>
+      <div className="py-4 px-6 border-b border-sidebar-border">
+        <div className="flex items-center gap-2">
+          <img 
+            src="/lovable-uploads/d8664fc3-262a-4828-a474-946392a103c5.png" 
+            alt="Gravity Smart Stay Logo" 
+            className="h-8 w-8"
+          />
+          <div>
+            <h2 className="text-lg font-semibold">{t("appName")}</h2>
+            <p className="text-xs text-muted-foreground">{t("dashboard")}</p>
+          </div>
+        </div>
       </div>
       <SidebarContent>
         <SidebarGroup>
@@ -53,7 +64,7 @@ export function SidebarNav() {
                 <SidebarMenuButton asChild isActive={location.pathname === "/"}>
                   <Link to="/">
                     <Home className="h-4 w-4" />
-                    <span>Dashboard</span>
+                    <span>{t("home")}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -61,7 +72,7 @@ export function SidebarNav() {
                 <SidebarMenuButton asChild isActive={location.pathname === "/rooms"}>
                   <Link to="/rooms">
                     <HotelIcon className="h-4 w-4" />
-                    <span>Rooms</span>
+                    <span>{t("rooms")}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -69,7 +80,7 @@ export function SidebarNav() {
                 <SidebarMenuButton asChild isActive={location.pathname === "/reservations"}>
                   <Link to="/reservations">
                     <CalendarRange className="h-4 w-4" />
-                    <span>Reservations</span>
+                    <span>{t("reservations")}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -77,7 +88,7 @@ export function SidebarNav() {
                 <SidebarMenuButton asChild isActive={location.pathname === "/guests"}>
                   <Link to="/guests">
                     <Users className="h-4 w-4" />
-                    <span>Guests</span>
+                    <span>{t("guests")}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -85,7 +96,7 @@ export function SidebarNav() {
                 <SidebarMenuButton asChild isActive={location.pathname === "/checkin"}>
                   <Link to="/checkin">
                     <LogIn className="h-4 w-4" />
-                    <span>Check In</span>
+                    <span>{t("checkIn")}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -93,7 +104,7 @@ export function SidebarNav() {
                 <SidebarMenuButton asChild isActive={location.pathname === "/checkout"}>
                   <Link to="/checkout">
                     <LogOut className="h-4 w-4" />
-                    <span>Check Out</span>
+                    <span>{t("checkOut")}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -102,14 +113,14 @@ export function SidebarNav() {
         </SidebarGroup>
         
         <SidebarGroup>
-          <SidebarGroupLabel>Management</SidebarGroupLabel>
+          <SidebarGroupLabel>{t("management")}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild isActive={location.pathname === "/payments"}>
                   <Link to="/payments">
                     <CreditCard className="h-4 w-4" />
-                    <span>Payments</span>
+                    <span>{t("payments")}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -117,7 +128,7 @@ export function SidebarNav() {
                 <SidebarMenuButton asChild isActive={location.pathname === "/charges"}>
                   <Link to="/charges">
                     <ReceiptText className="h-4 w-4" />
-                    <span>Charges</span>
+                    <span>{t("charges")}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -125,7 +136,7 @@ export function SidebarNav() {
                 <SidebarMenuButton asChild isActive={location.pathname === "/housekeeping"}>
                   <Link to="/housekeeping">
                     <ClipboardCheck className="h-4 w-4" />
-                    <span>Housekeeping</span>
+                    <span>{t("housekeeping")}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -133,7 +144,7 @@ export function SidebarNav() {
                 <SidebarMenuButton asChild isActive={location.pathname === "/employees"}>
                   <Link to="/employees">
                     <Users className="h-4 w-4" />
-                    <span>Employees</span>
+                    <span>{t("employees")}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -141,7 +152,7 @@ export function SidebarNav() {
                 <SidebarMenuButton asChild isActive={location.pathname === "/companies"}>
                   <Link to="/companies">
                     <Building2 className="h-4 w-4" />
-                    <span>Companies</span>
+                    <span>{t("companies")}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -149,7 +160,7 @@ export function SidebarNav() {
                 <SidebarMenuButton asChild isActive={location.pathname === "/maintenance"}>
                   <Link to="/maintenance">
                     <Wrench className="h-4 w-4" />
-                    <span>Maintenance</span>
+                    <span>{t("maintenance")}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -157,7 +168,7 @@ export function SidebarNav() {
                 <SidebarMenuButton asChild isActive={location.pathname === "/reports"}>
                   <Link to="/reports">
                     <BarChartBig className="h-4 w-4" />
-                    <span>Reports</span>
+                    <span>{t("reports")}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -166,14 +177,14 @@ export function SidebarNav() {
         </SidebarGroup>
         
         <SidebarGroup>
-          <SidebarGroupLabel>Configuration</SidebarGroupLabel>
+          <SidebarGroupLabel>{t("configuration")}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild isActive={location.pathname.startsWith("/setup")}>
                   <Link to="/setup">
                     <Cog className="h-4 w-4" />
-                    <span>Setup</span>
+                    <span>{t("setup")}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -183,13 +194,13 @@ export function SidebarNav() {
       </SidebarContent>
       <SidebarFooter>
         <Link to="/login" className="w-full">
-          <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent transition-colors">
+          <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors">
             <Avatar className="h-8 w-8">
               <AvatarFallback className="bg-primary text-primary-foreground">JS</AvatarFallback>
             </Avatar>
             <div className="text-left">
               <p className="text-sm font-medium">John Smith</p>
-              <p className="text-xs text-muted-foreground">Logout</p>
+              <p className="text-xs text-muted-foreground">{t("logout")}</p>
             </div>
           </div>
         </Link>
