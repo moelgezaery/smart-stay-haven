@@ -1,7 +1,7 @@
 
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Sun, Moon, Monitor, Globe } from "lucide-react";
+import { Sun, Moon, Monitor, Globe, Languages } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -83,7 +83,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ open, onOpenChange
                 onClick={() => setLanguage("ar")}
                 className="gap-2"
               >
-                <Globe className="h-4 w-4" />
+                <Languages className="h-4 w-4" />
                 {t("arabic")}
               </Button>
             </div>

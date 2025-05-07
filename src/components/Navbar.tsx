@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { BellIcon, Settings } from "lucide-react";
+import { BellIcon, Settings, Moon, Sun, Globe, Languages } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -8,13 +8,25 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Button } from "./ui/button";
 import { SettingsModal } from "./settings/SettingsModal";
 import { useTranslation } from "react-i18next";
-import { Button } from "./ui/button";
+import { useTheme } from "@/context/ThemeContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 const Navbar: React.FC = () => {
   const { t } = useTranslation();
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const { language, setLanguage } = useLanguage();
+
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
+
+  const toggleLanguage = () => {
+    setLanguage(language === "en" ? "ar" : "en");
+  };
 
   return (
     <>
@@ -37,6 +49,26 @@ const Navbar: React.FC = () => {
 
             {/* Right-side items */}
             <div className="flex items-center space-x-4">
+              {/* Quick theme toggle */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleTheme}
+                className="text-foreground"
+              >
+                {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              </Button>
+
+              {/* Quick language toggle */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleLanguage}
+                className="text-foreground"
+              >
+                {language === "en" ? <Languages className="h-5 w-5" /> : <Globe className="h-5 w-5" />}
+              </Button>
+
               {/* Settings button */}
               <Button
                 variant="ghost"

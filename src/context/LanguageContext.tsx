@@ -27,6 +27,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   useEffect(() => {
+    // Initialize language on first load
     setLanguage(language);
   }, []);
 
