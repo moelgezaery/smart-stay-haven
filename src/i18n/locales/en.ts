@@ -1,3 +1,4 @@
+
 export default {
   // App name
   appName: "Gravity Smart Stay",
@@ -81,6 +82,10 @@ export default {
   reportingDescription: "View revenue and occupancy reports",
   segments: "Guest Segments",
   segmentsDescription: "Configure rates for different guest segments",
+  rateCalendar: "Rate Calendar",
+  rateCalendarDescription: "Visual interface to set rates for specific dates",
+  occupancyRules: "Occupancy Rules",
+  occupancyRulesDescription: "Configure extra person charges and children policies",
   
   // Room Rate Components
   baseRate: "Base Rate",
@@ -92,6 +97,22 @@ export default {
   adjustment: "Adjustment",
   edit: "Edit",
   addPromotion: "Add Promotion",
+  
+  // Occupancy Rules
+  maxAdults: "Maximum Adults",
+  maxChildren: "Maximum Children",
+  extraAdultCharge: "Extra Adult Charge",
+  extraChildCharge: "Extra Child Charge",
+  childrenAgeLimit: "Children Age Limit",
+  includeBreakfast: "Include Breakfast",
+  occupancyPolicies: "Occupancy Policies",
+  
+  // Rate Calendar
+  selectMonth: "Select Month",
+  applyToAllRooms: "Apply to All Rooms",
+  bulkUpdate: "Bulk Update",
+  standardRate: "Standard Rate",
+  weekendRate: "Weekend Rate",
   
   // General Settings
   account: "Account",
@@ -132,3 +153,4 @@ export default {
   comingSoon: "Coming Soon",
   featureAvailable: "This {feature} will be available soon",
 };
+
