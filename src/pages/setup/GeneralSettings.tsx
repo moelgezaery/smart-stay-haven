@@ -2,102 +2,141 @@
 import React from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useTheme } from "@/context/ThemeContext";
-import { useLanguage } from "@/context/LanguageContext";
-import { Sun, Moon, Monitor, Globe, Languages } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, Settings, Key, UserCog, Mail, Calendar, Building2, Clock } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const GeneralSettings = () => {
   const { t } = useTranslation();
-  const { theme, setTheme } = useTheme();
-  const { language, setLanguage } = useLanguage();
-
-  const handleThemeChange = (newTheme: "light" | "dark" | "system") => {
-    setTheme(newTheme);
-  };
-
-  const handleLanguageChange = (newLanguage: "en" | "ar") => {
-    setLanguage(newLanguage);
-  };
+  const navigate = useNavigate();
 
   return (
     <Layout>
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-navy-500">{t("generalSettings")}</h1>
-        <p className="text-muted-foreground mt-1">{t("settingsDescription")}</p>
+      <div className="flex items-center mb-6">
+        <Button 
+          variant="outline" 
+          size="icon" 
+          className="mr-4" 
+          onClick={() => navigate(-1)}
+        >
+          <ArrowLeft className="h-4 w-4" />
+        </Button>
+        <div>
+          <h1 className="text-3xl font-bold text-navy-500">{t("generalSettings")}</h1>
+          <p className="text-muted-foreground mt-1">{t("settingsDescription")}</p>
+        </div>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Theme Settings Card */}
-        <Card>
-          <CardHeader>
-            <CardTitle>{t("theme")}</CardTitle>
-            <CardDescription>{t("themeDescription")}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-2">
-              <Button 
-                variant={theme === "light" ? "default" : "outline"} 
-                size="sm"
-                onClick={() => handleThemeChange("light")}
-                className="gap-2"
-              >
-                <Sun className="h-4 w-4" />
-                {t("lightMode")}
-              </Button>
-              <Button 
-                variant={theme === "dark" ? "default" : "outline"} 
-                size="sm"
-                onClick={() => handleThemeChange("dark")}
-                className="gap-2"
-              >
-                <Moon className="h-4 w-4" />
-                {t("darkMode")}
-              </Button>
-              <Button 
-                variant={theme === "system" ? "default" : "outline"} 
-                size="sm"
-                onClick={() => handleThemeChange("system")}
-                className="gap-2"
-              >
-                <Monitor className="h-4 w-4" />
-                {t("systemTheme")}
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+      <Tabs defaultValue="account" className="space-y-4">
+        <TabsList className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-2">
+          <TabsTrigger value="account" className="flex gap-2 items-center">
+            <UserCog className="h-4 w-4" /> {t("account")}
+          </TabsTrigger>
+          <TabsTrigger value="security" className="flex gap-2 items-center">
+            <Key className="h-4 w-4" /> {t("security")}
+          </TabsTrigger>
+          <TabsTrigger value="notifications" className="flex gap-2 items-center">
+            <Mail className="h-4 w-4" /> {t("notifications")}
+          </TabsTrigger>
+          <TabsTrigger value="dateTime" className="flex gap-2 items-center">
+            <Clock className="h-4 w-4" /> {t("dateTime")}
+          </TabsTrigger>
+          <TabsTrigger value="system" className="flex gap-2 items-center">
+            <Settings className="h-4 w-4" /> {t("system")}
+          </TabsTrigger>
+          <TabsTrigger value="hotel" className="flex gap-2 items-center">
+            <Building2 className="h-4 w-4" /> {t("hotel")}
+          </TabsTrigger>
+        </TabsList>
 
-        {/* Language Settings Card */}
-        <Card>
-          <CardHeader>
-            <CardTitle>{t("language")}</CardTitle>
-            <CardDescription>{t("languageDescription")}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-2">
-              <Button 
-                variant={language === "en" ? "default" : "outline"} 
-                size="sm"
-                onClick={() => handleLanguageChange("en")}
-                className="gap-2"
-              >
-                <Globe className="h-4 w-4" />
-                {t("english")}
-              </Button>
-              <Button 
-                variant={language === "ar" ? "default" : "outline"} 
-                size="sm"
-                onClick={() => handleLanguageChange("ar")}
-                className="gap-2"
-              >
-                <Languages className="h-4 w-4" />
-                {t("arabic")}
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+        <TabsContent value="account">
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("account")}</CardTitle>
+              <CardDescription>{t("accountDescription")}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex items-center gap-4">
+                  <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xl font-medium">
+                    JS
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">John Smith</h3>
+                    <p className="text-sm text-muted-foreground">Administrator</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                  <Button>{t("editProfile")}</Button>
+                  <Button variant="outline">{t("changePassword")}</Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="security">
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("security")}</CardTitle>
+              <CardDescription>{t("securityDescription")}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">{t("comingSoon")}</p>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="notifications">
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("notifications")}</CardTitle>
+              <CardDescription>{t("notificationsDescription")}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">{t("comingSoon")}</p>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="dateTime">
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("dateTime")}</CardTitle>
+              <CardDescription>{t("dateTimeDescription")}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">{t("comingSoon")}</p>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="system">
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("system")}</CardTitle>
+              <CardDescription>{t("systemDescription")}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">{t("comingSoon")}</p>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="hotel">
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("hotel")}</CardTitle>
+              <CardDescription>{t("hotelSettingsDescription")}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">{t("comingSoon")}</p>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </Layout>
   );
 };

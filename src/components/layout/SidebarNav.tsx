@@ -25,6 +25,7 @@ import {
   Wrench,
   BarChartBig,
   CalendarRange,
+  ClockIcon,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
@@ -52,7 +53,6 @@ export function SidebarNav() {
           />
           <div>
             <h2 className="text-lg font-semibold">{t("appName")}</h2>
-            <p className="text-xs text-muted-foreground">{t("dashboard")}</p>
           </div>
         </div>
       </div>
@@ -169,6 +169,14 @@ export function SidebarNav() {
                   <Link to="/reports">
                     <BarChartBig className="h-4 w-4" />
                     <span>{t("reports")}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={location.pathname === "/closeday"}>
+                  <Link to="/closeday">
+                    <ClockIcon className="h-4 w-4" />
+                    <span>{t("closeDay")}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>

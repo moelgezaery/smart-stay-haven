@@ -1,7 +1,7 @@
 
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building2, Users, KeyRound, CreditCard, BedDouble, HomeIcon, Waypoints, Settings, Wrench, DollarSign } from "lucide-react";
+import { Building2, Users, KeyRound, CreditCard, BedDouble, HomeIcon, Settings, DollarSign } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -75,18 +75,6 @@ const Setup = () => {
       description: t("servicesDescription"),
       icon: <KeyRound size={20} />,
       to: "/setup/services"
-    },
-    {
-      title: t("housekeepingSetup"),
-      description: t("housekeepingDescription"),
-      icon: <Waypoints size={20} />,
-      to: "/setup/housekeeping"
-    },
-    {
-      title: t("maintenanceSetup"),
-      description: t("maintenanceDescription"),
-      icon: <Wrench size={20} />,
-      to: "/setup/maintenance"
     },
     {
       title: t("generalSettings"),
