@@ -35,10 +35,10 @@ const seasonalAdjustments = [
 
 // Mock data for promotions and discounts
 const promotions = [
-  { id: 1, name: "Early Bird Discount", type: "percentage", value: 15, conditions: "Book 30 days in advance" },
-  { id: 2, name: "Last Minute Deal", type: "percentage", value: 20, conditions: "Book within 48 hours of stay" },
-  { id: 3, name: "Corporate Rate", type: "fixed", value: 85, conditions: "Valid corporate ID required" },
-  { id: 4, name: "Romance Package", type: "package", value: 50, conditions: "Includes dinner and champagne" }
+  { id: 1, name: "Early Bird Discount", type: "percentage" as const, value: 15, conditions: "Book 30 days in advance" },
+  { id: 2, name: "Last Minute Deal", type: "percentage" as const, value: 20, conditions: "Book within 48 hours of stay" },
+  { id: 3, name: "Corporate Rate", type: "fixed" as const, value: 85, conditions: "Valid corporate ID required" },
+  { id: 4, name: "Romance Package", type: "package" as const, value: 50, conditions: "Includes dinner and champagne" }
 ];
 
 const RoomRates = () => {
