@@ -24,6 +24,12 @@ import Login from "./pages/Login";
 import Reservations from "./pages/Reservations";
 import CloseDay from "./pages/CloseDay";
 
+// New reservation snapshot pages
+import ArrivalsToday from "./pages/ArrivalsToday";
+import DeparturesToday from "./pages/DeparturesToday";
+import NewBookings from "./pages/NewBookings";
+import NoShows from "./pages/NoShows";
+
 // Setup pages
 import RoomTypes from "./pages/setup/RoomTypes";
 import Floors from "./pages/setup/Floors";
@@ -64,10 +70,10 @@ const App = () => (
           
           {/* Reservation Snapshot */}
           <Route path="/reservations" element={<Reservations />} />
-          <Route path="/arrivals" element={<PlaceholderPage title="Arrivals Today" />} />
-          <Route path="/departures" element={<PlaceholderPage title="Departures Today" />} />
-          <Route path="/new-bookings" element={<PlaceholderPage title="New Bookings" />} />
-          <Route path="/no-shows" element={<PlaceholderPage title="No-shows & Cancellations" />} />
+          <Route path="/arrivals" element={<ArrivalsToday />} />
+          <Route path="/departures" element={<DeparturesToday />} />
+          <Route path="/new-bookings" element={<NewBookings />} />
+          <Route path="/no-shows" element={<NoShows />} />
           
           {/* Room Status & Housekeeping */}
           <Route path="/rooms" element={<Rooms />} />
