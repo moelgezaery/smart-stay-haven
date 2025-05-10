@@ -19,7 +19,7 @@ import Housekeeping from "./pages/Housekeeping";
 import Employees from "./pages/Employees";
 import Companies from "./pages/Companies";
 import Maintenance from "./pages/Maintenance";
-import Reports from "./pages/Reports";
+import { Reports } from "./pages/Reports";
 import Login from "./pages/Login";
 import Reservations from "./pages/Reservations";
 import CloseDay from "./pages/CloseDay";

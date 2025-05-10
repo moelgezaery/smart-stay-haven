@@ -19,8 +19,7 @@ namespace SmartStayHaven.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Charge>>> GetCharges(
             [FromQuery] int? bookingId,
-            [FromQuery] string? type,
-            [FromQuery] string? status,
+            [FromQuery] string? category,
             [FromQuery] DateTime? startDate,
             [FromQuery] DateTime? endDate)
         {
@@ -32,11 +31,8 @@ namespace SmartStayHaven.API.Controllers
             if (bookingId.HasValue)
                 query = query.Where(c => c.BookingId == bookingId.Value);
 
-            if (!string.IsNullOrEmpty(type))
-                query = query.Where(c => c.Type == type);
-
-            if (!string.IsNullOrEmpty(status))
-                query = query.Where(c => c.Status == status);
+            if (!string.IsNullOrEmpty(category))
+                query = query.Where(c => c.Category == category);
 
             if (startDate.HasValue)
                 query = query.Where(c => c.CreatedAt >= startDate.Value);
@@ -69,8 +65,7 @@ namespace SmartStayHaven.API.Controllers
                 return BadRequest("Invalid booking ID");
 
             charge.CreatedAt = DateTime.UtcNow;
-            charge.Status = "Posted";
-            charge.PostedAt = DateTime.UtcNow;
+            charge.CreatedAt = DateTime.UtcNow;
 
             if (charge.Quantity > 0 && charge.UnitPrice > 0)
                 charge.Amount = charge.Quantity * charge.UnitPrice;

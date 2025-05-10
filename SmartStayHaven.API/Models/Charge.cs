@@ -12,30 +12,33 @@ namespace SmartStayHaven.API.Models
         public int BookingId { get; set; }
 
         [Required]
-        public string Type { get; set; } = "Room Service";
+        public string Description { get; set; } = string.Empty;
 
         [Required]
-        public string Category { get; set; } = "Food";
-
-        [Required]
-        public string Description { get; set; }
-
-        [Required]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Amount { get; set; }
 
         [Required]
-        public int Quantity { get; set; } = 1;
+        public decimal Quantity { get; set; }
 
+        [Required]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal UnitPrice { get; set; }
 
         [Required]
-        public string Status { get; set; } = "Posted";
+        public string Category { get; set; } = string.Empty; // Room, Food, Service, Amenity, Other
+
+        public string? Notes { get; set; }
+
+        public bool IsPaid { get; set; }
+
+        public DateTime ChargeDate { get; set; } = DateTime.UtcNow;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public DateTime? PostedAt { get; set; }
+        public DateTime? LastUpdated { get; set; }
 
-        [ForeignKey("BookingId")]
+        // Navigation properties
         public Booking? Booking { get; set; }
     }
 } 

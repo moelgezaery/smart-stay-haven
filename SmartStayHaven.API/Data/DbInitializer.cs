@@ -9,104 +9,62 @@ namespace SmartStayHaven.API.Data
     {
         public static async Task Initialize(ApplicationDbContext context)
         {
-            // Ensure database is created
-            await context.Database.EnsureCreatedAsync();
+            // Apply any pending migrations
+            await context.Database.MigrateAsync();
 
-            // Check if we already have data
-            if (await context.Users.AnyAsync())
+            // Check if data already exists
+            if (await context.RoomTypes.AnyAsync())
             {
                 return; // Database has been seeded
             }
 
-            // Add test users
-            var adminUser = new User
+            // Seed RoomTypes
+            var roomTypes = new List<RoomType>
             {
-                Email = "admin@hotel.com",
-                PasswordHash = HashPassword("password"),
-                FirstName = "Admin",
-                LastName = "User",
-                Role = "Admin",
-                CreatedAt = DateTime.UtcNow
+                new RoomType { Name = "Standard", Description = "Standard room with basic amenities", BedType = "King", MaxOccupancy = 2, BedCount = 1, BaseRate = 100.00m, HasBalcony = false   },
+                new RoomType { Name = "Deluxe", Description = "Spacious room with premium amenities", BedType = "Queen", MaxOccupancy = 3, BedCount = 2, BaseRate = 150.00m, HasBalcony = true },
+                new RoomType { Name = "Suite", Description = "Luxury suite with separate living area", BedType = "King", MaxOccupancy = 4, BedCount = 3, BaseRate = 200.00m, HasBalcony = true }
             };
+            await context.RoomTypes.AddRangeAsync(roomTypes);
 
-            var staffUser = new User
+            // Seed Currencies
+            var currencies = new List<Currency>
             {
-                Email = "staff@hotel.com",
-                PasswordHash = HashPassword("password"),
-                FirstName = "Staff",
-                LastName = "User",
-                Role = "Staff",
-                CreatedAt = DateTime.UtcNow
+                new Currency { Code = "USD", Name = "US Dollar", Symbol = "$", ExchangeRate = 1.0m, IsDefault = true },
+                new Currency { Code = "EUR", Name = "Euro", Symbol = "€", ExchangeRate = 1.08m, IsDefault = false },
+                new Currency { Code = "GBP", Name = "British Pound", Symbol = "£", ExchangeRate = 1.27m, IsDefault = false }
             };
+            await context.Currencies.AddRangeAsync(currencies);
 
-            context.Users.AddRange(adminUser, staffUser);
-            await context.SaveChangesAsync();
-
-            // Add room type
-            var standardRoomType = new RoomType
+            // Seed Services
+            var services = new List<Service>
             {
-                Name = "Standard Room",
-                Description = "Comfortable room with essential amenities",
-                BasePrice = 150.00m,
-                Capacity = 2,
-                Features = "Queen bed, TV, WiFi, Air conditioning",
-                IsActive = true
+                new Service { Name = "Room Cleaning", Description = "Daily room cleaning service", Price = 0m, IsActive = true,Category = "Housekeeping" },
+                new Service { Name = "Laundry", Description = "Laundry and dry cleaning service", Price = 15.00m, IsActive = true,Category = "Housekeeping" },
+                new Service { Name = "Room Service", Description = "24/7 room service", Price = 0m, IsActive = true,Category = "Room Service" }
             };
+            await context.Services.AddRangeAsync(services);
 
-            context.RoomTypes.Add(standardRoomType);
-            await context.SaveChangesAsync();
-
-            // Add test rooms first
-            var rooms = new List<Room>
+            // Seed MaintenanceTypes
+            var maintenanceTypes = new List<MaintenanceType>
             {
-                new Room
-                {
-                    RoomNumber = "102",
-                    RoomTypeId = 1,
-                    Status = "Available",
-                    Floor = 1,
-                    Capacity = 2
-                },
-                new Room
-                {
-                    RoomNumber = "204",
-                    RoomTypeId = 1,
-                    Status = "Available",
-                    Floor = 2,
-                    Capacity = 2
-                }
+                new MaintenanceType { Name = "Regular", Description = "Regular maintenance tasks" },
+                new MaintenanceType { Name = "Emergency", Description = "Emergency maintenance tasks" },
+                new MaintenanceType { Name = "Preventive", Description = "Preventive maintenance tasks" }
             };
+            await context.MaintenanceTypes.AddRangeAsync(maintenanceTypes);
 
-            context.Rooms.AddRange(rooms);
-            await context.SaveChangesAsync();
-
-            // Add test maintenance requests
-            var maintenanceRequests = new List<MaintenanceRequest>
+            // Seed MaintenanceStatuses
+            var maintenanceStatuses = new List<MaintenanceStatus>
             {
-                new MaintenanceRequest
-                {
-                    RoomId = rooms[0].Id,
-                    Title = "AC Issue - Room 102",
-                    Description = "AC not cooling properly",
-                    Priority = "High",
-                    Status = "Pending",
-                    CreatedAt = DateTime.UtcNow,
-                    ResolutionNotes = "Guest complained room temperature is above 78°F despite AC set to 65°F"
-                },
-                new MaintenanceRequest
-                {
-                    RoomId = rooms[1].Id,
-                    Title = "Shower Leak - Room 204",
-                    Description = "Leaking shower head",
-                    Priority = "Medium",
-                    Status = "InProgress",
-                    CreatedAt = DateTime.UtcNow,
-                    AssignedToId = staffUser.Id,
-                    ResolutionNotes = "Water leaking onto bathroom floor causing slippery conditions"
-                }
+                new MaintenanceStatus { Name = "Pending", Description = "Maintenance request is pending" },
+                new MaintenanceStatus { Name = "In Progress", Description = "Maintenance is in progress" },
+                new MaintenanceStatus { Name = "Completed", Description = "Maintenance has been completed" },
+                new MaintenanceStatus { Name = "Cancelled", Description = "Maintenance request has been cancelled" }
             };
+            await context.MaintenanceStatuses.AddRangeAsync(maintenanceStatuses);
 
-            context.MaintenanceRequests.AddRange(maintenanceRequests);
+            // Save all changes
             await context.SaveChangesAsync();
         }
 

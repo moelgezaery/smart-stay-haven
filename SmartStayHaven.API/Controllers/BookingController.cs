@@ -17,54 +17,44 @@ namespace SmartStayHaven.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Booking>>> GetBookings(
-            [FromQuery] int? guestId = null,
-            [FromQuery] string? status = null,
-            [FromQuery] DateTime? startDate = null,
-            [FromQuery] DateTime? endDate = null)
+        public async Task<ActionResult<IEnumerable<Booking>>> GetBookings()
         {
-            var query = _context.Bookings
-                .Include(b => b.Room)
+            return await _context.Bookings
                 .Include(b => b.Guest)
-                .AsQueryable();
-
-            if (guestId.HasValue)
-                query = query.Where(b => b.GuestId == guestId.Value);
-
-            if (!string.IsNullOrWhiteSpace(status))
-                query = query.Where(b => b.Status == status);
-
-            if (startDate.HasValue)
-                query = query.Where(b => b.CheckInDate >= startDate.Value);
-
-            if (endDate.HasValue)
-                query = query.Where(b => b.CheckOutDate <= endDate.Value);
-
-            return await query.ToListAsync();
+                .Include(b => b.Room)
+                .ToListAsync();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Booking>> GetBooking(int id)
         {
             var booking = await _context.Bookings
-                .Include(b => b.Room)
                 .Include(b => b.Guest)
+                .Include(b => b.Room)
+                .Include(b => b.Charges)
+                .Include(b => b.Payments)
                 .FirstOrDefaultAsync(b => b.Id == id);
 
             if (booking == null)
+            {
                 return NotFound();
+            }
 
             return booking;
+        }
+
+        [HttpGet("guest/{guestId}")]
+        public async Task<ActionResult<IEnumerable<Booking>>> GetGuestBookings(int guestId)
+        {
+            return await _context.Bookings
+                .Include(b => b.Room)
+                .Where(b => b.GuestId == guestId)
+                .ToListAsync();
         }
 
         [HttpPost]
         public async Task<ActionResult<Booking>> CreateBooking(Booking booking)
         {
-            // Check if room is available for the requested dates
-            var isRoomAvailable = await IsRoomAvailable(booking.RoomId, booking.CheckInDate, booking.CheckOutDate);
-            if (!isRoomAvailable)
-                return BadRequest("Room is not available for the selected dates");
-
             _context.Bookings.Add(booking);
             await _context.SaveChangesAsync();
 
@@ -75,7 +65,9 @@ namespace SmartStayHaven.API.Controllers
         public async Task<IActionResult> UpdateBooking(int id, Booking booking)
         {
             if (id != booking.Id)
+            {
                 return BadRequest();
+            }
 
             booking.LastUpdated = DateTime.UtcNow;
             _context.Entry(booking).State = EntityState.Modified;
@@ -87,26 +79,15 @@ namespace SmartStayHaven.API.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 if (!BookingExists(id))
+                {
                     return NotFound();
-                throw;
+                }
+                else
+                {
+                    throw;
+                }
             }
 
-            return NoContent();
-        }
-
-        [HttpPost("{id}/cancel")]
-        public async Task<IActionResult> CancelBooking(int id, [FromBody] string reason)
-        {
-            var booking = await _context.Bookings.FindAsync(id);
-            if (booking == null)
-                return NotFound();
-
-            booking.Status = "Cancelled";
-            booking.CancellationReason = reason;
-            booking.CancelledAt = DateTime.UtcNow;
-            booking.LastUpdated = DateTime.UtcNow;
-
-            await _context.SaveChangesAsync();
             return NoContent();
         }
 
@@ -115,7 +96,9 @@ namespace SmartStayHaven.API.Controllers
         {
             var booking = await _context.Bookings.FindAsync(id);
             if (booking == null)
+            {
                 return NotFound();
+            }
 
             _context.Bookings.Remove(booking);
             await _context.SaveChangesAsync();
@@ -123,62 +106,19 @@ namespace SmartStayHaven.API.Controllers
             return NoContent();
         }
 
-        [HttpPost("{id}/checkout")]
-        public async Task<ActionResult<Booking>> Checkout(int id, [FromBody] CheckoutRequest request)
+        [HttpGet("status/{status}")]
+        public async Task<ActionResult<IEnumerable<Booking>>> GetBookingsByStatus(string status)
         {
-            var booking = await _context.Bookings
+            return await _context.Bookings
+                .Include(b => b.Guest)
                 .Include(b => b.Room)
-                .FirstOrDefaultAsync(b => b.Id == id);
-
-            if (booking == null)
-                return NotFound();
-
-            if (booking.Status == "Completed")
-                return BadRequest("Booking is already checked out");
-
-            if (booking.Status == "Cancelled")
-                return BadRequest("Cannot checkout a cancelled booking");
-
-            // Update booking status and details
-            booking.Status = "Completed";
-            booking.LastUpdated = DateTime.UtcNow;
-
-            // Add any additional charges to the total amount
-            if (request.AdditionalCharges.HasValue)
-            {
-                booking.TotalAmount += request.AdditionalCharges.Value;
-            }
-
-            // Update room status
-            booking.Room.Status = "Available";
-
-            // Save changes
-            await _context.SaveChangesAsync();
-
-            return Ok(new
-            {
-                Booking = booking,
-                CheckoutTime = request.ActualCheckOutTime,
-                IsEarlyCheckout = request.IsEarlyCheckout,
-                AdditionalCharges = request.AdditionalCharges,
-                PaymentMethod = request.PaymentMethod
-            });
+                .Where(b => b.Status == status)
+                .ToListAsync();
         }
 
         private bool BookingExists(int id)
         {
             return _context.Bookings.Any(e => e.Id == id);
-        }
-
-        private async Task<bool> IsRoomAvailable(int roomId, DateTime checkIn, DateTime checkOut)
-        {
-            return !await _context.Bookings
-                .AnyAsync(b => b.RoomId == roomId &&
-                              b.Status != "Cancelled" &&
-                              b.Status != "Completed" &&
-                              ((checkIn >= b.CheckInDate && checkIn < b.CheckOutDate) ||
-                               (checkOut > b.CheckInDate && checkOut <= b.CheckOutDate) ||
-                               (checkIn <= b.CheckInDate && checkOut >= b.CheckOutDate)));
         }
     }
 } 
