@@ -1,3 +1,4 @@
+
 import { Layout } from "@/components/layout/Layout";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
@@ -116,6 +117,12 @@ export default function Housekeeping() {
     ) &&
     (filterStatus.length === 0 || filterStatus.includes(room.cleaning))
   );
+
+  // Count of rooms by cleaning status for dashboard metrics
+  const requiredCount = rooms.filter(r => r.cleaning === "Required").length;
+  const inProgressCount = rooms.filter(r => r.cleaning === "In Progress").length;
+  const completedCount = rooms.filter(r => r.cleaning === "Completed").length;
+  const totalRooms = rooms.length;
   
   return (
     <Layout>
@@ -127,25 +134,25 @@ export default function Housekeeping() {
         <Card>
           <CardContent className="p-4">
             <p className="text-sm text-muted-foreground">Total Rooms</p>
-            <p className="text-2xl font-semibold">16</p>
+            <p className="text-2xl font-semibold">{totalRooms}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
             <p className="text-sm text-muted-foreground">Cleaning Required</p>
-            <p className="text-2xl font-semibold text-orange-600">4</p>
+            <p className="text-2xl font-semibold text-orange-600">{requiredCount}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
             <p className="text-sm text-muted-foreground">In Progress</p>
-            <p className="text-2xl font-semibold text-blue-600">1</p>
+            <p className="text-2xl font-semibold text-blue-600">{inProgressCount}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
             <p className="text-sm text-muted-foreground">Completed Today</p>
-            <p className="text-2xl font-semibold text-green-600">1</p>
+            <p className="text-2xl font-semibold text-green-600">{completedCount}</p>
           </CardContent>
         </Card>
       </div>

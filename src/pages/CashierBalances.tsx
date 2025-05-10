@@ -4,472 +4,268 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from "@/components/ui/table";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+  Card, 
+  CardContent, 
+  CardDescription, 
+  CardFooter, 
+  CardHeader, 
+  CardTitle 
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { CalendarIcon, Search, Coins, DollarSign, CreditCard, ChevronDown, PlusCircle, Printer } from "lucide-react";
-import { format } from "date-fns";
-import { useToast } from "@/hooks/use-toast";
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogTrigger,
-  DialogFooter
-} from "@/components/ui/dialog";
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-} from "@/components/ui/select";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CalendarIcon, DollarSign, FileText, Search, Wallet } from "lucide-react";
 
 // Mock data for cashier balances
-const cashierShifts = [
+const cashierBalances = [
   {
-    id: "CS001",
-    cashier: "Emily Johnson",
-    shiftStart: new Date(2025, 4, 9, 7, 0),
-    shiftEnd: new Date(2025, 4, 9, 15, 0),
+    id: 1,
+    name: "John Smith",
+    position: "Front Desk Agent",
+    shift: "Morning",
     openingBalance: 500.00,
-    cashReceived: 2350.75,
-    cardPayments: 4125.50,
-    otherPayments: 500.00,
-    refunds: 175.50,
-    expectedClosingBalance: 2675.25,
-    actualClosingBalance: 2675.25,
-    status: "closed",
-    notes: ""
+    currentBalance: 735.50,
+    transactions: 12,
+    lastUpdated: new Date("2025-05-10T10:30:00")
   },
   {
-    id: "CS002",
-    cashier: "Michael Torres",
-    shiftStart: new Date(2025, 4, 9, 15, 0),
-    shiftEnd: new Date(2025, 4, 9, 23, 0),
+    id: 2,
+    name: "Maria Garcia",
+    position: "Front Desk Agent",
+    shift: "Evening",
     openingBalance: 500.00,
-    cashReceived: 1850.25,
-    cardPayments: 3200.75,
-    otherPayments: 350.00,
-    refunds: 125.00,
-    expectedClosingBalance: 2225.25,
-    actualClosingBalance: 2200.00,
-    status: "closed",
-    notes: "Discrepancy of $25.25, investigation ongoing"
+    currentBalance: 890.75,
+    transactions: 8,
+    lastUpdated: new Date("2025-05-10T15:45:00")
   },
   {
-    id: "CS003",
-    cashier: "Sarah Davis",
-    shiftStart: new Date(2025, 4, 10, 7, 0),
-    shiftEnd: new Date(2025, 4, 10, 15, 0), 
-    openingBalance: 500.00,
-    cashReceived: 1975.50,
-    cardPayments: 3580.25,
-    otherPayments: 425.00,
-    refunds: 150.00,
-    expectedClosingBalance: 2325.50,
-    actualClosingBalance: 2325.50,
-    status: "closed",
-    notes: ""
+    id: 3,
+    name: "Ahmed Khan",
+    position: "Night Auditor",
+    shift: "Night",
+    openingBalance: 300.00,
+    currentBalance: 405.25,
+    transactions: 3,
+    lastUpdated: new Date("2025-05-10T02:15:00")
   },
   {
-    id: "CS004",
-    cashier: "James Wilson",
-    shiftStart: new Date(2025, 4, 10, 15, 0),
-    shiftEnd: null, // Active shift
-    openingBalance: 500.00,
-    cashReceived: 1250.75,
-    cardPayments: 2175.25,
-    otherPayments: 175.00,
-    refunds: 50.00,
-    expectedClosingBalance: 1700.75,
-    actualClosingBalance: null,
-    status: "active",
-    notes: ""
+    id: 4,
+    name: "Sarah Johnson",
+    position: "Manager",
+    shift: "Day",
+    openingBalance: 1000.00,
+    currentBalance: 2350.00,
+    transactions: 15,
+    lastUpdated: new Date("2025-05-10T16:20:00")
   }
 ];
 
 export default function CashierBalances() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [date, setDate] = useState<Date | undefined>(new Date());
-  const [shiftData, setShiftData] = useState(cashierShifts);
-  const { toast } = useToast();
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+  const [selectedShift, setSelectedShift] = useState("all");
   
-  // Filter cashier shifts based on search term
-  const filteredShifts = shiftData.filter(shift => 
-    shift.cashier.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    shift.id.toLowerCase().includes(searchTerm.toLowerCase())
+  // Total amounts
+  const totalOpeningBalance = cashierBalances.reduce((sum, cashier) => sum + cashier.openingBalance, 0);
+  const totalCurrentBalance = cashierBalances.reduce((sum, cashier) => sum + cashier.currentBalance, 0);
+  const totalTransactions = cashierBalances.reduce((sum, cashier) => sum + cashier.transactions, 0);
+  const totalDifference = totalCurrentBalance - totalOpeningBalance;
+  
+  // Filter cashiers based on search term and selected shift
+  const filteredCashiers = cashierBalances.filter(cashier => 
+    (searchTerm === "" || 
+      cashier.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      cashier.position.toLowerCase().includes(searchTerm.toLowerCase())
+    ) &&
+    (selectedShift === "all" || cashier.shift.toLowerCase() === selectedShift.toLowerCase())
   );
-
-  // Calculate total payments for today
-  const todaysPayments = cashierShifts
-    .filter(shift => {
-      const shiftDate = new Date(shift.shiftStart);
-      const today = new Date();
-      return shiftDate.getDate() === today.getDate() &&
-             shiftDate.getMonth() === today.getMonth() &&
-             shiftDate.getFullYear() === today.getFullYear();
-    })
-    .reduce((total, shift) => total + shift.cashReceived + shift.cardPayments + shift.otherPayments, 0);
-
-  // Start a new shift
-  const handleStartShift = () => {
-    const newShift = {
-      id: `CS00${shiftData.length + 1}`,
-      cashier: "Current User",
-      shiftStart: new Date(),
-      shiftEnd: null,
-      openingBalance: 500.00,
-      cashReceived: 0,
-      cardPayments: 0,
-      otherPayments: 0,
-      refunds: 0,
-      expectedClosingBalance: 500.00,
-      actualClosingBalance: null,
-      status: "active" as const,
-      notes: ""
-    };
-    
-    setShiftData([newShift, ...shiftData]);
-    
-    toast({
-      title: "Shift Started",
-      description: `New shift started with ID ${newShift.id}`
-    });
-  };
-
-  // End current shift
-  const handleEndShift = () => {
-    const updatedShifts = shiftData.map(shift => {
-      if (shift.status === "active") {
-        return {
-          ...shift,
-          shiftEnd: new Date(),
-          actualClosingBalance: shift.expectedClosingBalance,
-          status: "closed" as const
-        };
-      }
-      return shift;
-    });
-    
-    setShiftData(updatedShifts);
-    
-    toast({
-      title: "Shift Ended",
-      description: "Your shift has been closed successfully"
-    });
-  };
-
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "active":
-        return <Badge className="bg-green-500">Active</Badge>;
-      case "closed":
-        return <Badge variant="outline">Closed</Badge>;
-      default:
-        return <Badge>{status}</Badge>;
-    }
-  };
-
-  const hasActiveShift = shiftData.some(shift => shift.status === "active");
-
+  
   return (
     <Layout>
-      <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold">Cashier Balances</h1>
-          <div className="flex gap-2">
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className="w-[240px] justify-start text-left font-normal">
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {date ? format(date, 'PPP') : <span>Pick a date</span>}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="end">
-                <Calendar
-                  mode="single"
-                  selected={date}
-                  onSelect={setDate}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
-            
-            {hasActiveShift ? (
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button>End Shift</Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>End Cashier Shift</DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-4 py-4">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <p className="text-sm font-medium mb-1">Expected Closing Balance</p>
-                        <p className="text-xl font-semibold">$1,700.75</p>
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium mb-1">Actual Closing Balance</p>
-                        <Input placeholder="Enter actual cash count" defaultValue="1700.75" />
-                      </div>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium mb-1">Notes</p>
-                      <Input placeholder="Any notes about this shift?" />
-                    </div>
-                  </div>
-                  <DialogFooter>
-                    <Button variant="outline">Cancel</Button>
-                    <Button onClick={handleEndShift}>End Shift</Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-            ) : (
-              <Button onClick={handleStartShift}>Start Shift</Button>
-            )}
-          </div>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card>
-            <CardContent className="p-6 flex items-center gap-4">
-              <Coins className="h-10 w-10 text-primary" />
-              <div>
-                <p className="text-sm text-muted-foreground">Cash on Hand</p>
-                <p className="text-2xl font-semibold">$2,500.00</p>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-6 flex items-center gap-4">
-              <DollarSign className="h-10 w-10 text-green-500" />
-              <div>
-                <p className="text-sm text-muted-foreground">Today's Payments</p>
-                <p className="text-2xl font-semibold">${todaysPayments.toFixed(2)}</p>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-6 flex items-center gap-4">
-              <CreditCard className="h-10 w-10 text-blue-500" />
-              <div>
-                <p className="text-sm text-muted-foreground">Card Transactions</p>
-                <p className="text-2xl font-semibold">38</p>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-6 flex items-center gap-4">
-              <ChevronDown className="h-10 w-10 text-destructive" />
-              <div>
-                <p className="text-sm text-muted-foreground">Refunds</p>
-                <p className="text-2xl font-semibold">$325.50</p>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-        
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Cashier Balances</h1>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <Card>
-          <CardHeader>
-            <CardTitle>Cashier Shifts</CardTitle>
-            <CardDescription>View and manage current and past cashier shifts</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Tabs defaultValue="all">
-              <div className="flex justify-between items-center mb-4">
-                <TabsList>
-                  <TabsTrigger value="all">All Shifts</TabsTrigger>
-                  <TabsTrigger value="active">Active</TabsTrigger>
-                  <TabsTrigger value="closed">Closed</TabsTrigger>
-                </TabsList>
-                <div className="relative w-[250px]">
-                  <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search by cashier or ID..."
-                    className="pl-10"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
+          <CardContent className="p-4">
+            <div className="flex justify-between items-center">
+              <div>
+                <p className="text-sm text-muted-foreground">Opening Balance</p>
+                <p className="text-2xl font-semibold">${totalOpeningBalance.toFixed(2)}</p>
               </div>
-              
-              <TabsContent value="all">
-                <div className="rounded-md border">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Shift ID</TableHead>
-                        <TableHead>Cashier</TableHead>
-                        <TableHead>Start Time</TableHead>
-                        <TableHead>End Time</TableHead>
-                        <TableHead>Opening Balance</TableHead>
-                        <TableHead>Expected Closing</TableHead>
-                        <TableHead>Actual Closing</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead className="text-right">Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {filteredShifts.map((shift) => (
-                        <TableRow key={shift.id}>
-                          <TableCell className="font-medium">{shift.id}</TableCell>
-                          <TableCell>{shift.cashier}</TableCell>
-                          <TableCell>{format(shift.shiftStart, "MMM d, yyyy HH:mm")}</TableCell>
-                          <TableCell>
-                            {shift.shiftEnd 
-                              ? format(shift.shiftEnd, "MMM d, yyyy HH:mm") 
-                              : "In Progress"}
-                          </TableCell>
-                          <TableCell>${shift.openingBalance.toFixed(2)}</TableCell>
-                          <TableCell>${shift.expectedClosingBalance.toFixed(2)}</TableCell>
-                          <TableCell>
-                            {shift.actualClosingBalance !== null 
-                              ? `$${shift.actualClosingBalance.toFixed(2)}` 
-                              : "-"}
-                          </TableCell>
-                          <TableCell>{getStatusBadge(shift.status)}</TableCell>
-                          <TableCell className="text-right">
-                            <div className="flex justify-end gap-2">
-                              <Button variant="outline" size="sm">
-                                <Printer className="h-4 w-4 mr-1" />
-                                Report
-                              </Button>
-                              <Button variant="outline" size="sm">Details</Button>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="active">
-                <div className="rounded-md border">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Shift ID</TableHead>
-                        <TableHead>Cashier</TableHead>
-                        <TableHead>Start Time</TableHead>
-                        <TableHead>Opening Balance</TableHead>
-                        <TableHead>Current Balance</TableHead>
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {filteredShifts
-                        .filter(shift => shift.status === "active")
-                        .map((shift) => (
-                          <TableRow key={shift.id}>
-                            <TableCell className="font-medium">{shift.id}</TableCell>
-                            <TableCell>{shift.cashier}</TableCell>
-                            <TableCell>{format(shift.shiftStart, "MMM d, yyyy HH:mm")}</TableCell>
-                            <TableCell>${shift.openingBalance.toFixed(2)}</TableCell>
-                            <TableCell>${shift.expectedClosingBalance.toFixed(2)}</TableCell>
-                            <TableCell>
-                              <div className="flex gap-2">
-                                <Button size="sm">Close Shift</Button>
-                                <Button variant="outline" size="sm">Details</Button>
-                              </div>
-                            </TableCell>
-                          </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="closed">
-                <div className="rounded-md border">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Shift ID</TableHead>
-                        <TableHead>Cashier</TableHead>
-                        <TableHead>Date</TableHead>
-                        <TableHead>Duration</TableHead>
-                        <TableHead>Cash Received</TableHead>
-                        <TableHead>Variance</TableHead>
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {filteredShifts
-                        .filter(shift => shift.status === "closed")
-                        .map((shift) => {
-                          const variance = shift.actualClosingBalance !== null
-                            ? shift.actualClosingBalance - shift.expectedClosingBalance
-                            : 0;
-                            
-                          return (
-                            <TableRow key={shift.id}>
-                              <TableCell className="font-medium">{shift.id}</TableCell>
-                              <TableCell>{shift.cashier}</TableCell>
-                              <TableCell>{format(shift.shiftStart, "MMM d, yyyy")}</TableCell>
-                              <TableCell>
-                                {shift.shiftEnd ? 
-                                  `${Math.round((shift.shiftEnd.getTime() - shift.shiftStart.getTime()) / 3600000)} hrs` 
-                                  : "-"}
-                              </TableCell>
-                              <TableCell>${shift.cashReceived.toFixed(2)}</TableCell>
-                              <TableCell>
-                                <span className={cn(
-                                  "px-2 py-1 rounded-full text-xs",
-                                  variance === 0 
-                                    ? "bg-green-100 text-green-800"
-                                    : variance < 0 
-                                      ? "bg-red-100 text-red-800" 
-                                      : "bg-yellow-100 text-yellow-800"
-                                )}>
-                                  {variance === 0 
-                                    ? "Balanced" 
-                                    : variance < 0 
-                                      ? `-$${Math.abs(variance).toFixed(2)}` 
-                                      : `+$${variance.toFixed(2)}`}
-                                </span>
-                              </TableCell>
-                              <TableCell>
-                                <Button variant="outline" size="sm">
-                                  <Printer className="h-4 w-4 mr-1" />
-                                  Report
-                                </Button>
-                              </TableCell>
-                            </TableRow>
-                          );
-                        })}
-                    </TableBody>
-                  </Table>
-                </div>
-              </TabsContent>
-            </Tabs>
+              <Wallet className="h-8 w-8 text-gray-400" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex justify-between items-center">
+              <div>
+                <p className="text-sm text-muted-foreground">Current Balance</p>
+                <p className="text-2xl font-semibold">${totalCurrentBalance.toFixed(2)}</p>
+              </div>
+              <DollarSign className="h-8 w-8 text-blue-400" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex justify-between items-center">
+              <div>
+                <p className="text-sm text-muted-foreground">Difference</p>
+                <p className="text-2xl font-semibold text-green-600">+${totalDifference.toFixed(2)}</p>
+              </div>
+              <FileText className="h-8 w-8 text-green-400" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex justify-between items-center">
+              <div>
+                <p className="text-sm text-muted-foreground">Total Transactions</p>
+                <p className="text-2xl font-semibold">{totalTransactions}</p>
+              </div>
+              <FileText className="h-8 w-8 text-orange-400" />
+            </div>
           </CardContent>
         </Card>
       </div>
+      
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle>Daily Cashier Balances</CardTitle>
+          <CardDescription>
+            View and manage cashier balances for the selected date
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="mb-6 flex flex-col md:flex-row gap-4">
+            <div className="relative flex-grow">
+              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search by cashier name or position..."
+                className="pl-10"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <div className="flex gap-4">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "w-[220px] justify-start text-left font-normal",
+                      !selectedDate && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {selectedDate ? format(selectedDate, "PPP") : <span>Pick a date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={selectedDate}
+                    onSelect={setSelectedDate}
+                    initialFocus
+                    className="p-3 pointer-events-auto"
+                  />
+                </PopoverContent>
+              </Popover>
+              <Select value={selectedShift} onValueChange={setSelectedShift}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Filter by shift" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Shifts</SelectItem>
+                  <SelectItem value="Morning">Morning</SelectItem>
+                  <SelectItem value="Evening">Evening</SelectItem>
+                  <SelectItem value="Night">Night</SelectItem>
+                  <SelectItem value="Day">Day</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Cashier</TableHead>
+                  <TableHead>Position</TableHead>
+                  <TableHead>Shift</TableHead>
+                  <TableHead>Opening Balance</TableHead>
+                  <TableHead>Current Balance</TableHead>
+                  <TableHead>Difference</TableHead>
+                  <TableHead>Transactions</TableHead>
+                  <TableHead>Last Updated</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredCashiers.map((cashier) => {
+                  const difference = cashier.currentBalance - cashier.openingBalance;
+                  return (
+                    <TableRow key={cashier.id}>
+                      <TableCell className="font-medium">{cashier.name}</TableCell>
+                      <TableCell>{cashier.position}</TableCell>
+                      <TableCell>
+                        <Badge variant="outline">{cashier.shift}</Badge>
+                      </TableCell>
+                      <TableCell>${cashier.openingBalance.toFixed(2)}</TableCell>
+                      <TableCell>${cashier.currentBalance.toFixed(2)}</TableCell>
+                      <TableCell>
+                        <span className={difference >= 0 ? "text-green-600" : "text-red-600"}>
+                          {difference >= 0 ? "+" : ""}{difference.toFixed(2)}
+                        </span>
+                      </TableCell>
+                      <TableCell>{cashier.transactions}</TableCell>
+                      <TableCell>{format(cashier.lastUpdated, "hh:mm a")}</TableCell>
+                      <TableCell className="text-right">
+                        <Button variant="outline" size="sm">View Details</Button>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+                {filteredCashiers.length === 0 && (
+                  <TableRow>
+                    <TableCell colSpan={9} className="text-center py-6 text-muted-foreground">
+                      No cashier balances found
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+        <CardFooter className="flex justify-between border-t pt-6">
+          <div className="flex gap-2">
+            <Button variant="outline">Print Report</Button>
+            <Button variant="outline">Export Data</Button>
+          </div>
+          <Button>End of Day Reconciliation</Button>
+        </CardFooter>
+      </Card>
     </Layout>
   );
 }

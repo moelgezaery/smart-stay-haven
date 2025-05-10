@@ -4,414 +4,297 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from "@/components/ui/table";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+  Card, 
+  CardContent, 
+  CardDescription, 
+  CardFooter, 
+  CardHeader, 
+  CardTitle 
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Search, ArrowDownUp, FileText, Mail, PhoneCall, Printer, ArrowDownUp as Filter } from "lucide-react";
-import { format, addDays, isPast, differenceInDays } from "date-fns";
-import { useToast } from "@/hooks/use-toast";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Checkbox } from "@/components/ui/checkbox";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import { format, addDays, differenceInDays } from "date-fns";
+import { AlertCircle, FileText, Mail, Search, Send } from "lucide-react";
 
 // Mock data for outstanding invoices
-const invoices = [
+const outstandingInvoices = [
   {
-    id: "INV-2025-001",
-    guestName: "Robert Miller",
-    email: "robert.miller@example.com",
-    phone: "+1 (555) 123-4567",
-    roomNumber: "304",
-    checkOut: new Date(2025, 4, 2),
-    amount: 1250.75,
-    paid: 250.00,
-    due: 1000.75,
-    status: "partial",
-    dueDate: addDays(new Date(2025, 4, 2), 30),
-    notes: "Promised to pay by end of month"
+    id: "INV-001",
+    guestName: "John Smith",
+    company: "ABC Corporation",
+    amount: 1250.00,
+    issueDate: new Date("2025-04-25"),
+    dueDate: new Date("2025-05-25"),
+    status: "pending" as const,
+    email: "john.smith@example.com",
+    phone: "+1-555-123-4567",
+    notes: "Corporate rate applied"
   },
   {
-    id: "INV-2025-002",
-    guestName: "Jennifer Davis",
-    email: "jennifer.davis@example.com",
-    phone: "+1 (555) 234-5678",
-    roomNumber: "412",
-    checkOut: new Date(2025, 4, 3),
-    amount: 875.50,
-    paid: 0,
-    due: 875.50,
-    status: "unpaid",
-    dueDate: addDays(new Date(2025, 4, 3), 30),
-    notes: "Corporate account, will be paid by company"
+    id: "INV-002",
+    guestName: "Sarah Johnson",
+    company: "",
+    amount: 780.50,
+    issueDate: new Date("2025-04-28"),
+    dueDate: new Date("2025-05-12"),
+    status: "overdue" as const,
+    email: "sarahj@example.com",
+    phone: "+1-555-987-6543",
+    notes: "Guest requested itemized receipt"
   },
   {
-    id: "INV-2025-003",
-    guestName: "David Wilson",
-    email: "david.wilson@example.com",
-    phone: "+1 (555) 345-6789",
-    roomNumber: "201",
-    checkOut: new Date(2025, 3, 28),
-    amount: 475.25,
-    paid: 0,
-    due: 475.25,
-    status: "unpaid",
-    dueDate: addDays(new Date(2025, 3, 28), 30),
-    notes: "Card declined, following up"
+    id: "INV-003",
+    guestName: "Michael Brown",
+    company: "XYZ Ltd",
+    amount: 2150.75,
+    issueDate: new Date("2025-05-01"),
+    dueDate: new Date("2025-06-01"),
+    status: "pending" as const,
+    email: "michael.b@example.com",
+    phone: "+1-555-456-7890",
+    notes: "Applied 10% loyalty discount"
   },
   {
-    id: "INV-2025-004",
-    guestName: "Sophia Johnson",
-    email: "sophia.j@example.com",
-    phone: "+1 (555) 456-7890",
-    roomNumber: "105",
-    checkOut: new Date(2025, 3, 15),
-    amount: 925.75,
-    paid: 925.75,
-    due: 0,
-    status: "paid",
-    dueDate: addDays(new Date(2025, 3, 15), 30),
-    notes: "Paid in full on checkout"
+    id: "INV-004",
+    guestName: "Emily Davis",
+    company: "Tech Solutions Inc",
+    amount: 3200.25,
+    issueDate: new Date("2025-04-15"),
+    dueDate: new Date("2025-05-15"),
+    status: "overdue" as const,
+    email: "emily.davis@example.com",
+    phone: "+1-555-789-0123",
+    notes: "Conference package"
   },
   {
-    id: "INV-2025-005",
-    guestName: "Thomas Brown",
-    email: "thomas.brown@example.com",
-    phone: "+1 (555) 567-8901",
-    roomNumber: "508",
-    checkOut: new Date(2025, 3, 5),
-    amount: 1580.00,
-    paid: 0,
-    due: 1580.00,
-    status: "overdue",
-    dueDate: addDays(new Date(2025, 3, 5), 30),
-    notes: "Multiple attempts to contact, no response"
+    id: "INV-005",
+    guestName: "Robert Wilson",
+    company: "",
+    amount: 650.00,
+    issueDate: new Date("2025-05-05"),
+    dueDate: new Date("2025-05-20"),
+    status: "pending" as const,
+    email: "r.wilson@example.com",
+    phone: "+1-555-234-5678",
+    notes: ""
   }
 ];
 
+type InvoiceStatus = "pending" | "overdue" | "paid" | "cancelled";
+
 export default function OutstandingInvoices() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedInvoices, setSelectedInvoices] = useState<string[]>([]);
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
-  const [activeTab, setActiveTab] = useState("all");
-  const { toast } = useToast();
-  
-  // Filter invoices based on search term and active tab
-  const filteredInvoices = invoices.filter(invoice => {
-    const matchesSearch = 
-      invoice.guestName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      invoice.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      invoice.roomNumber.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    if (activeTab === "all") return matchesSearch;
-    return matchesSearch && invoice.status === activeTab;
-  });
-  
-  // Sort invoices by due date
-  const sortedInvoices = [...filteredInvoices].sort((a, b) => {
-    if (sortOrder === "asc") {
-      return a.dueDate.getTime() - b.dueDate.getTime();
-    } else {
-      return b.dueDate.getTime() - a.dueDate.getTime();
-    }
-  });
-  
-  // Toggle sorting order
-  const toggleSortOrder = () => {
-    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-  };
+  const [filterStatus, setFilterStatus] = useState("all");
   
   // Calculate totals
-  const totalOutstanding = invoices
-    .filter(inv => inv.status !== "paid")
-    .reduce((sum, inv) => sum + inv.due, 0);
-    
-  const totalOverdue = invoices
-    .filter(inv => inv.status === "overdue")
-    .reduce((sum, inv) => sum + inv.due, 0);
+  const totalOutstanding = outstandingInvoices.reduce((sum, invoice) => sum + invoice.amount, 0);
+  const totalOverdue = outstandingInvoices
+    .filter(invoice => invoice.status === "overdue")
+    .reduce((sum, invoice) => sum + invoice.amount, 0);
+  const totalPending = outstandingInvoices
+    .filter(invoice => invoice.status === "pending")
+    .reduce((sum, invoice) => sum + invoice.amount, 0);
   
-  // Handle invoice selection
-  const toggleInvoiceSelection = (invoiceId: string) => {
-    setSelectedInvoices(prev => 
-      prev.includes(invoiceId)
-        ? prev.filter(id => id !== invoiceId)
-        : [...prev, invoiceId]
-    );
-  };
+  // Filter invoices based on search term and status filter
+  const filteredInvoices = outstandingInvoices.filter(invoice => 
+    (searchTerm === "" || 
+      invoice.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      invoice.guestName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      invoice.company.toLowerCase().includes(searchTerm.toLowerCase())
+    ) &&
+    (filterStatus === "all" || invoice.status === filterStatus)
+  );
   
-  // Check if all visible invoices are selected
-  const allSelected = filteredInvoices.length > 0 && 
-    filteredInvoices.every(invoice => selectedInvoices.includes(invoice.id));
-  
-  // Handle "select all" checkbox
-  const toggleSelectAll = () => {
-    if (allSelected) {
-      setSelectedInvoices([]);
-    } else {
-      setSelectedInvoices(filteredInvoices.map(invoice => invoice.id));
-    }
-  };
-  
-  // Send payment reminder
-  const sendReminder = (invoiceId: string, guestName: string) => {
-    toast({
-      title: "Payment Reminder Sent",
-      description: `Payment reminder sent to ${guestName}.`
-    });
-  };
-  
-  // Send multiple reminders
-  const sendMultipleReminders = () => {
-    if (selectedInvoices.length > 0) {
-      toast({
-        title: "Multiple Reminders Sent",
-        description: `Payment reminders sent to ${selectedInvoices.length} guests.`
-      });
-      setSelectedInvoices([]);
-    }
-  };
-  
-  // Get status badge based on invoice status
-  const getStatusBadge = (status: string, dueDate: Date) => {
+  const getStatusBadge = (status: InvoiceStatus) => {
     switch(status) {
+      case "pending":
+        return <Badge className="bg-blue-500">Pending</Badge>;
+      case "overdue":
+        return <Badge className="bg-red-500">Overdue</Badge>;
       case "paid":
         return <Badge className="bg-green-500">Paid</Badge>;
-      case "partial":
-        return <Badge className="bg-blue-500">Partially Paid</Badge>;
-      case "unpaid":
-        return isPast(dueDate) 
-          ? <Badge variant="destructive">Overdue</Badge>
-          : <Badge variant="outline">Unpaid</Badge>;
-      case "overdue":
-        return <Badge variant="destructive">Overdue</Badge>;
+      case "cancelled":
+        return <Badge className="bg-gray-500">Cancelled</Badge>;
       default:
-        return <Badge>{status}</Badge>;
+        return <Badge>Unknown</Badge>;
     }
   };
   
-  // Get days remaining/overdue text
-  const getDaysText = (dueDate: Date) => {
+  const getDaysRemaining = (dueDate: Date) => {
     const today = new Date();
     const days = differenceInDays(dueDate, today);
-    
-    if (days > 0) {
-      return `${days} days remaining`;
-    } else if (days < 0) {
-      return `${Math.abs(days)} days overdue`;
-    } else {
-      return "Due today";
-    }
+    return days;
   };
-
+  
   return (
     <Layout>
-      <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold">Outstanding Invoices</h1>
-          <div className="flex gap-2">
-            <Button 
-              variant="outline"
-              onClick={sendMultipleReminders}
-              disabled={selectedInvoices.length === 0}
-            >
-              <Mail className="mr-2 h-4 w-4" />
-              Send Reminders ({selectedInvoices.length})
-            </Button>
-            <Button>
-              <FileText className="mr-2 h-4 w-4" />
-              Generate Report
-            </Button>
-          </div>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Outstanding Invoices</h1>
+        <div className="flex gap-2">
+          <Button>
+            <FileText className="mr-2 h-4 w-4" />
+            Generate Invoices
+          </Button>
+          <Button variant="outline">
+            <Send className="mr-2 h-4 w-4" />
+            Send Reminders
+          </Button>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="text-sm text-muted-foreground">Total Outstanding</p>
-                  <p className="text-2xl font-semibold">${totalOutstanding.toFixed(2)}</p>
-                </div>
-                <div className="h-12 w-12 rounded-full bg-amber-100 flex items-center justify-center">
-                  <FileText className="h-6 w-6 text-amber-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="text-sm text-muted-foreground">Overdue Amount</p>
-                  <p className="text-2xl font-semibold text-destructive">${totalOverdue.toFixed(2)}</p>
-                </div>
-                <div className="h-12 w-12 rounded-full bg-red-100 flex items-center justify-center">
-                  <FileText className="h-6 w-6 text-red-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="text-sm text-muted-foreground">Invoices Pending</p>
-                  <p className="text-2xl font-semibold">{invoices.filter(inv => inv.status !== "paid").length}</p>
-                </div>
-                <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
-                  <FileText className="h-6 w-6 text-blue-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-        
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <Card>
-          <CardHeader>
-            <CardTitle>Invoice Management</CardTitle>
-            <CardDescription>
-              Manage and track outstanding guest invoices
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab}>
-              <div className="flex justify-between items-center mb-6">
-                <TabsList>
-                  <TabsTrigger value="all">All</TabsTrigger>
-                  <TabsTrigger value="unpaid">Unpaid</TabsTrigger>
-                  <TabsTrigger value="partial">Partially Paid</TabsTrigger>
-                  <TabsTrigger value="overdue">Overdue</TabsTrigger>
-                  <TabsTrigger value="paid">Paid</TabsTrigger>
-                </TabsList>
-                
-                <div className="relative w-[280px]">
-                  <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search by guest, ID, or room..."
-                    className="pl-10"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
+          <CardContent className="p-4">
+            <div className="flex justify-between items-center">
+              <div>
+                <p className="text-sm text-muted-foreground">Total Outstanding</p>
+                <p className="text-2xl font-semibold">${totalOutstanding.toFixed(2)}</p>
               </div>
-              
-              <div className="rounded-md border">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-[40px]">
-                        <Checkbox 
-                          checked={allSelected}
-                          onCheckedChange={toggleSelectAll}
-                        />
-                      </TableHead>
-                      <TableHead>Invoice</TableHead>
-                      <TableHead>Guest</TableHead>
-                      <TableHead>Room</TableHead>
-                      <TableHead>Amount Due</TableHead>
-                      <TableHead onClick={toggleSortOrder} className="cursor-pointer">
-                        <div className="flex items-center">
-                          Due Date
-                          <ArrowDownUp className="ml-2 h-4 w-4" />
-                        </div>
-                      </TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {sortedInvoices.map((invoice) => (
-                      <TableRow key={invoice.id}>
-                        <TableCell>
-                          <Checkbox 
-                            checked={selectedInvoices.includes(invoice.id)}
-                            onCheckedChange={() => toggleInvoiceSelection(invoice.id)}
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <div className="font-medium">{invoice.id}</div>
-                          <div className="text-xs text-muted-foreground">
-                            Checkout: {format(invoice.checkOut, "MMM d, yyyy")}
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div>{invoice.guestName}</div>
-                          <div className="text-xs text-muted-foreground">{invoice.email}</div>
-                        </TableCell>
-                        <TableCell>{invoice.roomNumber}</TableCell>
-                        <TableCell>
-                          <div className={invoice.status === "overdue" ? "text-destructive font-medium" : "font-medium"}>
-                            ${invoice.due.toFixed(2)}
-                          </div>
-                          {invoice.paid > 0 && (
-                            <div className="text-xs text-muted-foreground">
-                              Of ${invoice.amount.toFixed(2)}
-                            </div>
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          <div>{format(invoice.dueDate, "MMM d, yyyy")}</div>
-                          <div className={`text-xs ${isPast(invoice.dueDate) && invoice.status !== "paid" ? "text-destructive" : "text-muted-foreground"}`}>
-                            {getDaysText(invoice.dueDate)}
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          {getStatusBadge(invoice.status, invoice.dueDate)}
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex space-x-2">
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="outline" size="sm">Actions</Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent>
-                                <DropdownMenuItem onClick={() => sendReminder(invoice.id, invoice.guestName)}>
-                                  <Mail className="mr-2 h-4 w-4" />
-                                  Send Reminder
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                  <PhoneCall className="mr-2 h-4 w-4" />
-                                  Call Guest
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                  <Printer className="mr-2 h-4 w-4" />
-                                  Print Invoice
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                  <FileText className="mr-2 h-4 w-4" />
-                                  View Details
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+              <FileText className="h-8 w-8 text-gray-400" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex justify-between items-center">
+              <div>
+                <p className="text-sm text-muted-foreground">Total Overdue</p>
+                <p className="text-2xl font-semibold text-red-600">${totalOverdue.toFixed(2)}</p>
               </div>
-            </Tabs>
+              <AlertCircle className="h-8 w-8 text-red-400" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex justify-between items-center">
+              <div>
+                <p className="text-sm text-muted-foreground">Pending Payment</p>
+                <p className="text-2xl font-semibold text-blue-600">${totalPending.toFixed(2)}</p>
+              </div>
+              <FileText className="h-8 w-8 text-blue-400" />
+            </div>
           </CardContent>
         </Card>
       </div>
+      
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle>Outstanding Invoice Management</CardTitle>
+          <CardDescription>
+            Track and manage unpaid invoices
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="mb-6 flex flex-col md:flex-row gap-4">
+            <div className="relative flex-grow">
+              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search by invoice ID, guest name or company..."
+                className="pl-10"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <Select
+              value={filterStatus}
+              onValueChange={setFilterStatus}
+              defaultValue="all"
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Filter by status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Statuses</SelectItem>
+                <SelectItem value="pending">Pending</SelectItem>
+                <SelectItem value="overdue">Overdue</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Invoice #</TableHead>
+                  <TableHead>Guest</TableHead>
+                  <TableHead>Company</TableHead>
+                  <TableHead>Issue Date</TableHead>
+                  <TableHead>Due Date</TableHead>
+                  <TableHead>Days Left</TableHead>
+                  <TableHead>Amount</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredInvoices.map((invoice) => {
+                  const daysRemaining = getDaysRemaining(invoice.dueDate);
+                  return (
+                    <TableRow key={invoice.id}>
+                      <TableCell className="font-medium">{invoice.id}</TableCell>
+                      <TableCell>{invoice.guestName}</TableCell>
+                      <TableCell>{invoice.company || "-"}</TableCell>
+                      <TableCell>{format(invoice.issueDate, "MMM dd, yyyy")}</TableCell>
+                      <TableCell>{format(invoice.dueDate, "MMM dd, yyyy")}</TableCell>
+                      <TableCell>
+                        <span className={
+                          daysRemaining < 0 ? "text-red-600" :
+                          daysRemaining <= 5 ? "text-orange-600" :
+                          "text-green-600"
+                        }>
+                          {daysRemaining < 0 ? `${Math.abs(daysRemaining)} days overdue` : 
+                           daysRemaining === 0 ? "Due today" :
+                           `${daysRemaining} days left`}
+                        </span>
+                      </TableCell>
+                      <TableCell>${invoice.amount.toFixed(2)}</TableCell>
+                      <TableCell>{getStatusBadge(invoice.status)}</TableCell>
+                      <TableCell className="text-right space-x-2">
+                        <Button variant="outline" size="sm">
+                          <Mail className="h-4 w-4" />
+                        </Button>
+                        <Button variant="outline" size="sm">View</Button>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+                {filteredInvoices.length === 0 && (
+                  <TableRow>
+                    <TableCell colSpan={9} className="text-center py-6 text-muted-foreground">
+                      No invoices found
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+        <CardFooter className="flex justify-between border-t pt-6">
+          <div className="flex gap-2">
+            <Button variant="outline">Print Report</Button>
+            <Button variant="outline">Export Data</Button>
+          </div>
+          <div className="flex gap-2">
+            <Button variant="outline">Mark as Paid</Button>
+            <Button>Bulk Actions</Button>
+          </div>
+        </CardFooter>
+      </Card>
     </Layout>
   );
 }

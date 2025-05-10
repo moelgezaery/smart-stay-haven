@@ -4,493 +4,352 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from "@/components/ui/table";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  CardFooter,
+  Card, 
+  CardContent, 
+  CardDescription, 
+  CardFooter, 
+  CardHeader, 
+  CardTitle 
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Search, Edit, CreditCard, Mail, Download, FileText, Plus, User } from "lucide-react";
-import { format, parseISO } from "date-fns";
-import { useToast } from "@/hooks/use-toast";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogDescription, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogTrigger,
-  DialogFooter
-} from "@/components/ui/dialog";
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { 
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from "@/components/ui/badge";
+import { format } from "date-fns";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import {
+  AlertCircle,
+  CalendarIcon,
+  CheckCircle,
+  CreditCard,
+  FileText,
+  Mail,
+  MailCheck,
+  Search,
+} from "lucide-react";
 
-// Mock data for post-stay charges
-const postStayCharges = [
+// Mock data for post-stay billings
+const postStayBillings = [
   {
-    id: "PSC-001",
-    guestName: "Thomas Anderson",
-    email: "thomas.anderson@example.com",
-    checkOut: "2025-05-05",
-    roomNumber: "301",
-    chargeType: "Minibar",
-    description: "Items consumed but not charged during stay",
-    amount: 45.50,
-    status: "pending",
-    notes: "Found after checkout"
+    id: "PSB-001",
+    guestName: "John Smith",
+    email: "john.smith@example.com",
+    phone: "+1-555-123-4567",
+    checkOutDate: new Date("2025-05-05"),
+    roomNumber: "101",
+    amount: 350.75,
+    status: "pending" as const,
+    notified: true,
+    paymentMethod: "Credit Card on File",
+    lastAttempt: new Date("2025-05-07"),
+    notes: "Guest was notified about additional charges"
   },
   {
-    id: "PSC-002",
-    guestName: "Sarah Miller",
-    email: "sarah.miller@example.com",
-    checkOut: "2025-05-03",
-    roomNumber: "422",
-    chargeType: "Room Damage",
-    description: "Damage to bathroom sink",
-    amount: 180.00,
-    status: "invoiced",
-    notes: "Discovered during housekeeping check"
+    id: "PSB-002",
+    guestName: "Sarah Johnson",
+    email: "sarahj@example.com",
+    phone: "+1-555-987-6543",
+    checkOutDate: new Date("2025-05-02"),
+    roomNumber: "205",
+    amount: 120.50,
+    status: "approved" as const,
+    notified: true,
+    paymentMethod: "Credit Card on File",
+    lastAttempt: new Date("2025-05-03"),
+    notes: "Mini-bar charges"
   },
   {
-    id: "PSC-003",
-    guestName: "James Wilson",
-    email: "james.wilson@example.com",
-    checkOut: "2025-05-02",
-    roomNumber: "105",
-    chargeType: "Late Checkout",
-    description: "3 hours after checkout time",
-    amount: 75.00,
-    status: "paid",
-    notes: "Charge approved by guest at checkout"
-  },
-  {
-    id: "PSC-004",
-    guestName: "Emily Johnson",
-    email: "emily.johnson@example.com",
-    checkOut: "2025-04-30",
-    roomNumber: "217",
-    chargeType: "Missing Items",
-    description: "Bath robes not returned",
-    amount: 120.00,
-    status: "disputed",
-    notes: "Guest claims items were not used"
-  },
-  {
-    id: "PSC-005",
+    id: "PSB-003",
     guestName: "Michael Brown",
-    email: "michael.brown@example.com",
-    checkOut: "2025-04-28",
-    roomNumber: "510",
-    chargeType: "Room Service",
-    description: "Late night room service not charged",
-    amount: 55.25,
-    status: "pending",
-    notes: "Order found in system but not billed"
+    email: "michael.b@example.com",
+    phone: "+1-555-456-7890",
+    checkOutDate: new Date("2025-05-01"),
+    roomNumber: "302",
+    amount: 75.25,
+    status: "rejected" as const,
+    notified: true,
+    paymentMethod: "Credit Card on File",
+    lastAttempt: new Date("2025-05-04"),
+    notes: "Guest disputes charges, follow up required"
+  },
+  {
+    id: "PSB-004",
+    guestName: "Emily Davis",
+    email: "emily.davis@example.com",
+    phone: "+1-555-789-0123",
+    checkOutDate: new Date("2025-05-04"),
+    roomNumber: "402",
+    amount: 280.00,
+    status: "pending" as const,
+    notified: false,
+    paymentMethod: "",
+    lastAttempt: null,
+    notes: "Room service charges on final day, guest needs to be notified"
+  },
+  {
+    id: "PSB-005",
+    guestName: "Robert Wilson",
+    email: "r.wilson@example.com",
+    phone: "+1-555-234-5678",
+    checkOutDate: new Date("2025-04-29"),
+    roomNumber: "118",
+    amount: 450.20,
+    status: "approved" as const,
+    notified: true,
+    paymentMethod: "Credit Card on File",
+    lastAttempt: new Date("2025-04-30"),
+    notes: "Damage to room furniture"
   }
 ];
 
-// Mock data for post-stay payments
-const postStayPayments = [
-  {
-    id: "PSP-001",
-    guestName: "Sarah Miller",
-    chargeId: "PSC-002",
-    paymentDate: "2025-05-10",
-    amount: 180.00,
-    method: "Credit Card",
-    reference: "TXN-57892"
-  },
-  {
-    id: "PSP-002",
-    guestName: "James Wilson",
-    chargeId: "PSC-003",
-    paymentDate: "2025-05-02",
-    amount: 75.00,
-    method: "Cash",
-    reference: "CASH-3245"
-  }
-];
+type BillingStatus = "pending" | "approved" | "rejected" | "failed";
 
 export default function PostStayBilling() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [activeTab, setActiveTab] = useState("charges");
-  const [activeChargesTab, setActiveChargesTab] = useState("all");
-  const [showAddChargeDialog, setShowAddChargeDialog] = useState(false);
-  const { toast } = useToast();
-  
-  // Filter post-stay charges based on search term and active tab
-  const filteredCharges = postStayCharges.filter(charge => {
-    const matchesSearch = 
-      charge.guestName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      charge.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      charge.roomNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      charge.chargeType.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    if (activeChargesTab === "all") return matchesSearch;
-    return matchesSearch && charge.status === activeChargesTab;
-  });
-  
-  // Filter post-stay payments based on search term
-  const filteredPayments = postStayPayments.filter(payment => 
-    payment.guestName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    payment.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    payment.chargeId.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [filterNotified, setFilterNotified] = useState("all");
   
   // Calculate totals
-  const totalPendingAmount = postStayCharges
-    .filter(charge => charge.status === "pending" || charge.status === "invoiced")
-    .reduce((sum, charge) => sum + charge.amount, 0);
-    
-  const totalCollectedAmount = postStayCharges
-    .filter(charge => charge.status === "paid")
-    .reduce((sum, charge) => sum + charge.amount, 0);
-    
-  const totalDisputedAmount = postStayCharges
-    .filter(charge => charge.status === "disputed")
-    .reduce((sum, charge) => sum + charge.amount, 0);
+  const totalAmount = postStayBillings.reduce((sum, billing) => sum + billing.amount, 0);
+  const pendingAmount = postStayBillings
+    .filter(billing => billing.status === "pending")
+    .reduce((sum, billing) => sum + billing.amount, 0);
+  const approvedAmount = postStayBillings
+    .filter(billing => billing.status === "approved")
+    .reduce((sum, billing) => sum + billing.amount, 0);
   
-  // Process a new charge
-  const handleAddCharge = () => {
-    setShowAddChargeDialog(false);
-    
-    toast({
-      title: "Charge Added Successfully",
-      description: "The new post-stay charge has been added and is ready for processing."
-    });
-  };
+  // Filter billings based on search term, status and notification status
+  const filteredBillings = postStayBillings.filter(billing => 
+    (searchTerm === "" || 
+      billing.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      billing.guestName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      billing.roomNumber.toLowerCase().includes(searchTerm.toLowerCase())
+    ) &&
+    (filterStatus === "all" || billing.status === filterStatus) &&
+    (filterNotified === "all" || 
+      (filterNotified === "notified" && billing.notified) ||
+      (filterNotified === "not-notified" && !billing.notified)
+    )
+  );
   
-  // Process payment for a charge
-  const handleProcessPayment = (id: string, guestName: string) => {
-    toast({
-      title: "Payment Processed",
-      description: `Payment for ${guestName} has been successfully processed.`
-    });
-  };
-  
-  // Send invoice for a charge
-  const handleSendInvoice = (id: string, guestName: string) => {
-    toast({
-      title: "Invoice Sent",
-      description: `Invoice has been sent to ${guestName}.`
-    });
-  };
-  
-  // Get status badge based on charge status
-  const getStatusBadge = (status: string) => {
+  const getStatusBadge = (status: BillingStatus) => {
     switch(status) {
       case "pending":
-        return <Badge variant="outline">Pending</Badge>;
-      case "invoiced":
-        return <Badge className="bg-blue-500">Invoiced</Badge>;
-      case "paid":
-        return <Badge className="bg-green-500">Paid</Badge>;
-      case "disputed":
-        return <Badge variant="destructive">Disputed</Badge>;
+        return <Badge className="bg-yellow-500">Pending</Badge>;
+      case "approved":
+        return <Badge className="bg-green-500">Approved</Badge>;
+      case "rejected":
+        return <Badge className="bg-red-500">Rejected</Badge>;
+      case "failed":
+        return <Badge className="bg-gray-500">Failed</Badge>;
       default:
-        return <Badge>{status}</Badge>;
+        return <Badge>Unknown</Badge>;
     }
   };
-
+  
   return (
     <Layout>
-      <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold">Post-Stay Billing</h1>
-          <div className="flex gap-2">
-            <Dialog open={showAddChargeDialog} onOpenChange={setShowAddChargeDialog}>
-              <DialogTrigger asChild>
-                <Button>
-                  <Plus className="mr-2 h-4 w-4" />
-                  Add New Charge
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[550px]">
-                <DialogHeader>
-                  <DialogTitle>Add Post-Stay Charge</DialogTitle>
-                  <DialogDescription>
-                    Create a new charge for a recently checked-out guest.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="roomNumber">Room Number</Label>
-                      <Input id="roomNumber" placeholder="Room number" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="guestLookup">Guest</Label>
-                      <div className="flex gap-2">
-                        <Input id="guestLookup" placeholder="Find guest..." className="flex-grow" />
-                        <Button variant="outline" size="icon">
-                          <User className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="chargeType">Charge Type</Label>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select charge type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="minibar">Minibar</SelectItem>
-                        <SelectItem value="damage">Room Damage</SelectItem>
-                        <SelectItem value="lateCheckout">Late Checkout</SelectItem>
-                        <SelectItem value="missingItems">Missing Items</SelectItem>
-                        <SelectItem value="roomService">Room Service</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="amount">Amount</Label>
-                      <Input id="amount" type="number" min="0" step="0.01" placeholder="0.00" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="tax">Tax</Label>
-                      <Input id="tax" type="number" min="0" step="0.01" placeholder="0.00" />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="description">Description</Label>
-                    <Textarea id="description" placeholder="Detailed description of the charge" />
-                  </div>
-                  
-                  <div className="flex items-center space-x-2">
-                    <Checkbox id="sendInvoice" />
-                    <label
-                      htmlFor="sendInvoice"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Send invoice to guest immediately
-                    </label>
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button variant="outline" onClick={() => setShowAddChargeDialog(false)}>Cancel</Button>
-                  <Button onClick={handleAddCharge}>Add Charge</Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="text-sm text-muted-foreground">Pending Amount</p>
-                  <p className="text-2xl font-semibold">${totalPendingAmount.toFixed(2)}</p>
-                </div>
-                <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
-                  <FileText className="h-6 w-6 text-blue-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="text-sm text-muted-foreground">Collected Amount</p>
-                  <p className="text-2xl font-semibold text-green-600">${totalCollectedAmount.toFixed(2)}</p>
-                </div>
-                <div className="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center">
-                  <CreditCard className="h-6 w-6 text-green-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="text-sm text-muted-foreground">Disputed Amount</p>
-                  <p className="text-2xl font-semibold text-red-500">${totalDisputedAmount.toFixed(2)}</p>
-                </div>
-                <div className="h-12 w-12 rounded-full bg-red-100 flex items-center justify-center">
-                  <Edit className="h-6 w-6 text-red-500" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-        
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Post-Stay Billing</h1>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <Card>
-          <CardHeader>
-            <CardTitle>Post-Stay Billing Management</CardTitle>
-            <CardDescription>
-              Manage charges and payments for guests after their stay
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Tabs defaultValue="charges" value={activeTab} onValueChange={setActiveTab}>
-              <TabsList className="mb-6">
-                <TabsTrigger value="charges">Charges</TabsTrigger>
-                <TabsTrigger value="payments">Payments</TabsTrigger>
-              </TabsList>
-              
-              <div className="relative mb-6">
-                <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search..."
-                  className="pl-10 w-[300px]"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
+          <CardContent className="p-4">
+            <div className="flex justify-between items-center">
+              <div>
+                <p className="text-sm text-muted-foreground">Total Amount</p>
+                <p className="text-2xl font-semibold">${totalAmount.toFixed(2)}</p>
               </div>
-              
-              <TabsContent value="charges">
-                <Tabs defaultValue="all" value={activeChargesTab} onValueChange={setActiveChargesTab}>
-                  <TabsList className="mb-6">
-                    <TabsTrigger value="all">All</TabsTrigger>
-                    <TabsTrigger value="pending">Pending</TabsTrigger>
-                    <TabsTrigger value="invoiced">Invoiced</TabsTrigger>
-                    <TabsTrigger value="paid">Paid</TabsTrigger>
-                    <TabsTrigger value="disputed">Disputed</TabsTrigger>
-                  </TabsList>
-                  
-                  <div className="rounded-md border">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>ID</TableHead>
-                          <TableHead>Guest</TableHead>
-                          <TableHead>Room</TableHead>
-                          <TableHead>Charge Type</TableHead>
-                          <TableHead>Amount</TableHead>
-                          <TableHead>Checkout Date</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead>Actions</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {filteredCharges.map((charge) => (
-                          <TableRow key={charge.id}>
-                            <TableCell className="font-medium">{charge.id}</TableCell>
-                            <TableCell>
-                              <div>{charge.guestName}</div>
-                              <div className="text-xs text-muted-foreground">{charge.email}</div>
-                            </TableCell>
-                            <TableCell>{charge.roomNumber}</TableCell>
-                            <TableCell>
-                              <div>{charge.chargeType}</div>
-                              <div className="text-xs text-muted-foreground truncate max-w-[150px]" title={charge.description}>
-                                {charge.description}
-                              </div>
-                            </TableCell>
-                            <TableCell className="font-medium">
-                              ${charge.amount.toFixed(2)}
-                            </TableCell>
-                            <TableCell>
-                              {format(parseISO(charge.checkOut), "MMM d, yyyy")}
-                            </TableCell>
-                            <TableCell>
-                              {getStatusBadge(charge.status)}
-                            </TableCell>
-                            <TableCell>
-                              <div className="flex space-x-2">
-                                {charge.status === "pending" && (
-                                  <Button size="sm" variant="outline" onClick={() => handleSendInvoice(charge.id, charge.guestName)}>
-                                    <Mail className="h-4 w-4 mr-1" />
-                                    Invoice
-                                  </Button>
-                                )}
-                                
-                                {(charge.status === "pending" || charge.status === "invoiced") && (
-                                  <Button size="sm" onClick={() => handleProcessPayment(charge.id, charge.guestName)}>
-                                    <CreditCard className="h-4 w-4 mr-1" />
-                                    Payment
-                                  </Button>
-                                )}
-                                
-                                <Button size="sm" variant="ghost">Details</Button>
-                              </div>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </div>
-                </Tabs>
-              </TabsContent>
-              
-              <TabsContent value="payments">
-                <div className="rounded-md border">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Payment ID</TableHead>
-                        <TableHead>Charge ID</TableHead>
-                        <TableHead>Guest</TableHead>
-                        <TableHead>Payment Date</TableHead>
-                        <TableHead>Amount</TableHead>
-                        <TableHead>Method</TableHead>
-                        <TableHead>Reference</TableHead>
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {filteredPayments.map((payment) => (
-                        <TableRow key={payment.id}>
-                          <TableCell className="font-medium">{payment.id}</TableCell>
-                          <TableCell>{payment.chargeId}</TableCell>
-                          <TableCell>{payment.guestName}</TableCell>
-                          <TableCell>
-                            {format(parseISO(payment.paymentDate), "MMM d, yyyy")}
-                          </TableCell>
-                          <TableCell className="font-medium">
-                            ${payment.amount.toFixed(2)}
-                          </TableCell>
-                          <TableCell>{payment.method}</TableCell>
-                          <TableCell>{payment.reference}</TableCell>
-                          <TableCell>
-                            <div className="flex space-x-2">
-                              <Button size="sm" variant="outline">
-                                <Download className="h-4 w-4 mr-1" />
-                                Receipt
-                              </Button>
-                              <Button size="sm" variant="ghost">Details</Button>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </TabsContent>
-            </Tabs>
+              <FileText className="h-8 w-8 text-gray-400" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex justify-between items-center">
+              <div>
+                <p className="text-sm text-muted-foreground">Pending</p>
+                <p className="text-2xl font-semibold text-yellow-600">${pendingAmount.toFixed(2)}</p>
+              </div>
+              <AlertCircle className="h-8 w-8 text-yellow-400" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex justify-between items-center">
+              <div>
+                <p className="text-sm text-muted-foreground">Approved</p>
+                <p className="text-2xl font-semibold text-green-600">${approvedAmount.toFixed(2)}</p>
+              </div>
+              <CheckCircle className="h-8 w-8 text-green-400" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex justify-between items-center">
+              <div>
+                <p className="text-sm text-muted-foreground">Not Notified</p>
+                <p className="text-2xl font-semibold text-blue-600">
+                  {postStayBillings.filter(b => !b.notified).length}
+                </p>
+              </div>
+              <Mail className="h-8 w-8 text-blue-400" />
+            </div>
           </CardContent>
         </Card>
       </div>
+      
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle>Post-Stay Billing Management</CardTitle>
+          <CardDescription>
+            Process additional charges after guest check-out
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="mb-6 flex flex-col md:flex-row gap-4">
+            <div className="relative flex-grow">
+              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search by billing ID, guest name or room..."
+                className="pl-10"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <div className="flex gap-4">
+              <Select
+                value={filterStatus}
+                onValueChange={setFilterStatus}
+                defaultValue="all"
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Filter by status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Statuses</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="approved">Approved</SelectItem>
+                  <SelectItem value="rejected">Rejected</SelectItem>
+                  <SelectItem value="failed">Failed</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              <Select
+                value={filterNotified}
+                onValueChange={setFilterNotified}
+                defaultValue="all"
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Notification status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All</SelectItem>
+                  <SelectItem value="notified">Notified</SelectItem>
+                  <SelectItem value="not-notified">Not Notified</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>ID</TableHead>
+                  <TableHead>Guest</TableHead>
+                  <TableHead>Room</TableHead>
+                  <TableHead>Check-Out Date</TableHead>
+                  <TableHead>Amount</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Notified</TableHead>
+                  <TableHead>Last Attempt</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredBillings.map((billing) => (
+                  <TableRow key={billing.id}>
+                    <TableCell className="font-medium">{billing.id}</TableCell>
+                    <TableCell>
+                      <div className="flex flex-col">
+                        <span>{billing.guestName}</span>
+                        <span className="text-xs text-muted-foreground">{billing.email}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>{billing.roomNumber}</TableCell>
+                    <TableCell>{format(billing.checkOutDate, "MMM dd, yyyy")}</TableCell>
+                    <TableCell>${billing.amount.toFixed(2)}</TableCell>
+                    <TableCell>{getStatusBadge(billing.status)}</TableCell>
+                    <TableCell>
+                      {billing.notified ? (
+                        <Badge className="bg-green-100 text-green-800">
+                          Notified
+                        </Badge>
+                      ) : (
+                        <Badge className="bg-red-100 text-red-800">
+                          Not Notified
+                        </Badge>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {billing.lastAttempt ? format(billing.lastAttempt, "MMM dd, yyyy") : "-"}
+                    </TableCell>
+                    <TableCell className="text-right space-x-2">
+                      {!billing.notified && (
+                        <Button variant="outline" size="sm">
+                          <MailCheck className="h-4 w-4 mr-1" />
+                          Notify
+                        </Button>
+                      )}
+                      {billing.status === "pending" && (
+                        <Button variant="outline" size="sm">
+                          <CreditCard className="h-4 w-4 mr-1" />
+                          Process
+                        </Button>
+                      )}
+                      <Button variant="outline" size="sm">View</Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+                {filteredBillings.length === 0 && (
+                  <TableRow>
+                    <TableCell colSpan={9} className="text-center py-6 text-muted-foreground">
+                      No post-stay billings found
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+        <CardFooter className="flex justify-between border-t pt-6">
+          <div className="flex gap-2">
+            <Button variant="outline">Print Report</Button>
+            <Button variant="outline">Export Data</Button>
+          </div>
+          <div className="flex gap-2">
+            <Button>Add New Charge</Button>
+          </div>
+        </CardFooter>
+      </Card>
     </Layout>
   );
 }

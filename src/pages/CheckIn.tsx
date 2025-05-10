@@ -39,8 +39,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { KeyRound, Search, UserPlus } from "lucide-react";
+import { KeyRound, Search, UserPlus, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 
 // Mock data for available rooms
 const availableRooms = [
@@ -101,10 +103,13 @@ const upcomingReservations = [
     guestName: "Sarah Williams",
     email: "sarah@example.com",
     phone: "234-567-8901",
-    roomType: "Standard Double",
+    rooms: [
+      { roomType: "Standard Double", roomNumber: "204" },
+      { roomType: "Standard Double", roomNumber: "206" }
+    ],
     checkIn: "May 5, 2025",
     checkOut: "May 8, 2025",
-    adults: 2,
+    adults: 4,
     children: 0,
     status: "Confirmed"
   },
@@ -113,7 +118,9 @@ const upcomingReservations = [
     guestName: "David Wilson",
     email: "david@example.com",
     phone: "567-890-1234",
-    roomType: "Junior Suite",
+    rooms: [
+      { roomType: "Junior Suite", roomNumber: "401" }
+    ],
     checkIn: "May 7, 2025",
     checkOut: "May 12, 2025",
     adults: 2,
@@ -125,11 +132,14 @@ const upcomingReservations = [
     guestName: "Robert Martinez",
     email: "robert@example.com",
     phone: "789-012-3456",
-    roomType: "Executive Suite",
+    rooms: [
+      { roomType: "Executive Suite", roomNumber: "501" },
+      { roomType: "Deluxe Double", roomNumber: "402" },
+    ],
     checkIn: "May 8, 2025",
     checkOut: "May 15, 2025",
-    adults: 2,
-    children: 0,
+    adults: 3,
+    children: 2,
     status: "Confirmed"
   }
 ];
@@ -137,6 +147,7 @@ const upcomingReservations = [
 export default function CheckIn() {
   const [searchReservation, setSearchReservation] = useState("");
   const [searchRoom, setSearchRoom] = useState("");
+  const [selectedRooms, setSelectedRooms] = useState<string[]>([]);
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
@@ -165,6 +176,15 @@ export default function CheckIn() {
     reservation.email.toLowerCase().includes(searchReservation.toLowerCase())
   );
   
+  // Toggle room selection
+  const toggleRoomSelection = (roomNumber: string) => {
+    if (selectedRooms.includes(roomNumber)) {
+      setSelectedRooms(selectedRooms.filter(r => r !== roomNumber));
+    } else {
+      setSelectedRooms([...selectedRooms, roomNumber]);
+    }
+  };
+  
   const handleReservationCheckIn = (reservationId: string) => {
     setSelectedReservation(reservationId);
     setActiveTab("reservation");
@@ -174,15 +194,24 @@ export default function CheckIn() {
     if (reservation) {
       toast({
         title: "Reservation selected",
-        description: `Preparing check-in for ${reservation.guestName}`
+        description: `Preparing check-in for ${reservation.guestName} (${reservation.rooms.length} ${reservation.rooms.length === 1 ? 'room' : 'rooms'})`
       });
     }
   };
   
   const handleCompleteCheckIn = () => {
+    if (selectedRooms.length === 0) {
+      toast({
+        variant: "destructive",
+        title: "No rooms selected",
+        description: "Please select at least one room to check in"
+      });
+      return;
+    }
+    
     toast({
       title: "Check-in completed",
-      description: "Guest has been successfully checked in"
+      description: `${selectedRooms.length} ${selectedRooms.length === 1 ? 'room' : 'rooms'} have been successfully checked in`
     });
   };
   
@@ -282,7 +311,7 @@ export default function CheckIn() {
             <Card>
               <CardHeader>
                 <CardTitle>Room Selection</CardTitle>
-                <CardDescription>Select a room for check-in</CardDescription>
+                <CardDescription>Select one or more rooms for check-in</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="relative">
@@ -334,6 +363,7 @@ export default function CheckIn() {
                   <Table>
                     <TableHeader>
                       <TableRow>
+                        <TableHead className="w-12"></TableHead>
                         <TableHead>Room</TableHead>
                         <TableHead>Type</TableHead>
                         <TableHead>Rate</TableHead>
@@ -341,7 +371,19 @@ export default function CheckIn() {
                     </TableHeader>
                     <TableBody>
                       {filteredRooms.map((room) => (
-                        <TableRow key={room.roomNumber} className="cursor-pointer hover:bg-muted">
+                        <TableRow 
+                          key={room.roomNumber} 
+                          className={`cursor-pointer hover:bg-muted ${
+                            selectedRooms.includes(room.roomNumber) ? "bg-blue-50" : ""
+                          }`}
+                          onClick={() => toggleRoomSelection(room.roomNumber)}
+                        >
+                          <TableCell>
+                            <Checkbox 
+                              checked={selectedRooms.includes(room.roomNumber)}
+                              onCheckedChange={() => toggleRoomSelection(room.roomNumber)}
+                            />
+                          </TableCell>
                           <TableCell className="font-medium">{room.roomNumber}</TableCell>
                           <TableCell>{room.type}</TableCell>
                           <TableCell>${room.rate.toFixed(2)}</TableCell>
@@ -351,9 +393,10 @@ export default function CheckIn() {
                   </Table>
                 </div>
                 
-                <div className="space-y-2 pt-4">
-                  <Label htmlFor="roomRate">Room Rate (per night)</Label>
-                  <Input id="roomRate" type="number" placeholder="0.00" />
+                <div className="pt-2">
+                  <p className="text-sm text-muted-foreground">
+                    {selectedRooms.length} {selectedRooms.length === 1 ? 'room' : 'rooms'} selected
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -408,7 +451,7 @@ export default function CheckIn() {
                 <Button variant="outline">Cancel</Button>
                 <Button onClick={handleCompleteCheckIn}>
                   <KeyRound className="mr-2 h-4 w-4" />
-                  Complete Check-In
+                  Complete Check-In ({selectedRooms.length} {selectedRooms.length === 1 ? 'room' : 'rooms'})
                 </Button>
               </CardFooter>
             </Card>
@@ -438,9 +481,10 @@ export default function CheckIn() {
                     <TableRow>
                       <TableHead>Reservation ID</TableHead>
                       <TableHead>Guest Name</TableHead>
-                      <TableHead>Room Type</TableHead>
+                      <TableHead>Rooms</TableHead>
                       <TableHead>Check-in</TableHead>
                       <TableHead>Check-out</TableHead>
+                      <TableHead>Total Guests</TableHead>
                       <TableHead>Status</TableHead>
                       <TableHead className="text-right">Action</TableHead>
                     </TableRow>
@@ -450,9 +494,21 @@ export default function CheckIn() {
                       <TableRow key={reservation.reservationId}>
                         <TableCell className="font-medium">{reservation.reservationId}</TableCell>
                         <TableCell>{reservation.guestName}</TableCell>
-                        <TableCell>{reservation.roomType}</TableCell>
+                        <TableCell>
+                          <div className="flex flex-col gap-1">
+                            {reservation.rooms.map((room, index) => (
+                              <Badge key={index} variant="outline" className="max-w-fit">
+                                {room.roomNumber} - {room.roomType}
+                              </Badge>
+                            ))}
+                            <span className="text-xs text-muted-foreground mt-1">
+                              {reservation.rooms.length} {reservation.rooms.length === 1 ? 'room' : 'rooms'}
+                            </span>
+                          </div>
+                        </TableCell>
                         <TableCell>{reservation.checkIn}</TableCell>
                         <TableCell>{reservation.checkOut}</TableCell>
+                        <TableCell>{reservation.adults + reservation.children}</TableCell>
                         <TableCell>
                           <span className="px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">
                             {reservation.status}

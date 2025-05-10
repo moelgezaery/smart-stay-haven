@@ -30,6 +30,11 @@ import DeparturesToday from "./pages/DeparturesToday";
 import NewBookings from "./pages/NewBookings";
 import NoShows from "./pages/NoShows";
 
+// New financial pages
+import CashierBalances from "./pages/CashierBalances";
+import OutstandingInvoices from "./pages/OutstandingInvoices"; 
+import PostStayBilling from "./pages/PostStayBilling";
+
 // Setup pages
 import RoomTypes from "./pages/setup/RoomTypes";
 import Floors from "./pages/setup/Floors";
@@ -83,15 +88,15 @@ const App = () => (
           <Route path="/checkin" element={<CheckIn />} />
           <Route path="/checkout" element={<CheckOut />} />
           <Route path="/guests" element={<Guests />} />
-          <Route path="/guest-requests" element={<PlaceholderPage title="Guest Requests" />} />
-          <Route path="/late-arrivals" element={<PlaceholderPage title="Late Arrivals" />} />
+          <Route path="/guest-requests" element={<NotFound />} />
+          <Route path="/late-arrivals" element={<NotFound />} />
           
           {/* Financial */}
           <Route path="/payments" element={<Payments />} />
           <Route path="/charges" element={<Charges />} />
-          <Route path="/cashier" element={<PlaceholderPage title="Cashier Balances" />} />
-          <Route path="/invoices" element={<PlaceholderPage title="Outstanding Invoices" />} />
-          <Route path="/post-stay" element={<PlaceholderPage title="Post-stay Billing" />} />
+          <Route path="/cashier" element={<CashierBalances />} />
+          <Route path="/invoices" element={<OutstandingInvoices />} />
+          <Route path="/post-stay" element={<PostStayBilling />} />
           <Route path="/closeday" element={<CloseDay />} />
           
           {/* Reports */}
