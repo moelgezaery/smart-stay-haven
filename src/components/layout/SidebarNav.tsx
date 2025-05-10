@@ -11,35 +11,49 @@ import {
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Link, useLocation } from "react-router-dom";
-import { 
-  Home, 
-  HotelIcon, 
-  Users,
-  LogIn,
-  LogOut,
-  CreditCard,
-  ReceiptText,
-  ClipboardCheck,
-  Building2,
-  Cog,
-  Wrench,
-  BarChartBig,
-  CalendarRange,
-  ClockIcon,
-} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
+import { useNavigation } from "@/context/NavigationContext";
+import { NavigationItem } from "@/config/navigationConfig";
 
 export function SidebarNav() {
   const location = useLocation();
   const { toast } = useToast();
   const { t } = useTranslation();
+  const { allowedNavigation } = useNavigation();
   
   const handleUnimplementedFeature = (feature: string) => {
     toast({
       title: t("comingSoon"),
       description: t("featureAvailable", { feature })
     });
+  };
+
+  // Recursive function to render navigation items and their children
+  const renderNavItems = (items: NavigationItem[]) => {
+    return items.map((item) => (
+      <SidebarMenuItem key={item.key}>
+        {item.path ? (
+          <SidebarMenuButton 
+            asChild 
+            isActive={location.pathname === item.path || 
+                     (item.path !== "/" && location.pathname.startsWith(item.path))}
+          >
+            <Link to={item.path}>
+              <item.icon className="h-4 w-4" />
+              <span>{t(item.label)}</span>
+            </Link>
+          </SidebarMenuButton>
+        ) : (
+          <SidebarMenuButton 
+            onClick={() => item.children?.length === 0 && handleUnimplementedFeature(t(item.label))}
+          >
+            <item.icon className="h-4 w-4" />
+            <span>{t(item.label)}</span>
+          </SidebarMenuButton>
+        )}
+      </SidebarMenuItem>
+    ));
   };
   
   return (
@@ -56,150 +70,28 @@ export function SidebarNav() {
           </div>
         </div>
       </div>
+      
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={location.pathname === "/"}>
-                  <Link to="/">
-                    <Home className="h-4 w-4" />
-                    <span>{t("home")}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={location.pathname === "/rooms"}>
-                  <Link to="/rooms">
-                    <HotelIcon className="h-4 w-4" />
-                    <span>{t("rooms")}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={location.pathname === "/reservations"}>
-                  <Link to="/reservations">
-                    <CalendarRange className="h-4 w-4" />
-                    <span>{t("reservations")}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={location.pathname === "/guests"}>
-                  <Link to="/guests">
-                    <Users className="h-4 w-4" />
-                    <span>{t("guests")}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={location.pathname === "/checkin"}>
-                  <Link to="/checkin">
-                    <LogIn className="h-4 w-4" />
-                    <span>{t("checkIn")}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={location.pathname === "/checkout"}>
-                  <Link to="/checkout">
-                    <LogOut className="h-4 w-4" />
-                    <span>{t("checkOut")}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-        
-        <SidebarGroup>
-          <SidebarGroupLabel>{t("management")}</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={location.pathname === "/payments"}>
-                  <Link to="/payments">
-                    <CreditCard className="h-4 w-4" />
-                    <span>{t("payments")}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={location.pathname === "/charges"}>
-                  <Link to="/charges">
-                    <ReceiptText className="h-4 w-4" />
-                    <span>{t("charges")}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={location.pathname === "/housekeeping"}>
-                  <Link to="/housekeeping">
-                    <ClipboardCheck className="h-4 w-4" />
-                    <span>{t("housekeeping")}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={location.pathname === "/employees"}>
-                  <Link to="/employees">
-                    <Users className="h-4 w-4" />
-                    <span>{t("employees")}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={location.pathname === "/companies"}>
-                  <Link to="/companies">
-                    <Building2 className="h-4 w-4" />
-                    <span>{t("companies")}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={location.pathname === "/maintenance"}>
-                  <Link to="/maintenance">
-                    <Wrench className="h-4 w-4" />
-                    <span>{t("maintenance")}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={location.pathname === "/reports"}>
-                  <Link to="/reports">
-                    <BarChartBig className="h-4 w-4" />
-                    <span>{t("reports")}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={location.pathname === "/closeday"}>
-                  <Link to="/closeday">
-                    <ClockIcon className="h-4 w-4" />
-                    <span>{t("closeDay")}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-        
-        <SidebarGroup>
-          <SidebarGroupLabel>{t("configuration")}</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={location.pathname.startsWith("/setup")}>
-                  <Link to="/setup">
-                    <Cog className="h-4 w-4" />
-                    <span>{t("setup")}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        {allowedNavigation.map((category) => (
+          <SidebarGroup key={category.key}>
+            {category.key !== "home" && (
+              <SidebarGroupLabel>{t(category.label)}</SidebarGroupLabel>
+            )}
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {category.key === "home" ? (
+                  renderNavItems([category])
+                ) : category.children ? (
+                  renderNavItems(category.children)
+                ) : (
+                  renderNavItems([category])
+                )}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
+      
       <SidebarFooter>
         <Link to="/login" className="w-full">
           <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors">

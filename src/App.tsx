@@ -1,9 +1,10 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+// Existing pages
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Setup from "./pages/Setup";
@@ -34,7 +35,22 @@ import HousekeepingSetup from "./pages/setup/Housekeeping";
 import MaintenanceSetup from "./pages/setup/Maintenance";
 import RoomRates from "./pages/setup/RoomRates";
 
+// New demo page for testing permissions
+import PermissionDemo from "./pages/PermissionDemo";
+
 const queryClient = new QueryClient();
+
+// Placeholder component for new pages that haven't been implemented yet
+const PlaceholderPage = ({ title }: { title: string }) => (
+  <div className="flex flex-col min-h-screen">
+    <div className="flex-grow flex items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-3xl font-bold mb-4">{title}</h1>
+        <p className="text-muted-foreground">This page is coming soon.</p>
+      </div>
+    </div>
+  </div>
+);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -45,19 +61,40 @@ const App = () => (
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Index />} />
-          <Route path="/rooms" element={<Rooms />} />
-          <Route path="/guests" element={<Guests />} />
+          
+          {/* Reservation Snapshot */}
           <Route path="/reservations" element={<Reservations />} />
+          <Route path="/arrivals" element={<PlaceholderPage title="Arrivals Today" />} />
+          <Route path="/departures" element={<PlaceholderPage title="Departures Today" />} />
+          <Route path="/new-bookings" element={<PlaceholderPage title="New Bookings" />} />
+          <Route path="/no-shows" element={<PlaceholderPage title="No-shows & Cancellations" />} />
+          
+          {/* Room Status & Housekeeping */}
+          <Route path="/rooms" element={<Rooms />} />
+          <Route path="/housekeeping" element={<Housekeeping />} />
+          
+          {/* Front Desk */}
           <Route path="/checkin" element={<CheckIn />} />
           <Route path="/checkout" element={<CheckOut />} />
+          <Route path="/guests" element={<Guests />} />
+          <Route path="/guest-requests" element={<PlaceholderPage title="Guest Requests" />} />
+          <Route path="/late-arrivals" element={<PlaceholderPage title="Late Arrivals" />} />
+          
+          {/* Financial */}
           <Route path="/payments" element={<Payments />} />
           <Route path="/charges" element={<Charges />} />
-          <Route path="/housekeeping" element={<Housekeeping />} />
+          <Route path="/cashier" element={<PlaceholderPage title="Cashier Balances" />} />
+          <Route path="/invoices" element={<PlaceholderPage title="Outstanding Invoices" />} />
+          <Route path="/post-stay" element={<PlaceholderPage title="Post-stay Billing" />} />
+          <Route path="/closeday" element={<CloseDay />} />
+          
+          {/* Reports */}
+          <Route path="/reports" element={<Reports />} />
+          
+          {/* System */}
           <Route path="/employees" element={<Employees />} />
           <Route path="/companies" element={<Companies />} />
           <Route path="/maintenance" element={<Maintenance />} />
-          <Route path="/reports" element={<Reports />} />
-          <Route path="/closeday" element={<CloseDay />} />
           
           {/* Setup Routes */}
           <Route path="/setup" element={<Setup />} />
@@ -72,7 +109,10 @@ const App = () => (
           <Route path="/setup/maintenance" element={<MaintenanceSetup />} />
           <Route path="/setup/room-rates" element={<RoomRates />} />
           
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          {/* Permission Demo */}
+          <Route path="/permission-demo" element={<PermissionDemo />} />
+          
+          {/* Catch-all route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

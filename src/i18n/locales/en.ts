@@ -1,4 +1,3 @@
-
 export default {
   // App name
   appName: "Gravity Smart Stay",
@@ -152,5 +151,34 @@ export default {
   // Other
   comingSoon: "Coming Soon",
   featureAvailable: "This {feature} will be available soon",
+  
+  // New Navigation Categories
+  reservationSnapshot: "Reservation Snapshot",
+  arrivalsToday: "Arrivals Today",
+  departuresToday: "Departures Today",
+  newBookings: "New Bookings",
+  noShowsCancellations: "No-shows & Cancellations",
+  
+  roomStatusHousekeeping: "Room Status & Housekeeping",
+  
+  frontDeskWorkflow: "Front Desk Workflow",
+  guestRequests: "Guest Requests",
+  lateArrivals: "Late Arrivals",
+  
+  financialOverview: "Financial Overview",
+  cashierBalances: "Cashier Balances",
+  outstandingInvoices: "Outstanding Invoices",
+  postStayBilling: "Post-stay Billing",
+  
+  analyticsReports: "Analytics & Reports",
+  
+  // Permission categories
+  permissionCategories: {
+    reservationSnapshot: "Reservation Snapshot",
+    roomStatus: "Room Status & Housekeeping",
+    frontDesk: "Front Desk Workflow",
+    financial: "Financial Overview",
+    analytics: "Analytics & Reports", 
+    systemConfig: "System Configuration"
+  },
 };
-

@@ -1,4 +1,3 @@
-
 import { Layout } from "@/components/layout/Layout";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -74,7 +73,7 @@ const users = [
   }
 ];
 
-// Mock roles data
+// Updated mock roles data aligned with new navigation categories
 const roles = [
   {
     id: "R001",
@@ -82,36 +81,36 @@ const roles = [
     description: "Full access to all system features and settings",
     users: 1,
     permissions: [
-      "manage_users",
-      "manage_rooms",
-      "manage_bookings",
-      "manage_payments",
-      "manage_reports",
-      "manage_settings"
+      "reservation_snapshot",
+      "room_status",
+      "front_desk",
+      "financial",
+      "analytics",
+      "system_config"
     ]
   },
   {
     id: "R002",
     name: "Manager",
-    description: "Access to most system features except user management and critical settings",
+    description: "Access to most system features except critical settings",
     users: 2,
     permissions: [
-      "manage_rooms",
-      "manage_bookings",
-      "manage_payments",
-      "view_reports",
-      "view_settings"
+      "reservation_snapshot",
+      "room_status",
+      "front_desk",
+      "financial",
+      "analytics"
     ]
   },
   {
     id: "R003",
     name: "Front Desk",
-    description: "Access to bookings, check-ins, check-outs, and guest information",
+    description: "Access to front desk operations, check-ins, check-outs, and guest information",
     users: 5,
     permissions: [
-      "view_rooms",
-      "manage_bookings",
-      "process_payments"
+      "reservation_snapshot",
+      "room_status",
+      "front_desk"
     ]
   },
   {
@@ -120,56 +119,73 @@ const roles = [
     description: "Access to room status and housekeeping tasks",
     users: 8,
     permissions: [
-      "view_rooms",
-      "update_room_status"
+      "room_status"
     ]
   }
 ];
 
-// Mock permissions categories
+// Updated permissions categories to match navigation structure
 const permissionCategories = [
   {
-    name: "User Management",
+    name: "Reservation Snapshot",
+    key: "reservation_snapshot",
     permissions: [
-      { id: "manage_users", name: "Manage Users" },
-      { id: "view_users", name: "View Users" }
+      { id: "view_reservations", name: "View Reservations" },
+      { id: "manage_reservations", name: "Manage Reservations" },
+      { id: "view_arrivals", name: "View Arrivals" },
+      { id: "view_departures", name: "View Departures" },
+      { id: "view_cancellations", name: "View Cancellations" }
     ]
   },
   {
-    name: "Room Management",
+    name: "Room Status & Housekeeping",
+    key: "room_status",
     permissions: [
-      { id: "manage_rooms", name: "Manage Rooms" },
       { id: "view_rooms", name: "View Rooms" },
+      { id: "manage_rooms", name: "Manage Rooms" },
+      { id: "manage_housekeeping", name: "Manage Housekeeping" },
       { id: "update_room_status", name: "Update Room Status" }
     ]
   },
   {
-    name: "Booking Management",
+    name: "Front Desk Workflow",
+    key: "front_desk",
     permissions: [
-      { id: "manage_bookings", name: "Manage Bookings" },
-      { id: "view_bookings", name: "View Bookings" }
+      { id: "check_in_guests", name: "Check-in Guests" },
+      { id: "check_out_guests", name: "Check-out Guests" },
+      { id: "manage_guest_requests", name: "Manage Guest Requests" },
+      { id: "view_guest_profiles", name: "View Guest Profiles" },
+      { id: "edit_guest_profiles", name: "Edit Guest Profiles" }
     ]
   },
   {
-    name: "Payment Management",
+    name: "Financial Overview",
+    key: "financial",
     permissions: [
-      { id: "manage_payments", name: "Manage Payments" },
       { id: "process_payments", name: "Process Payments" },
-      { id: "void_payments", name: "Void Payments" }
+      { id: "manage_invoices", name: "Manage Invoices" },
+      { id: "void_payments", name: "Void Payments" },
+      { id: "view_financial_reports", name: "View Financial Reports" },
+      { id: "close_day", name: "Close Day" }
     ]
   },
   {
-    name: "Reports",
+    name: "Analytics & Reports",
+    key: "analytics",
     permissions: [
-      { id: "manage_reports", name: "Manage Reports" },
-      { id: "view_reports", name: "View Reports" }
+      { id: "view_reports", name: "View Reports" },
+      { id: "generate_reports", name: "Generate Reports" },
+      { id: "export_data", name: "Export Data" }
     ]
   },
   {
-    name: "Settings",
+    name: "System Configuration",
+    key: "system_config",
     permissions: [
-      { id: "manage_settings", name: "Manage Settings" },
-      { id: "view_settings", name: "View Settings" }
+      { id: "manage_users", name: "Manage Users" },
+      { id: "manage_roles", name: "Manage Roles" },
+      { id: "system_settings", name: "System Settings" },
+      { id: "view_audit_logs", name: "View Audit Logs" }
     ]
   }
 ];
