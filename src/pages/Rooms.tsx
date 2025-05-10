@@ -1,6 +1,5 @@
-
 import { Layout } from "@/components/layout/Layout";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -20,56 +19,96 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { roomService } from "@/services/roomService";
+import { Room } from "@/types/room";
 
-// Mock rooms data
-const mockRooms = [
-  {
-    floorNumber: "1",
-    rooms: [
-      { roomNumber: "101", type: "Standard Single", status: "vacant" as const },
-      { roomNumber: "102", type: "Standard Double", status: "occupied" as const, guest: "Alex Johnson", checkIn: "May 2, 2025", checkOut: "May 5, 2025" },
-      { roomNumber: "103", type: "Standard Double", status: "reserved" as const, guest: "Sarah Williams", checkIn: "May 5, 2025", checkOut: "May 8, 2025" },
-      { roomNumber: "104", type: "Standard Twin", status: "cleaning" as const },
-      { roomNumber: "105", type: "Deluxe Double", status: "maintenance" as const },
-      { roomNumber: "106", type: "Junior Suite", status: "checkout" as const },
-    ]
-  },
-  {
-    floorNumber: "2",
-    rooms: [
-      { roomNumber: "201", type: "Standard Single", status: "vacant" as const },
-      { roomNumber: "202", type: "Standard Double", status: "occupied" as const, guest: "Michael Brown", checkIn: "May 1, 2025", checkOut: "May 4, 2025" },
-      { roomNumber: "203", type: "Standard Double", status: "vacant" as const },
-      { roomNumber: "204", type: "Standard Twin", status: "occupied" as const, guest: "Emily Davis", checkIn: "May 3, 2025", checkOut: "May 10, 2025" },
-      { roomNumber: "205", type: "Deluxe Double", status: "vacant" as const },
-      { roomNumber: "206", type: "Junior Suite", status: "reserved" as const, guest: "David Wilson", checkIn: "May 7, 2025", checkOut: "May 12, 2025" },
-    ]
-  },
-  {
-    floorNumber: "3",
-    rooms: [
-      { roomNumber: "301", type: "Deluxe Single", status: "vacant" as const },
-      { roomNumber: "302", type: "Deluxe Double", status: "occupied" as const, guest: "Jennifer Taylor", checkIn: "May 2, 2025", checkOut: "May 6, 2025" },
-      { roomNumber: "303", type: "Executive Suite", status: "reserved" as const, guest: "Robert Martinez", checkIn: "May 8, 2025", checkOut: "May 15, 2025" },
-      { roomNumber: "304", type: "Presidential Suite", status: "vacant" as const },
-    ]
-  },
-];
+// Interface for the grouped room data by floor
+// Update the interface in Rooms.tsx
+interface FloorData {
+  floorNumber: string;
+  rooms: {
+    roomNumber: string;
+    type: string;
+    status: "occupied" | "vacant" | "reserved" | "cleaning" | "maintenance" | "checkout";
+    guest?: string;
+    checkIn?: string;
+    checkOut?: string;
+  }[];
+}
 
 export default function Rooms() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentView, setCurrentView] = useState("grid");
   const [statusFilter, setStatusFilter] = useState<string[]>([]);
   const [roomDialog, setRoomDialog] = useState(false);
+  const [rooms, setRooms] = useState<Room[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [floorData, setFloorData] = useState<FloorData[]>([]);
+  
   const [newRoom, setNewRoom] = useState({
     roomNumber: "",
     type: "standard-single",
-    floor: "1"
+    floor: "1",
   });
+  
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const handleAddRoom = () => {
+  // Fetch rooms from API on component mount
+  useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+        setLoading(true);
+        const roomsData = await roomService.getRooms();
+        setRooms(roomsData);
+        
+        // Process rooms into the format needed by UI
+        organizeRoomsByFloor(roomsData);
+        
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching rooms:", err);
+        setError("Failed to load rooms. Please try again later.");
+        setLoading(false);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to load rooms. Please try again later."
+        });
+      }
+    };
+
+    fetchRooms();
+  }, [toast]);
+
+  const organizeRoomsByFloor = (roomsData: Room[]) => {
+    const floorMap = new Map<string, FloorData>();
+    
+    roomsData.forEach(room => {
+      const floorNumber = room.floor.toString();
+      
+      if (!floorMap.has(floorNumber)) {
+        floorMap.set(floorNumber, {
+          floorNumber,
+          rooms: []
+        });
+      }
+      
+      const floorData = floorMap.get(floorNumber);
+      if (floorData) {
+        floorData.rooms.push({
+          roomNumber: room.roomNumber,
+          type: room.roomType?.name || "Unknown",
+          // Cast the status to the expected union type after converting to lowercase
+          status: room.status.toLowerCase() as "occupied" | "vacant" | "reserved" | "cleaning" | "maintenance" | "checkout",
+        });
+      }
+    });
+    
+    setFloorData(Array.from(floorMap.values()));
+  };
+  const handleAddRoom = async () => {
     if (!newRoom.roomNumber || !newRoom.type || !newRoom.floor) {
       toast({
         variant: "destructive",
@@ -79,23 +118,109 @@ export default function Rooms() {
       return;
     }
 
-    toast({
-      title: "Room added",
-      description: `Room ${newRoom.roomNumber} has been added successfully.`
-    });
-    
-    setRoomDialog(false);
-    setNewRoom({
-      roomNumber: "",
-      type: "standard-single",
-      floor: "1"
-    });
+    try {
+      // Map UI room type to backend room type ID (this mapping would need to be adjusted)
+      const roomTypeMap: Record<string, number> = {
+        "standard-single": 1,
+        "standard-double": 2,
+        "standard-twin": 3,
+        "deluxe-double": 4,
+        "junior-suite": 5,
+        "executive-suite": 6
+      };
+      
+      // Create the room in the backend
+      const createdRoom = await roomService.createRoom({
+        roomNumber: newRoom.roomNumber,
+        floor: parseInt(newRoom.floor),
+        roomType: {
+          id: roomTypeMap[newRoom.type] || 1,
+          name: newRoom.type,
+          description: '', // Add appropriate description if available
+          basePrice: 0,
+          capacity: 0,
+          isActive: true,
+          createdAt: new Date().toISOString()
+        },
+        status: "vacant",
+        capacity: 2,
+        hasBalcony: false,
+        hasOceanView: false,
+        roomTypeId: roomTypeMap[newRoom.type] || 1
+      });
+      
+      // Refresh the rooms list
+      const roomsData = await roomService.getRooms();
+      setRooms(roomsData);
+      organizeRoomsByFloor(roomsData);
+      
+      toast({
+        title: "Room added",
+        description: `Room ${newRoom.roomNumber} has been added successfully.`
+      });
+      
+      setRoomDialog(false);
+      setNewRoom({
+        roomNumber: "",
+        type: "standard-single",
+        floor: "1"
+      });
+    } catch (err) {
+      console.error("Error adding room:", err);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to add room. Please try again."
+      });
+    }
   };
   
   const handleRoomDetailClick = (roomNumber: string) => {
-    // Navigate to room details page with the room number as a parameter
-    navigate(`/rooms?room=${roomNumber}`);
+    // Find the room ID from the room number
+    const room = rooms.find(r => r.roomNumber === roomNumber);
+    if (room) {
+      navigate(`/rooms/${room.id}`);
+    } else {
+      navigate(`/rooms?room=${roomNumber}`);
+    }
   };
+
+  // Calculate room statistics
+  const totalRooms = rooms.length;
+  const occupiedRooms = rooms.filter(r => r.status === "occupied").length;
+  const vacantRooms = rooms.filter(r => r.status === "vacant").length;
+  const reservedRooms = rooms.filter(r => r.status === "reserved").length;
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="flex justify-center items-center h-64">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
+            <p className="mt-4">Loading rooms...</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (error) {
+    return (
+      <Layout>
+        <div className="flex justify-center items-center h-64">
+          <div className="text-center text-red-500">
+            <p>{error}</p>
+            <Button 
+              className="mt-4" 
+              onClick={() => window.location.reload()}
+            >
+              Retry
+            </Button>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -182,7 +307,7 @@ export default function Rooms() {
             <CardTitle className="text-lg">Total Rooms</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">16</div>
+            <div className="text-3xl font-bold">{totalRooms}</div>
           </CardContent>
         </Card>
         <Card className="flex-1">
@@ -190,7 +315,7 @@ export default function Rooms() {
             <CardTitle className="text-lg">Occupied</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-blue-600">5</div>
+            <div className="text-3xl font-bold text-blue-600">{occupiedRooms}</div>
           </CardContent>
         </Card>
         <Card className="flex-1">
@@ -198,7 +323,7 @@ export default function Rooms() {
             <CardTitle className="text-lg">Vacant</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-green-600">7</div>
+            <div className="text-3xl font-bold text-green-600">{vacantRooms}</div>
           </CardContent>
         </Card>
         <Card className="flex-1">
@@ -206,7 +331,7 @@ export default function Rooms() {
             <CardTitle className="text-lg">Reserved</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-orange-600">3</div>
+            <div className="text-3xl font-bold text-orange-600">{reservedRooms}</div>
           </CardContent>
         </Card>
       </div>
@@ -262,13 +387,15 @@ export default function Rooms() {
       <Tabs defaultValue="allFloors" className="w-full">
         <TabsList className="mb-4">
           <TabsTrigger value="allFloors">All Floors</TabsTrigger>
-          <TabsTrigger value="floor1">Floor 1</TabsTrigger>
-          <TabsTrigger value="floor2">Floor 2</TabsTrigger>
-          <TabsTrigger value="floor3">Floor 3</TabsTrigger>
+          {floorData.map(floor => (
+            <TabsTrigger key={floor.floorNumber} value={`floor${floor.floorNumber}`}>
+              Floor {floor.floorNumber}
+            </TabsTrigger>
+          ))}
         </TabsList>
         
         <TabsContent value="allFloors" className="mt-0">
-          {mockRooms.map((floor) => (
+          {floorData.map((floor) => (
             <FloorSection 
               key={floor.floorNumber} 
               floorNumber={floor.floorNumber} 
@@ -285,8 +412,8 @@ export default function Rooms() {
           ))}
         </TabsContent>
         
-        {mockRooms.map((floor, index) => (
-          <TabsContent key={index} value={`floor${floor.floorNumber}`} className="mt-0">
+        {floorData.map((floor) => (
+          <TabsContent key={floor.floorNumber} value={`floor${floor.floorNumber}`} className="mt-0">
             <FloorSection 
               floorNumber={floor.floorNumber} 
               rooms={floor.rooms.filter(room => 

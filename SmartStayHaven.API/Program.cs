@@ -1,20 +1,28 @@
 using Microsoft.EntityFrameworkCore;
 using SmartStayHaven.API.Data;
-
+using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options => {
+        options.JsonSerializerOptions.ReferenceHandler = 
+            ReferenceHandler.IgnoreCycles; // ← Handle circular references
+    });
 
-// Configure CORS
+// In ConfigureServices method
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend",
-        builder => builder
-            .WithOrigins("http://localhost:5173") // Your frontend URL
-            .AllowAnyMethod()
-            .AllowAnyHeader());
+    options.AddPolicy("AllowSpecificOrigin",
+        builder =>
+        {
+            builder
+                .WithOrigins("http://192.168.1.3:8081") // Your frontend URL
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
 });
+
 
 // Configure DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -51,7 +59,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("AllowFrontend");
+app.UseCors("AllowSpecificOrigin");
 
 app.UseAuthorization();
 
@@ -77,8 +85,7 @@ app.MapGet("/weatherforecast", () =>
 .WithName("GetWeatherForecast")
 .WithOpenApi();
 
-app.Run();
-
+app.Run("http://0.0.0.0:5039"); // ← Explicitly listen on all interfaces
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);

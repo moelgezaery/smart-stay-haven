@@ -3,6 +3,90 @@
   "WorkspaceRootPath": "D:\\GravitySmartStayWeb\\smart-stay-haven\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SmartStayHaven.API\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\SmartStayHaven.API.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SmartStayHaven.API\\SmartStayHaven.API.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\SmartStayHaven.API.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SmartStayHaven.API\\SmartStayHaven.API.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Controllers\\RoomController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SmartStayHaven.API\\Controllers\\RoomController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Migrations\\20250510112601_RemovePricePerNightColumn.Designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SmartStayHaven.API\\Migrations\\20250510112601_RemovePricePerNightColumn.Designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Migrations\\20250510112601_RemovePricePerNightColumn.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SmartStayHaven.API\\Migrations\\20250510112601_RemovePricePerNightColumn.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Migrations\\20250510111025_removepricecolumnfromroomstable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SmartStayHaven.API\\Migrations\\20250510111025_removepricecolumnfromroomstable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Migrations\\20250509032323_Addednewtables.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SmartStayHaven.API\\Migrations\\20250509032323_Addednewtables.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Migrations\\20250509032323_Addednewtables.Designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SmartStayHaven.API\\Migrations\\20250509032323_Addednewtables.Designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Migrations\\20250510095824_FixRoomTypeRelationship.Designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SmartStayHaven.API\\Migrations\\20250510095824_FixRoomTypeRelationship.Designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Data\\ApplicationDbContext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SmartStayHaven.API\\Data\\ApplicationDbContext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Data\\DbInitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SmartStayHaven.API\\Data\\DbInitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Models\\RoomType.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SmartStayHaven.API\\Models\\RoomType.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\GravitySmartStayWeb\\smart-stay-haven\\src\\types\\room.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\types\\room.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\GravitySmartStayWeb\\smart-stay-haven\\src\\pages\\Rooms.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\pages\\Rooms.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Models\\Room.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SmartStayHaven.API\\Models\\Room.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Models\\RoomServiceOrder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SmartStayHaven.API\\Models\\RoomServiceOrder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\GravitySmartStayWeb\\smart-stay-haven\\src\\services\\roomService.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\services\\roomService.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\GravitySmartStayWeb\\smart-stay-haven\\src\\App.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\App.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\GravitySmartStayWeb\\smart-stay-haven\\src\\main.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\main.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\GravitySmartStayWeb\\smart-stay-haven\\package-lock.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:package-lock.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
@@ -10,16 +94,8 @@
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SmartStayHaven.API\\Controllers\\MaintenanceController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\SmartStayHaven.API.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SmartStayHaven.API\\SmartStayHaven.API.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Models\\MaintenanceRequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SmartStayHaven.API\\Models\\MaintenanceRequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SmartStayHaven.API\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
@@ -37,11 +113,284 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SmartStayHaven.API.csproj",
+              "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\SmartStayHaven.API.csproj",
+              "RelativeDocumentMoniker": "SmartStayHaven.API\\SmartStayHaven.API.csproj",
+              "ToolTip": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\SmartStayHaven.API.csproj",
+              "RelativeToolTip": "SmartStayHaven.API\\SmartStayHaven.API.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-05-10T13:37:32.493Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "20250510112601_RemovePricePerNightColumn.Designer.cs",
+              "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Migrations\\20250510112601_RemovePricePerNightColumn.Designer.cs",
+              "RelativeDocumentMoniker": "SmartStayHaven.API\\Migrations\\20250510112601_RemovePricePerNightColumn.Designer.cs",
+              "ToolTip": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Migrations\\20250510112601_RemovePricePerNightColumn.Designer.cs",
+              "RelativeToolTip": "SmartStayHaven.API\\Migrations\\20250510112601_RemovePricePerNightColumn.Designer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T13:08:49.164Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "20250510112601_RemovePricePerNightColumn.cs",
+              "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Migrations\\20250510112601_RemovePricePerNightColumn.cs",
+              "RelativeDocumentMoniker": "SmartStayHaven.API\\Migrations\\20250510112601_RemovePricePerNightColumn.cs",
+              "ToolTip": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Migrations\\20250510112601_RemovePricePerNightColumn.cs",
+              "RelativeToolTip": "SmartStayHaven.API\\Migrations\\20250510112601_RemovePricePerNightColumn.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T13:08:44.396Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "SmartStayHaven.API.http",
+              "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\SmartStayHaven.API.http",
+              "RelativeDocumentMoniker": "SmartStayHaven.API\\SmartStayHaven.API.http",
+              "ToolTip": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\SmartStayHaven.API.http",
+              "RelativeToolTip": "SmartStayHaven.API\\SmartStayHaven.API.http",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
+              "WhenOpened": "2025-05-09T01:00:00.609Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Program.cs",
+              "RelativeDocumentMoniker": "SmartStayHaven.API\\Program.cs",
+              "ToolTip": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Program.cs",
+              "RelativeToolTip": "SmartStayHaven.API\\Program.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABUAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-09T01:00:08.375Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "20250510111025_removepricecolumnfromroomstable.cs",
+              "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Migrations\\20250510111025_removepricecolumnfromroomstable.cs",
+              "RelativeDocumentMoniker": "SmartStayHaven.API\\Migrations\\20250510111025_removepricecolumnfromroomstable.cs",
+              "ToolTip": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Migrations\\20250510111025_removepricecolumnfromroomstable.cs",
+              "RelativeToolTip": "SmartStayHaven.API\\Migrations\\20250510111025_removepricecolumnfromroomstable.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAAABUAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T13:08:36.607Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "20250509032323_Addednewtables.Designer.cs",
+              "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Migrations\\20250509032323_Addednewtables.Designer.cs",
+              "RelativeDocumentMoniker": "SmartStayHaven.API\\Migrations\\20250509032323_Addednewtables.Designer.cs",
+              "ToolTip": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Migrations\\20250509032323_Addednewtables.Designer.cs",
+              "RelativeToolTip": "SmartStayHaven.API\\Migrations\\20250509032323_Addednewtables.Designer.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAADYBAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T13:07:34.857Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "RoomController.cs",
+              "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Controllers\\RoomController.cs",
+              "RelativeDocumentMoniker": "SmartStayHaven.API\\Controllers\\RoomController.cs",
+              "ToolTip": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Controllers\\RoomController.cs",
+              "RelativeToolTip": "SmartStayHaven.API\\Controllers\\RoomController.cs",
+              "ViewState": "AgIAAEgAAAAAAAAAAAAAAFIAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T09:29:43.656Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "20250510095824_FixRoomTypeRelationship.Designer.cs",
+              "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Migrations\\20250510095824_FixRoomTypeRelationship.Designer.cs",
+              "RelativeDocumentMoniker": "SmartStayHaven.API\\Migrations\\20250510095824_FixRoomTypeRelationship.Designer.cs",
+              "ToolTip": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Migrations\\20250510095824_FixRoomTypeRelationship.Designer.cs",
+              "RelativeToolTip": "SmartStayHaven.API\\Migrations\\20250510095824_FixRoomTypeRelationship.Designer.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAADYBAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T13:07:43.546Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "20250509032323_Addednewtables.cs",
+              "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Migrations\\20250509032323_Addednewtables.cs",
+              "RelativeDocumentMoniker": "SmartStayHaven.API\\Migrations\\20250509032323_Addednewtables.cs",
+              "ToolTip": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Migrations\\20250509032323_Addednewtables.cs",
+              "RelativeToolTip": "SmartStayHaven.API\\Migrations\\20250509032323_Addednewtables.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHcAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T13:07:28.829Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "DbInitializer.cs",
+              "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Data\\DbInitializer.cs",
+              "RelativeDocumentMoniker": "SmartStayHaven.API\\Data\\DbInitializer.cs",
+              "ToolTip": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Data\\DbInitializer.cs",
+              "RelativeToolTip": "SmartStayHaven.API\\Data\\DbInitializer.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAAADEAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T11:06:16.293Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "room.tsx",
+              "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\src\\types\\room.tsx",
+              "RelativeDocumentMoniker": "src\\types\\room.tsx",
+              "ToolTip": "D:\\GravitySmartStayWeb\\smart-stay-haven\\src\\types\\room.tsx",
+              "RelativeToolTip": "src\\types\\room.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-05-10T10:26:36.317Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "App.tsx",
+              "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\src\\App.tsx",
+              "RelativeDocumentMoniker": "src\\App.tsx",
+              "ToolTip": "D:\\GravitySmartStayWeb\\smart-stay-haven\\src\\App.tsx",
+              "RelativeToolTip": "src\\App.tsx",
+              "ViewState": "AgIAACoAAAAAAAAAAAAAAC8AAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-05-10T10:14:43.726Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "main.tsx",
+              "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\src\\main.tsx",
+              "RelativeDocumentMoniker": "src\\main.tsx",
+              "ToolTip": "D:\\GravitySmartStayWeb\\smart-stay-haven\\src\\main.tsx",
+              "RelativeToolTip": "src\\main.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-05-10T10:14:21.718Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Rooms.tsx",
+              "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\src\\pages\\Rooms.tsx",
+              "RelativeDocumentMoniker": "src\\pages\\Rooms.tsx",
+              "ToolTip": "D:\\GravitySmartStayWeb\\smart-stay-haven\\src\\pages\\Rooms.tsx",
+              "RelativeToolTip": "src\\pages\\Rooms.tsx",
+              "ViewState": "AgIAAHoAAAAAAAAAAAAAAIsAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-05-10T10:00:19.22Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "SmartStayHaven.API\\Data\\ApplicationDbContext.cs",
+              "ToolTip": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "SmartStayHaven.API\\Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAC8AAAAAAAAAAAAAADUAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T09:50:49.377Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Room.cs",
+              "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Models\\Room.cs",
+              "RelativeDocumentMoniker": "SmartStayHaven.API\\Models\\Room.cs",
+              "ToolTip": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Models\\Room.cs",
+              "RelativeToolTip": "SmartStayHaven.API\\Models\\Room.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T09:48:51.912Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "RoomType.cs",
+              "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Models\\RoomType.cs",
+              "RelativeDocumentMoniker": "SmartStayHaven.API\\Models\\RoomType.cs",
+              "ToolTip": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Models\\RoomType.cs",
+              "RelativeToolTip": "SmartStayHaven.API\\Models\\RoomType.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T09:48:44.764Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "roomService.tsx",
+              "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\src\\services\\roomService.tsx",
+              "RelativeDocumentMoniker": "src\\services\\roomService.tsx",
+              "ToolTip": "D:\\GravitySmartStayWeb\\smart-stay-haven\\src\\services\\roomService.tsx",
+              "RelativeToolTip": "src\\services\\roomService.tsx",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-05-10T10:26:47.146Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "RoomServiceOrder.cs",
+              "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Models\\RoomServiceOrder.cs",
+              "RelativeDocumentMoniker": "SmartStayHaven.API\\Models\\RoomServiceOrder.cs",
+              "ToolTip": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Models\\RoomServiceOrder.cs",
+              "RelativeToolTip": "SmartStayHaven.API\\Models\\RoomServiceOrder.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T10:35:55.897Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "package-lock.json",
+              "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\package-lock.json",
+              "RelativeDocumentMoniker": "package-lock.json",
+              "ToolTip": "D:\\GravitySmartStayWeb\\smart-stay-haven\\package-lock.json",
+              "RelativeToolTip": "package-lock.json",
+              "ViewState": "AgIAAPUcAAAAAAAAAAAAAP4cAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-05-10T09:37:01.423Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
               "Title": "Microsoft.Common.CurrentVersion.targets",
               "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
               "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
@@ -52,19 +401,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "MaintenanceRequest.cs",
-              "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Models\\MaintenanceRequest.cs",
-              "RelativeDocumentMoniker": "SmartStayHaven.API\\Models\\MaintenanceRequest.cs",
-              "ToolTip": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Models\\MaintenanceRequest.cs",
-              "RelativeToolTip": "SmartStayHaven.API\\Models\\MaintenanceRequest.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAABoAAAAuAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-09T02:18:26.627Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 24,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\appsettings.json",
               "RelativeDocumentMoniker": "SmartStayHaven.API\\appsettings.json",
@@ -72,11 +409,12 @@
               "RelativeToolTip": "SmartStayHaven.API\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-05-09T01:04:04.379Z"
+              "WhenOpened": "2025-05-09T01:04:04.379Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 25,
               "Title": "AuthController.cs",
               "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "SmartStayHaven.API\\Controllers\\AuthController.cs",
@@ -84,11 +422,12 @@
               "RelativeToolTip": "SmartStayHaven.API\\Controllers\\AuthController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-09T01:03:58.021Z"
+              "WhenOpened": "2025-05-09T01:03:58.021Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 22,
               "Title": "MaintenanceController.cs",
               "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Controllers\\MaintenanceController.cs",
               "RelativeDocumentMoniker": "SmartStayHaven.API\\Controllers\\MaintenanceController.cs",
@@ -101,28 +440,24 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Program.cs",
-              "RelativeDocumentMoniker": "SmartStayHaven.API\\Program.cs",
-              "ToolTip": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Program.cs",
-              "RelativeToolTip": "SmartStayHaven.API\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 23,
+              "Title": "MaintenanceRequest.cs",
+              "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Models\\MaintenanceRequest.cs",
+              "RelativeDocumentMoniker": "SmartStayHaven.API\\Models\\MaintenanceRequest.cs",
+              "ToolTip": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\Models\\MaintenanceRequest.cs",
+              "RelativeToolTip": "SmartStayHaven.API\\Models\\MaintenanceRequest.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAABoAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-09T01:00:08.375Z"
+              "WhenOpened": "2025-05-09T02:18:26.627Z",
+              "EditorCaption": ""
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "SmartStayHaven.API.http",
-              "DocumentMoniker": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\SmartStayHaven.API.http",
-              "RelativeDocumentMoniker": "SmartStayHaven.API\\SmartStayHaven.API.http",
-              "ToolTip": "D:\\GravitySmartStayWeb\\smart-stay-haven\\SmartStayHaven.API\\SmartStayHaven.API.http",
-              "RelativeToolTip": "SmartStayHaven.API\\SmartStayHaven.API.http",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
-              "WhenOpened": "2025-05-09T01:00:00.609Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             }
           ]
         }

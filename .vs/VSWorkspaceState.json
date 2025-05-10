@@ -1,9 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\SmartStayHaven.API",
-    "\\SmartStayHaven.API\\Controllers"
+    "\\src"
   ],
-  "SelectedNode": "\\public",
+  "SelectedNode": "\\src\\components\\dashboard\\RoomCard.tsx",
   "PreviewInSolutionExplorer": false
 }

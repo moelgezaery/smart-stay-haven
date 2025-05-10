@@ -63,7 +63,6 @@ namespace SmartStayHaven.API.Data
                 {
                     RoomNumber = "102",
                     RoomTypeId = 1,
-                    PricePerNight = 150.00m,
                     Status = "Available",
                     Floor = 1,
                     Capacity = 2
@@ -72,7 +71,6 @@ namespace SmartStayHaven.API.Data
                 {
                     RoomNumber = "204",
                     RoomTypeId = 1,
-                    PricePerNight = 150.00m,
                     Status = "Available",
                     Floor = 2,
                     Capacity = 2

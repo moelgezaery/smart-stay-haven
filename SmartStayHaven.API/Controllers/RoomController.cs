@@ -19,9 +19,7 @@ namespace SmartStayHaven.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Room>>> GetRooms(
             [FromQuery] string? roomType = null,
-            [FromQuery] string? status = null,
-            [FromQuery] decimal? minPrice = null,
-            [FromQuery] decimal? maxPrice = null)
+            [FromQuery] string? status = null)
         {
             var query = _context.Rooms
                 .Include(r => r.RoomType)
@@ -32,12 +30,6 @@ namespace SmartStayHaven.API.Controllers
 
             if (!string.IsNullOrWhiteSpace(status))
                 query = query.Where(r => r.Status == status);
-
-            if (minPrice.HasValue)
-                query = query.Where(r => r.PricePerNight >= minPrice.Value);
-
-            if (maxPrice.HasValue)
-                query = query.Where(r => r.PricePerNight <= maxPrice.Value);
 
             return await query.ToListAsync();
         }

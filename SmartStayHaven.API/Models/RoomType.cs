@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace SmartStayHaven.API.Models
 {
@@ -12,7 +12,7 @@ namespace SmartStayHaven.API.Models
         public required string Name { get; set; }
 
         [Required]
-        public string Description { get; set; }
+        public required string Description { get; set; }
 
         [Required]
         public decimal BasePrice { get; set; }
@@ -31,6 +31,7 @@ namespace SmartStayHaven.API.Models
         public DateTime? LastUpdated { get; set; }
 
         // Navigation property
+        [JsonIgnore] // ← Now this will work
         public ICollection<Room>? Rooms { get; set; }
     }
 } 

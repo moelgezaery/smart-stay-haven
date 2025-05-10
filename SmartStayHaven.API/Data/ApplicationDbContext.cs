@@ -32,10 +32,6 @@ namespace SmartStayHaven.API.Data
                 .HasForeignKey(m => m.AssignedToId)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            // Configure Room entity
-            modelBuilder.Entity<Room>()
-                .Property(r => r.PricePerNight)
-                .HasColumnType("decimal(18,2)");
 
             // Configure Booking entity
             modelBuilder.Entity<Booking>()
@@ -62,11 +58,10 @@ namespace SmartStayHaven.API.Data
                 .Property(rso => rso.TotalAmount)
                 .HasColumnType("decimal(18,2)");
 
-            // Configure RoomType relationship with Room
             modelBuilder.Entity<Room>()
                 .HasOne(r => r.RoomType)
-                .WithMany(rt => rt.Rooms)
-                .HasForeignKey("RoomTypeId")
+                .WithMany(rt => rt.Rooms) // Reference the inverse navigation property
+                .HasForeignKey(r => r.RoomTypeId) // Use the lambda, NOT the string
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Configure RoomAmenity relationship with Room
@@ -90,4 +85,4 @@ namespace SmartStayHaven.API.Data
                 .OnDelete(DeleteBehavior.SetNull);
         }
     }
-} 
+}

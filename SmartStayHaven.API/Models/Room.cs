@@ -11,10 +11,7 @@ namespace SmartStayHaven.API.Models
         public required string RoomNumber { get; set; }
 
         [Required]
-        public decimal PricePerNight { get; set; }
-
-        [Required]
-        public required string Status { get; set; } = "Available";
+        public required string Status { get; set; } = "Vacant";
 
         public string? Description { get; set; }
 
