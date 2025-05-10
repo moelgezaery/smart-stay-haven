@@ -342,9 +342,10 @@ export default function NoShows() {
                   </AlertDescription>
                 </Alert>
               )}
-            </CardContent>
-          </Card>
-        </div>
+            </Tabs>
+          </CardContent>
+        </Card>
+      </div>
     </Layout>
   );
 }
