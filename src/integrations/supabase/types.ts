@@ -69,6 +69,53 @@ export type Database = {
           },
         ]
       }
+      charges: {
+        Row: {
+          amount: number
+          booking_id: number | null
+          category: string
+          created_at: string | null
+          date: string
+          description: string
+          id: number
+          last_updated: string | null
+          notes: string | null
+          status: string
+        }
+        Insert: {
+          amount: number
+          booking_id?: number | null
+          category: string
+          created_at?: string | null
+          date?: string
+          description: string
+          id?: number
+          last_updated?: string | null
+          notes?: string | null
+          status?: string
+        }
+        Update: {
+          amount?: number
+          booking_id?: number | null
+          category?: string
+          created_at?: string | null
+          date?: string
+          description?: string
+          id?: number
+          last_updated?: string | null
+          notes?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "charges_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       guests: {
         Row: {
           address: string | null

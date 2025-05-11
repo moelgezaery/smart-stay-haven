@@ -54,7 +54,7 @@ const mapFromSupabase = (data: any): Charge => {
   return {
     id: data.id,
     bookingId: data.booking_id,
-    booking: data.booking,
+    booking: data.bookings,
     category: data.category as ChargeCategory,
     description: data.description,
     amount: data.amount,
@@ -70,7 +70,7 @@ export const chargeSupabaseService = {
   async getCharges(): Promise<Charge[]> {
     const { data, error } = await supabase
       .from('charges')
-      .select('*, booking:bookings(*)');
+      .select('*, bookings(*)');
       
     if (error) throw error;
     
@@ -80,7 +80,7 @@ export const chargeSupabaseService = {
   async getCharge(id: number): Promise<Charge> {
     const { data, error } = await supabase
       .from('charges')
-      .select('*, booking:bookings(*)')
+      .select('*, bookings(*)')
       .eq('id', id)
       .single();
       
@@ -93,7 +93,7 @@ export const chargeSupabaseService = {
     const { data, error } = await supabase
       .from('charges')
       .insert(mapToSupabase(charge))
-      .select('*, booking:bookings(*)')
+      .select('*, bookings(*)')
       .single();
       
     if (error) throw error;
@@ -122,7 +122,7 @@ export const chargeSupabaseService = {
   async getBookingCharges(bookingId: number): Promise<Charge[]> {
     const { data, error } = await supabase
       .from('charges')
-      .select('*, booking:bookings(*)')
+      .select('*, bookings(*)')
       .eq('booking_id', bookingId);
       
     if (error) throw error;
@@ -133,7 +133,7 @@ export const chargeSupabaseService = {
   async getChargesByCategory(category: ChargeCategory): Promise<Charge[]> {
     const { data, error } = await supabase
       .from('charges')
-      .select('*, booking:bookings(*)')
+      .select('*, bookings(*)')
       .eq('category', category);
       
     if (error) throw error;
@@ -144,7 +144,7 @@ export const chargeSupabaseService = {
   async getUnpaidCharges(): Promise<Charge[]> {
     const { data, error } = await supabase
       .from('charges')
-      .select('*, booking:bookings(*)')
+      .select('*, bookings(*)')
       .eq('status', 'Pending');
       
     if (error) throw error;
