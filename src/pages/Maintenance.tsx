@@ -1,6 +1,6 @@
 
 import { Layout } from "@/components/layout/Layout";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -36,109 +36,227 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Search, Plus, ClipboardPen, Wrench } from "lucide-react";
+import { Search, Plus, ClipboardPen, Wrench, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { maintenanceRequestSupabaseService } from "@/services/maintenanceRequestSupabaseService";
+import { 
+  MaintenanceRequest, 
+  MaintenanceRequestCreate, 
+  MaintenanceRequestUpdate, 
+  MaintenancePriority, 
+  MaintenanceStatus 
+} from "@/types/maintenanceRequest";
+import { roomService } from "@/services/roomService"; 
+import { Room } from "@/types/room";
 
-// Sample data for maintenance staff
+// Sample data for maintenance staff (in a real app, this would come from the database)
 const maintenanceStaff = [
-  { id: "1", name: "Robert Johnson", position: "Chief Engineer", phone: "555-1234" },
-  { id: "2", name: "Maria Garcia", position: "Maintenance Technician", phone: "555-2345" },
-  { id: "3", name: "David Kim", position: "HVAC Specialist", phone: "555-3456" },
-  { id: "4", name: "Sarah Patel", position: "Electrician", phone: "555-4567" },
-  { id: "5", name: "James Wilson", position: "Plumber", phone: "555-5678" },
-];
-
-// Sample data for maintenance requests
-const maintenanceRequests = [
-  {
-    id: "M001",
-    room: "102",
-    reportedBy: "Guest - Alex Johnson",
-    description: "AC not cooling properly",
-    priority: "High",
-    status: "Open",
-    dateReported: "May 3, 2025",
-    assignedTo: "2",
-    notes: "Guest complained room temperature is above 78°F despite AC set to 65°F"
-  },
-  {
-    id: "M002",
-    room: "204",
-    reportedBy: "Housekeeping",
-    description: "Leaking shower head",
-    priority: "Medium",
-    status: "In Progress",
-    dateReported: "May 3, 2025",
-    assignedTo: "5",
-    notes: "Water leaking onto bathroom floor causing slippery conditions"
-  },
-  {
-    id: "M003",
-    room: "301",
-    reportedBy: "Front Desk",
-    description: "TV not turning on",
-    priority: "Low",
-    status: "Open",
-    dateReported: "May 4, 2025",
-    assignedTo: null,
-    notes: "Guest reported TV unresponsive to remote and manual power button"
-  },
-  {
-    id: "M004",
-    room: "Lobby",
-    reportedBy: "Manager",
-    description: "Light fixtures flickering",
-    priority: "Medium",
-    status: "In Progress",
-    dateReported: "May 2, 2025",
-    assignedTo: "4",
-    notes: "Multiple guests have mentioned the issue"
-  },
-  {
-    id: "M005",
-    room: "Restaurant",
-    reportedBy: "Restaurant Manager",
-    description: "Refrigerator not maintaining temperature",
-    priority: "High",
-    status: "Completed",
-    dateReported: "May 1, 2025",
-    assignedTo: "3",
-    notes: "Thermostat replaced and unit is now functioning properly"
-  },
+  { id: 1, name: "Robert Johnson", position: "Chief Engineer", phone: "555-1234" },
+  { id: 2, name: "Maria Garcia", position: "Maintenance Technician", phone: "555-2345" },
+  { id: 3, name: "David Kim", position: "HVAC Specialist", phone: "555-3456" },
+  { id: 4, name: "Sarah Patel", position: "Electrician", phone: "555-4567" },
+  { id: 5, name: "James Wilson", position: "Plumber", phone: "555-5678" },
 ];
 
 export default function Maintenance() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [priorityFilter, setPriorityFilter] = useState<string>("");
+  const [statusFilter, setStatusFilter] = useState<string>("");
+  const [maintenanceRequests, setMaintenanceRequests] = useState<MaintenanceRequest[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [rooms, setRooms] = useState<Room[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [newRequestOpen, setNewRequestOpen] = useState(false);
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState<MaintenanceRequest | null>(null);
+
+  // New maintenance request form state
+  const [newRequest, setNewRequest] = useState<{
+    roomId: number | null;
+    title: string;
+    description: string;
+    priority: MaintenancePriority;
+    assignedToId?: number;
+    estimatedCost?: number;
+  }>({
+    roomId: null,
+    title: "",
+    description: "",
+    priority: "Medium",
+    assignedToId: undefined,
+    estimatedCost: undefined,
+  });
+
+  // Edit maintenance request form state
+  const [editedRequest, setEditedRequest] = useState<MaintenanceRequestUpdate>({});
+  
   const { toast } = useToast();
   
-  // Filter maintenance requests based on search
+  // Fetch maintenance requests and rooms on component mount
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const [requestsData, roomsData] = await Promise.all([
+          maintenanceRequestSupabaseService.getMaintenanceRequests(),
+          roomService.getRooms()
+        ]);
+        
+        setMaintenanceRequests(requestsData);
+        setRooms(roomsData);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+        setError("Failed to load maintenance data. Please try again later.");
+        setLoading(false);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to load maintenance data. Please try again later."
+        });
+      }
+    };
+
+    fetchData();
+  }, [toast]);
+  
+  // Filter maintenance requests based on search, priority, and status
   const filteredRequests = maintenanceRequests.filter(request =>
-    request.room.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    request.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    request.reportedBy.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    request.priority.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    request.status.toLowerCase().includes(searchTerm.toLowerCase())
+    (searchTerm === "" || 
+      (request.room?.roomNumber && request.room.roomNumber.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      request.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.priority.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.status.toLowerCase().includes(searchTerm.toLowerCase())
+    ) &&
+    (priorityFilter === "" || priorityFilter === "all-priorities" || request.priority === priorityFilter) &&
+    (statusFilter === "" || statusFilter === "all-statuses" || request.status === statusFilter)
   );
   
-  const handleCreateRequest = () => {
-    toast({
-      title: "Maintenance Request Created",
-      description: "New maintenance request has been created successfully.",
-    });
+  const handleCreateRequest = async () => {
+    if (!newRequest.roomId || !newRequest.title || !newRequest.description || !newRequest.priority) {
+      toast({
+        variant: "destructive",
+        title: "Missing information",
+        description: "Please fill in all required fields"
+      });
+      return;
+    }
+
+    try {
+      const createdRequest = await maintenanceRequestSupabaseService.createMaintenanceRequest({
+        roomId: newRequest.roomId,
+        title: newRequest.title,
+        description: newRequest.description,
+        priority: newRequest.priority,
+        assignedToId: newRequest.assignedToId,
+        estimatedCost: newRequest.estimatedCost
+      });
+      
+      // Refresh the requests list with the new request
+      setMaintenanceRequests([...maintenanceRequests, createdRequest]);
+      
+      toast({
+        title: "Maintenance Request Created",
+        description: "New maintenance request has been created successfully."
+      });
+      
+      // Reset the form and close the dialog
+      setNewRequest({
+        roomId: null,
+        title: "",
+        description: "",
+        priority: "Medium",
+        assignedToId: undefined,
+        estimatedCost: undefined
+      });
+      setNewRequestOpen(false);
+    } catch (err) {
+      console.error("Error creating maintenance request:", err);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to create maintenance request. Please try again."
+      });
+    }
   };
 
-  const handleAssignStaff = (requestId: string, staffId: string) => {
-    toast({
-      title: "Staff Assigned",
-      description: "Maintenance staff has been assigned to the request.",
-    });
+  const handleUpdateRequest = async () => {
+    if (!selectedRequest) return;
+    
+    try {
+      await maintenanceRequestSupabaseService.updateMaintenanceRequest(
+        selectedRequest.id,
+        editedRequest
+      );
+      
+      // Refresh the requests list with the updated request
+      const updatedRequests = await maintenanceRequestSupabaseService.getMaintenanceRequests();
+      setMaintenanceRequests(updatedRequests);
+      
+      toast({
+        title: "Request Updated",
+        description: "Maintenance request has been updated successfully."
+      });
+      
+      // Reset the form and close the dialog
+      setEditedRequest({});
+      setDetailsOpen(false);
+    } catch (err) {
+      console.error("Error updating maintenance request:", err);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to update maintenance request. Please try again."
+      });
+    }
   };
+  
+  const openRequestDetails = (request: MaintenanceRequest) => {
+    setSelectedRequest(request);
+    setEditedRequest({
+      status: request.status,
+      assignedToId: request.assignedToId,
+      resolutionNotes: request.resolutionNotes,
+      actualCost: request.actualCost
+    });
+    setDetailsOpen(true);
+  };
+  
+  if (loading) {
+    return (
+      <Layout>
+        <div className="flex justify-center items-center h-64">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <span className="ml-2">Loading maintenance data...</span>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (error) {
+    return (
+      <Layout>
+        <div className="flex justify-center items-center h-64">
+          <div className="text-center text-red-500">
+            <p>{error}</p>
+            <Button 
+              className="mt-4" 
+              onClick={() => window.location.reload()}
+            >
+              Retry
+            </Button>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
   
   return (
     <Layout>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Maintenance</h1>
-        <Dialog>
+        <Dialog open={newRequestOpen} onOpenChange={setNewRequestOpen}>
           <DialogTrigger asChild>
             <Button>
               <ClipboardPen className="mr-2 h-4 w-4" />
@@ -157,26 +275,52 @@ export default function Maintenance() {
                 <label htmlFor="room" className="text-right text-sm font-medium">
                   Room/Location
                 </label>
-                <Input id="room" className="col-span-3" />
+                <Select 
+                  value={newRequest.roomId?.toString() || ""} 
+                  onValueChange={(value) => setNewRequest({...newRequest, roomId: parseInt(value)})}
+                >
+                  <SelectTrigger id="room" className="col-span-3">
+                    <SelectValue placeholder="Select room" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {rooms.map(room => (
+                      <SelectItem key={room.id} value={room.id.toString()}>
+                        {room.roomNumber} - Floor {room.floor}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <label htmlFor="reportedBy" className="text-right text-sm font-medium">
-                  Reported By
+                <label htmlFor="title" className="text-right text-sm font-medium">
+                  Title
                 </label>
-                <Input id="reportedBy" className="col-span-3" />
+                <Input 
+                  id="title" 
+                  className="col-span-3" 
+                  value={newRequest.title}
+                  onChange={(e) => setNewRequest({...newRequest, title: e.target.value})}
+                />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <label htmlFor="priority" className="text-right text-sm font-medium">
                   Priority
                 </label>
-                <Select>
+                <Select 
+                  value={newRequest.priority} 
+                  onValueChange={(value) => setNewRequest({
+                    ...newRequest, 
+                    priority: value as MaintenancePriority
+                  })}
+                >
                   <SelectTrigger id="priority" className="col-span-3">
                     <SelectValue placeholder="Select priority" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="High">High</SelectItem>
-                    <SelectItem value="Medium">Medium</SelectItem>
                     <SelectItem value="Low">Low</SelectItem>
+                    <SelectItem value="Medium">Medium</SelectItem>
+                    <SelectItem value="High">High</SelectItem>
+                    <SelectItem value="Emergency">Emergency</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -184,32 +328,55 @@ export default function Maintenance() {
                 <label htmlFor="description" className="text-right text-sm font-medium">
                   Description
                 </label>
-                <Textarea id="description" className="col-span-3" />
+                <Textarea 
+                  id="description" 
+                  className="col-span-3" 
+                  value={newRequest.description}
+                  onChange={(e) => setNewRequest({...newRequest, description: e.target.value})}
+                />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <label htmlFor="notes" className="text-right text-sm font-medium">
-                  Notes
+                <label htmlFor="estimatedCost" className="text-right text-sm font-medium">
+                  Est. Cost
                 </label>
-                <Textarea id="notes" className="col-span-3" />
+                <Input 
+                  id="estimatedCost" 
+                  type="number" 
+                  className="col-span-3"
+                  value={newRequest.estimatedCost || ''}
+                  onChange={(e) => setNewRequest({
+                    ...newRequest, 
+                    estimatedCost: e.target.value ? parseFloat(e.target.value) : undefined
+                  })}
+                />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <label htmlFor="assignedTo" className="text-right text-sm font-medium">
                   Assign to
                 </label>
-                <Select>
+                <Select 
+                  value={newRequest.assignedToId?.toString() || ''} 
+                  onValueChange={(value) => setNewRequest({
+                    ...newRequest, 
+                    assignedToId: value ? parseInt(value) : undefined
+                  })}
+                >
                   <SelectTrigger id="assignedTo" className="col-span-3">
                     <SelectValue placeholder="Assign maintenance staff" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="unassigned">Unassigned</SelectItem>
+                    <SelectItem value="">Unassigned</SelectItem>
                     {maintenanceStaff.map(staff => (
-                      <SelectItem key={staff.id} value={staff.id}>{staff.name}</SelectItem>
+                      <SelectItem key={staff.id} value={staff.id.toString()}>
+                        {staff.name}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
             </div>
             <DialogFooter>
+              <Button variant="outline" onClick={() => setNewRequestOpen(false)}>Cancel</Button>
               <Button onClick={handleCreateRequest}>Create Request</Button>
             </DialogFooter>
           </DialogContent>
@@ -231,27 +398,29 @@ export default function Maintenance() {
               />
             </div>
             
-            <Select>
+            <Select value={priorityFilter} onValueChange={setPriorityFilter}>
               <SelectTrigger className="w-40">
                 <SelectValue placeholder="Priority" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all-priorities">All Priorities</SelectItem>
-                <SelectItem value="High">High</SelectItem>
-                <SelectItem value="Medium">Medium</SelectItem>
                 <SelectItem value="Low">Low</SelectItem>
+                <SelectItem value="Medium">Medium</SelectItem>
+                <SelectItem value="High">High</SelectItem>
+                <SelectItem value="Emergency">Emergency</SelectItem>
               </SelectContent>
             </Select>
             
-            <Select>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-40">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all-statuses">All Statuses</SelectItem>
-                <SelectItem value="Open">Open</SelectItem>
-                <SelectItem value="In Progress">In Progress</SelectItem>
+                <SelectItem value="Pending">Pending</SelectItem>
+                <SelectItem value="InProgress">In Progress</SelectItem>
                 <SelectItem value="Completed">Completed</SelectItem>
+                <SelectItem value="Cancelled">Cancelled</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -264,142 +433,80 @@ export default function Maintenance() {
                   <TableHead>ID</TableHead>
                   <TableHead>Room</TableHead>
                   <TableHead>Description</TableHead>
-                  <TableHead>Reported By</TableHead>
-                  <TableHead>Date</TableHead>
+                  <TableHead>Created</TableHead>
                   <TableHead>Priority</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredRequests.map((request) => {
-                  const assignedStaff = maintenanceStaff.find(staff => staff.id === request.assignedTo);
-                  
-                  return (
-                    <TableRow key={request.id}>
-                      <TableCell className="font-medium">{request.id}</TableCell>
-                      <TableCell>{request.room}</TableCell>
-                      <TableCell>{request.description}</TableCell>
-                      <TableCell>{request.reportedBy}</TableCell>
-                      <TableCell>{request.dateReported}</TableCell>
-                      <TableCell>
-                        <span
-                          className={`px-2 py-1 rounded-full text-xs ${
-                            request.priority === "High" 
-                              ? "bg-red-100 text-red-800" 
-                              : request.priority === "Medium"
-                                ? "bg-yellow-100 text-yellow-800"
-                                : "bg-green-100 text-green-800"
-                          }`}
-                        >
-                          {request.priority}
-                        </span>
-                      </TableCell>
-                      <TableCell>
-                        <span
-                          className={`px-2 py-1 rounded-full text-xs ${
-                            request.status === "Open" 
-                              ? "bg-blue-100 text-blue-800" 
-                              : request.status === "In Progress"
-                                ? "bg-purple-100 text-purple-800"
-                                : "bg-green-100 text-green-800"
-                          }`}
-                        >
-                          {request.status}
-                        </span>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex gap-2 justify-end">
-                          <Dialog>
-                            <DialogTrigger asChild>
-                              <Button size="sm" variant="outline">
-                                <Wrench className="h-4 w-4 mr-2" />
-                                Details
-                              </Button>
-                            </DialogTrigger>
-                            <DialogContent>
-                              <DialogHeader>
-                                <DialogTitle>Maintenance Request Details</DialogTitle>
-                                <DialogDescription>
-                                  Request ID: {request.id}
-                                </DialogDescription>
-                              </DialogHeader>
-                              <div className="grid gap-4 py-4">
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                  <label className="text-right text-sm font-medium">
-                                    Room/Location
-                                  </label>
-                                  <div className="col-span-3">{request.room}</div>
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                  <label className="text-right text-sm font-medium">
-                                    Reported By
-                                  </label>
-                                  <div className="col-span-3">{request.reportedBy}</div>
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                  <label className="text-right text-sm font-medium">
-                                    Description
-                                  </label>
-                                  <div className="col-span-3">{request.description}</div>
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                  <label className="text-right text-sm font-medium">
-                                    Notes
-                                  </label>
-                                  <div className="col-span-3">{request.notes}</div>
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                  <label className="text-right text-sm font-medium">
-                                    Assigned To
-                                  </label>
-                                  <Select defaultValue={request.assignedTo || "unassigned"}>
-                                    <SelectTrigger className="col-span-3">
-                                      <SelectValue placeholder="Assign maintenance staff" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                      <SelectItem value="unassigned">Unassigned</SelectItem>
-                                      {maintenanceStaff.map(staff => (
-                                        <SelectItem key={staff.id} value={staff.id}>{staff.name}</SelectItem>
-                                      ))}
-                                    </SelectContent>
-                                  </Select>
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                  <label className="text-right text-sm font-medium">
-                                    Status
-                                  </label>
-                                  <Select defaultValue={request.status}>
-                                    <SelectTrigger className="col-span-3">
-                                      <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                      <SelectItem value="Open">Open</SelectItem>
-                                      <SelectItem value="In Progress">In Progress</SelectItem>
-                                      <SelectItem value="Completed">Completed</SelectItem>
-                                    </SelectContent>
-                                  </Select>
-                                </div>
-                              </div>
-                              <DialogFooter>
-                                <Button 
-                                  onClick={() => {
-                                    toast({
-                                      title: "Request Updated",
-                                      description: "Maintenance request has been updated."
-                                    });
-                                  }}
-                                >
-                                  Update Request
-                                </Button>
-                              </DialogFooter>
-                            </DialogContent>
-                          </Dialog>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                {filteredRequests.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                      No maintenance requests found
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  filteredRequests.map((request) => {
+                    const assignedStaff = maintenanceStaff.find(staff => staff.id === request.assignedToId);
+                    
+                    return (
+                      <TableRow key={request.id}>
+                        <TableCell className="font-medium">#{request.id}</TableCell>
+                        <TableCell>{request.room?.roomNumber || 'Unknown'}</TableCell>
+                        <TableCell>
+                          <div className="font-medium">{request.title}</div>
+                          <div className="text-sm text-muted-foreground truncate max-w-[200px]">
+                            {request.description}
+                          </div>
+                        </TableCell>
+                        <TableCell>{new Date(request.createdAt).toLocaleDateString()}</TableCell>
+                        <TableCell>
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs ${
+                              request.priority === "Emergency" 
+                                ? "bg-red-100 text-red-800" 
+                                : request.priority === "High" 
+                                  ? "bg-orange-100 text-orange-800" 
+                                  : request.priority === "Medium"
+                                    ? "bg-yellow-100 text-yellow-800"
+                                    : "bg-green-100 text-green-800"
+                            }`}
+                          >
+                            {request.priority}
+                          </span>
+                        </TableCell>
+                        <TableCell>
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs ${
+                              request.status === "Pending" 
+                                ? "bg-blue-100 text-blue-800" 
+                                : request.status === "InProgress"
+                                  ? "bg-purple-100 text-purple-800"
+                                  : request.status === "Completed"
+                                    ? "bg-green-100 text-green-800"
+                                    : "bg-gray-100 text-gray-800"
+                            }`}
+                          >
+                            {request.status}
+                          </span>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex gap-2 justify-end">
+                            <Button 
+                              size="sm" 
+                              variant="outline"
+                              onClick={() => openRequestDetails(request)}
+                            >
+                              <Wrench className="h-4 w-4 mr-2" />
+                              Details
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
+                )}
               </TableBody>
             </Table>
           </div>
@@ -440,6 +547,161 @@ export default function Maintenance() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Maintenance Request Details Dialog */}
+      {selectedRequest && (
+        <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
+          <DialogContent className="sm:max-w-[600px]">
+            <DialogHeader>
+              <DialogTitle>Maintenance Request Details</DialogTitle>
+              <DialogDescription>
+                Request ID: #{selectedRequest.id}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <label className="text-right text-sm font-medium">
+                  Room
+                </label>
+                <div className="col-span-3">{selectedRequest.room?.roomNumber || 'Unknown'}</div>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <label className="text-right text-sm font-medium">
+                  Title
+                </label>
+                <div className="col-span-3">{selectedRequest.title}</div>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <label className="text-right text-sm font-medium">
+                  Description
+                </label>
+                <div className="col-span-3">{selectedRequest.description}</div>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <label className="text-right text-sm font-medium">
+                  Priority
+                </label>
+                <div className="col-span-3">
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs ${
+                      selectedRequest.priority === "Emergency" 
+                        ? "bg-red-100 text-red-800" 
+                        : selectedRequest.priority === "High" 
+                          ? "bg-orange-100 text-orange-800" 
+                          : selectedRequest.priority === "Medium"
+                            ? "bg-yellow-100 text-yellow-800"
+                            : "bg-green-100 text-green-800"
+                    }`}
+                  >
+                    {selectedRequest.priority}
+                  </span>
+                </div>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <label className="text-right text-sm font-medium">
+                  Created
+                </label>
+                <div className="col-span-3">{new Date(selectedRequest.createdAt).toLocaleString()}</div>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <label htmlFor="status" className="text-right text-sm font-medium">
+                  Status
+                </label>
+                <Select 
+                  value={editedRequest.status || selectedRequest.status} 
+                  onValueChange={(value) => setEditedRequest({
+                    ...editedRequest, 
+                    status: value as MaintenanceStatus
+                  })}
+                >
+                  <SelectTrigger id="status" className="col-span-3">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Pending">Pending</SelectItem>
+                    <SelectItem value="InProgress">In Progress</SelectItem>
+                    <SelectItem value="Completed">Completed</SelectItem>
+                    <SelectItem value="Cancelled">Cancelled</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <label htmlFor="assignedToId" className="text-right text-sm font-medium">
+                  Assigned To
+                </label>
+                <Select 
+                  value={(editedRequest.assignedToId !== undefined 
+                    ? editedRequest.assignedToId?.toString() 
+                    : selectedRequest.assignedToId?.toString()) || ''}
+                  onValueChange={(value) => setEditedRequest({
+                    ...editedRequest, 
+                    assignedToId: value ? parseInt(value) : undefined
+                  })}
+                >
+                  <SelectTrigger id="assignedToId" className="col-span-3">
+                    <SelectValue placeholder="Assign maintenance staff" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">Unassigned</SelectItem>
+                    {maintenanceStaff.map(staff => (
+                      <SelectItem key={staff.id} value={staff.id.toString()}>
+                        {staff.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <label htmlFor="estimatedCost" className="text-right text-sm font-medium">
+                  Est. Cost
+                </label>
+                <div className="col-span-3">
+                  ${selectedRequest.estimatedCost?.toFixed(2) || 'Not specified'}
+                </div>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <label htmlFor="actualCost" className="text-right text-sm font-medium">
+                  Actual Cost
+                </label>
+                <Input 
+                  id="actualCost" 
+                  type="number" 
+                  className="col-span-3"
+                  value={editedRequest.actualCost !== undefined 
+                    ? editedRequest.actualCost
+                    : selectedRequest.actualCost || ''}
+                  onChange={(e) => setEditedRequest({
+                    ...editedRequest, 
+                    actualCost: e.target.value ? parseFloat(e.target.value) : undefined
+                  })}
+                  placeholder="Enter actual cost"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <label htmlFor="resolutionNotes" className="text-right text-sm font-medium">
+                  Resolution Notes
+                </label>
+                <Textarea 
+                  id="resolutionNotes" 
+                  className="col-span-3" 
+                  value={editedRequest.resolutionNotes !== undefined
+                    ? editedRequest.resolutionNotes
+                    : selectedRequest.resolutionNotes || ''}
+                  onChange={(e) => setEditedRequest({
+                    ...editedRequest, 
+                    resolutionNotes: e.target.value || undefined
+                  })}
+                  placeholder="Enter resolution notes"
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setDetailsOpen(false)}>Cancel</Button>
+              <Button onClick={handleUpdateRequest}>Update Request</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
     </Layout>
   );
 }

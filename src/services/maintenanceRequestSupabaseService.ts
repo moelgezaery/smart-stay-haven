@@ -25,7 +25,7 @@ const mapFromSupabase = (data: any): MaintenanceRequest => {
   return {
     id: data.id,
     roomId: data.room_id,
-    room: data.room || null, // We'll need to fetch this separately if needed
+    room: data.room || null,
     title: data.title,
     description: data.description,
     priority: data.priority as MaintenancePriority,
