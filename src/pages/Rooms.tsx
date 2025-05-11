@@ -133,15 +133,6 @@ export default function Rooms() {
       const createdRoom = await roomService.createRoom({
         roomNumber: newRoom.roomNumber,
         floor: parseInt(newRoom.floor),
-        roomType: {
-          id: roomTypeMap[newRoom.type] || 1,
-          name: newRoom.type,
-          description: '', // Add appropriate description if available
-          basePrice: 0,
-          capacity: 0,
-          isActive: true,
-          createdAt: new Date().toISOString()
-        },
         status: "vacant",
         capacity: 2,
         hasBalcony: false,
