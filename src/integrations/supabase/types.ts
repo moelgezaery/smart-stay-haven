@@ -9,7 +9,265 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      bookings: {
+        Row: {
+          check_in_date: string
+          check_out_date: string
+          created_at: string | null
+          guest_id: number | null
+          id: number
+          last_updated: string | null
+          number_of_guests: number | null
+          payment_status: string | null
+          room_id: number | null
+          special_requests: string | null
+          status: string
+          total_amount: number
+        }
+        Insert: {
+          check_in_date: string
+          check_out_date: string
+          created_at?: string | null
+          guest_id?: number | null
+          id?: number
+          last_updated?: string | null
+          number_of_guests?: number | null
+          payment_status?: string | null
+          room_id?: number | null
+          special_requests?: string | null
+          status?: string
+          total_amount: number
+        }
+        Update: {
+          check_in_date?: string
+          check_out_date?: string
+          created_at?: string | null
+          guest_id?: number | null
+          id?: number
+          last_updated?: string | null
+          number_of_guests?: number | null
+          payment_status?: string | null
+          room_id?: number | null
+          special_requests?: string | null
+          status?: string
+          total_amount?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_guest_id_fkey"
+            columns: ["guest_id"]
+            isOneToOne: false
+            referencedRelation: "guests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      guests: {
+        Row: {
+          address: string | null
+          city: string | null
+          country: string | null
+          created_at: string | null
+          date_of_birth: string | null
+          email: string | null
+          first_name: string
+          id: number
+          last_name: string
+          last_updated: string | null
+          passport_number: string | null
+          phone_number: string | null
+          special_requests: string | null
+        }
+        Insert: {
+          address?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string | null
+          date_of_birth?: string | null
+          email?: string | null
+          first_name: string
+          id?: number
+          last_name: string
+          last_updated?: string | null
+          passport_number?: string | null
+          phone_number?: string | null
+          special_requests?: string | null
+        }
+        Update: {
+          address?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string | null
+          date_of_birth?: string | null
+          email?: string | null
+          first_name?: string
+          id?: number
+          last_name?: string
+          last_updated?: string | null
+          passport_number?: string | null
+          phone_number?: string | null
+          special_requests?: string | null
+        }
+        Relationships: []
+      }
+      maintenance_requests: {
+        Row: {
+          actual_cost: number | null
+          assigned_to_id: number | null
+          completed_at: string | null
+          created_at: string | null
+          description: string
+          estimated_cost: number | null
+          id: number
+          last_updated: string | null
+          priority: string
+          resolution_notes: string | null
+          room_id: number | null
+          status: string
+          title: string
+        }
+        Insert: {
+          actual_cost?: number | null
+          assigned_to_id?: number | null
+          completed_at?: string | null
+          created_at?: string | null
+          description: string
+          estimated_cost?: number | null
+          id?: number
+          last_updated?: string | null
+          priority: string
+          resolution_notes?: string | null
+          room_id?: number | null
+          status?: string
+          title: string
+        }
+        Update: {
+          actual_cost?: number | null
+          assigned_to_id?: number | null
+          completed_at?: string | null
+          created_at?: string | null
+          description?: string
+          estimated_cost?: number | null
+          id?: number
+          last_updated?: string | null
+          priority?: string
+          resolution_notes?: string | null
+          room_id?: number | null
+          status?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "maintenance_requests_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      room_types: {
+        Row: {
+          base_rate: number
+          bed_count: number
+          bed_type: string | null
+          created_at: string | null
+          description: string | null
+          has_balcony: boolean | null
+          has_ocean_view: boolean | null
+          id: number
+          is_active: boolean | null
+          max_occupancy: number
+          name: string
+          updated_at: string | null
+        }
+        Insert: {
+          base_rate: number
+          bed_count: number
+          bed_type?: string | null
+          created_at?: string | null
+          description?: string | null
+          has_balcony?: boolean | null
+          has_ocean_view?: boolean | null
+          id?: number
+          is_active?: boolean | null
+          max_occupancy: number
+          name: string
+          updated_at?: string | null
+        }
+        Update: {
+          base_rate?: number
+          bed_count?: number
+          bed_type?: string | null
+          created_at?: string | null
+          description?: string | null
+          has_balcony?: boolean | null
+          has_ocean_view?: boolean | null
+          id?: number
+          is_active?: boolean | null
+          max_occupancy?: number
+          name?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      rooms: {
+        Row: {
+          capacity: number
+          created_at: string | null
+          description: string | null
+          floor: number
+          has_balcony: boolean | null
+          has_ocean_view: boolean | null
+          id: number
+          last_updated: string | null
+          room_number: string
+          room_type_id: number | null
+          status: string
+        }
+        Insert: {
+          capacity: number
+          created_at?: string | null
+          description?: string | null
+          floor: number
+          has_balcony?: boolean | null
+          has_ocean_view?: boolean | null
+          id?: number
+          last_updated?: string | null
+          room_number: string
+          room_type_id?: number | null
+          status?: string
+        }
+        Update: {
+          capacity?: number
+          created_at?: string | null
+          description?: string | null
+          floor?: number
+          has_balcony?: boolean | null
+          has_ocean_view?: boolean | null
+          id?: number
+          last_updated?: string | null
+          room_number?: string
+          room_type_id?: number | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rooms_room_type_id_fkey"
+            columns: ["room_type_id"]
+            isOneToOne: false
+            referencedRelation: "room_types"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
