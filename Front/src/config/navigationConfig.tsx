@@ -67,8 +67,22 @@ export const navigationConfig: NavigationItem[] = [
         icon: BookOpen,
         path: "/reservations",
         permission: "front_Office",
-      }  
-      ,{
+      },
+      {
+        key: "room_calendar",
+        label: "roomCalendar",
+        icon: Calendar,
+        path: "/room-calendar",
+        permission: "front_Office",
+      },
+      {
+        key: "room_transfer",
+        label: "roomTransfer",
+        icon: ArrowRightLeft,
+        path: "/room-transfer",
+        permission: "front_Office",
+      },
+      {
         key: "checkin",
         label: "checkInManagement", // Changed from "checkIn" to "checkInManagement"
         icon: LogIn,
@@ -115,20 +129,6 @@ export const navigationConfig: NavigationItem[] = [
         label: "noShowsCancellations",
         icon: UserX,
         path: "/no-shows",
-        permission: "front_Office",
-      },
-      {
-        key: "room_transfer",
-        label: "roomTransfer",
-        icon: ArrowRightLeft,
-        path: "/room-transfer",
-        permission: "front_Office",
-      },
-      {
-        key: "room_calendar",
-        label: "roomCalendar",
-        icon: Calendar,
-        path: "/room-calendar",
         permission: "front_Office",
       }
     ]
