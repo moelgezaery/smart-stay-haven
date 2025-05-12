@@ -7,9 +7,9 @@ export type CleaningType = 'Standard' | 'Deep' | 'Turndown' | 'Checkout';
 export interface HousekeepingTask {
   id: number;
   roomId: number;
-  room?: any;
+  room?: unknown;
   assignedToId?: number;
-  assignedTo?: any;
+  assignedTo?: unknown;
   status: HousekeepingStatus;
   cleaningType: CleaningType;
   notes?: string;
@@ -17,7 +17,7 @@ export interface HousekeepingTask {
   completedAt?: string;
   createdAt: string;
   verifiedById?: number;
-  verifiedBy?: any;
+  verifiedBy?: unknown;
   verificationNotes?: string;
 }
 
@@ -39,8 +39,20 @@ export interface HousekeepingTaskUpdate {
   verificationNotes?: string;
 }
 
+interface SupabaseTaskData {
+  room_id?: number;
+  assigned_to_id?: number;
+  status?: HousekeepingStatus;
+  cleaning_type?: CleaningType;
+  notes?: string;
+  scheduled_date?: string;
+  completed_at?: string;
+  verified_by_id?: number;
+  verification_notes?: string;
+}
+
 const mapToSupabase = (task: HousekeepingTaskCreate | HousekeepingTaskUpdate) => {
-  const mappedData: any = {};
+  const mappedData: SupabaseTaskData = {};
   
   if ('roomId' in task) mappedData.room_id = task.roomId;
   if ('assignedToId' in task) mappedData.assigned_to_id = task.assignedToId;
@@ -55,7 +67,7 @@ const mapToSupabase = (task: HousekeepingTaskCreate | HousekeepingTaskUpdate) =>
   return mappedData;
 };
 
-const mapFromSupabase = (data: any): HousekeepingTask => {
+const mapFromSupabase = (data: SupabaseTaskData & { id: number; created_at: string; room?: unknown; assigned_to?: unknown; verified_by?: unknown }): HousekeepingTask => {
   return {
     id: data.id,
     roomId: data.room_id,

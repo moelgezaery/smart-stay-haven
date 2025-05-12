@@ -5,9 +5,9 @@ export type CleaningType = 'Standard' | 'Deep' | 'Turndown' | 'Checkout';
 export interface HousekeepingTask {
   id: number;
   roomId: number;
-  room?: any;
+  room?: unknown;
   assignedToId?: number;
-  assignedTo?: any;
+  assignedTo?: unknown;
   status: HousekeepingStatus;
   cleaningType: CleaningType;
   notes?: string;
@@ -15,7 +15,7 @@ export interface HousekeepingTask {
   completedAt?: string;
   createdAt: string;
   verifiedById?: number;
-  verifiedBy?: any;
+  verifiedBy?: unknown;
   verificationNotes?: string;
 }
 
