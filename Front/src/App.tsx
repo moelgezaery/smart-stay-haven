@@ -29,6 +29,8 @@ import ArrivalsToday from "./pages/ArrivalsToday";
 import DeparturesToday from "./pages/DeparturesToday";
 import NewBookings from "./pages/NewBookings";
 import NoShows from "./pages/NoShows";
+import RoomTransfer from "./pages/RoomTransfer";
+import RoomCalendar from "./pages/RoomCalendar";
 
 // New financial pages
 import CashierBalances from "./pages/CashierBalances";
@@ -82,6 +84,8 @@ const App = () => (
           <Route path="/departures" element={<DeparturesToday />} />
           <Route path="/new-bookings" element={<NewBookings />} />
           <Route path="/no-shows" element={<NoShows />} />
+          <Route path="/room-transfer" element={<RoomTransfer />} />
+          <Route path="/room-calendar" element={<RoomCalendar />} />
           
           {/* Room Status & Housekeeping */}
           <Route path="/housekeeping" element={<Housekeeping />} />

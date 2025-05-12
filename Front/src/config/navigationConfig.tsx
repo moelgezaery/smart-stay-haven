@@ -1,3 +1,4 @@
+
 import { 
   Home, 
   CalendarRange, 
@@ -23,6 +24,8 @@ import {
   Receipt,
   Wallet,
   FileText,
+  Calendar,
+  ArrowRightLeft,
 } from "lucide-react";
 
 export type NavigationPermission = 
@@ -112,6 +115,20 @@ export const navigationConfig: NavigationItem[] = [
         label: "noShowsCancellations",
         icon: UserX,
         path: "/no-shows",
+        permission: "front_Office",
+      },
+      {
+        key: "room_transfer",
+        label: "roomTransfer",
+        icon: ArrowRightLeft,
+        path: "/room-transfer",
+        permission: "front_Office",
+      },
+      {
+        key: "room_calendar",
+        label: "roomCalendar",
+        icon: Calendar,
+        path: "/room-calendar",
         permission: "front_Office",
       }
     ]

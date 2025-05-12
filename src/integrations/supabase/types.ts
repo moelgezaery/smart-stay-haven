@@ -164,6 +164,56 @@ export type Database = {
         }
         Relationships: []
       }
+      housekeeping_tasks: {
+        Row: {
+          assigned_to_id: number | null
+          cleaning_type: string
+          completed_at: string | null
+          created_at: string | null
+          id: number
+          notes: string | null
+          room_id: number
+          scheduled_date: string
+          status: string
+          verification_notes: string | null
+          verified_by_id: number | null
+        }
+        Insert: {
+          assigned_to_id?: number | null
+          cleaning_type: string
+          completed_at?: string | null
+          created_at?: string | null
+          id?: number
+          notes?: string | null
+          room_id: number
+          scheduled_date: string
+          status?: string
+          verification_notes?: string | null
+          verified_by_id?: number | null
+        }
+        Update: {
+          assigned_to_id?: number | null
+          cleaning_type?: string
+          completed_at?: string | null
+          created_at?: string | null
+          id?: number
+          notes?: string | null
+          room_id?: number
+          scheduled_date?: string
+          status?: string
+          verification_notes?: string | null
+          verified_by_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "housekeeping_tasks_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       maintenance_requests: {
         Row: {
           actual_cost: number | null
