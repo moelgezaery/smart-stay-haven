@@ -84,7 +84,7 @@ export const navigationConfig: NavigationItem[] = [
       },
       {
         key: "checkin",
-        label: "checkInManagement", // Changed from "checkIn" to "checkInManagement"
+        label: "Check-In", 
         icon: LogIn,
         path: "/checkin",
         permission: "guest_Concierge",

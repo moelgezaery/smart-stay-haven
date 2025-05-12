@@ -1,4 +1,3 @@
-
 import { Layout } from "@/components/layout/Layout";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -43,13 +42,115 @@ import { Switch } from "@/components/ui/switch";
 import { roomService } from "@/services/roomService";
 import { bookingService } from "@/services/bookingService";
 import { Room } from "@/types/room";
+import { BookingStatus } from "@/types/booking";
+
+type RoomStatus = 'vacant' | 'occupied' | 'reserved' | 'cleaning' | 'maintenance' | 'checkout';
+
+// Mock data for testing
+const mockBookings: Booking[] = [
+  {
+    id: 1001,
+    status: 'CheckedIn',
+    checkInDate: '2024-03-20',
+    checkOutDate: '2024-03-25',
+    numberOfGuests: 2,
+    guest: {
+      firstName: 'John',
+      lastName: 'Doe',
+      phoneNumber: '+1234567890',
+      email: 'john.doe@example.com'
+    },
+    room: {
+      roomNumber: '101',
+      roomType: { name: 'Deluxe' },
+      floor: 1,
+      status: 'occupied'
+    }
+  },
+  {
+    id: 1002,
+    status: 'Confirmed',
+    checkInDate: '2024-03-21',
+    checkOutDate: '2024-03-23',
+    numberOfGuests: 1,
+    guest: {
+      firstName: 'Jane',
+      lastName: 'Smith',
+      phoneNumber: '+1987654321',
+      email: 'jane.smith@example.com'
+    },
+    room: {
+      roomNumber: '202',
+      roomType: { name: 'Standard' },
+      floor: 2,
+      status: 'reserved'
+    }
+  },
+  {
+    id: 1003,
+    status: 'CheckedIn',
+    checkInDate: '2024-03-19',
+    checkOutDate: '2024-03-26',
+    numberOfGuests: 3,
+    guest: {
+      firstName: 'Robert',
+      lastName: 'Johnson',
+      phoneNumber: '+1122334455',
+      email: 'robert.j@example.com'
+    },
+    room: {
+      roomNumber: '303',
+      roomType: { name: 'Suite' },
+      floor: 3,
+      status: 'occupied'
+    }
+  }
+];
+
+const mapBookingStatusToRoomStatus = (status: BookingStatus): RoomStatus => {
+  switch (status) {
+    case 'CheckedIn':
+      return 'occupied';
+    case 'CheckedOut':
+      return 'checkout';
+    case 'Confirmed':
+      return 'reserved';
+    case 'Cancelled':
+    case 'NoShow':
+      return 'vacant';
+    default:
+      return 'vacant';
+  }
+};
+
+interface Booking {
+  id: number;
+  status: BookingStatus;
+  checkInDate: string;
+  checkOutDate: string;
+  numberOfGuests?: number;
+  guest?: {
+    firstName: string;
+    lastName: string;
+    phoneNumber?: string;
+    email?: string;
+  };
+  room?: {
+    roomNumber: string;
+    roomType?: {
+      name: string;
+    };
+    floor: number;
+    status: string;
+  };
+}
 
 export default function RoomTransfer() {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState<any[]>([]);
-  const [selectedBooking, setSelectedBooking] = useState<any>(null);
+  const [searchResults, setSearchResults] = useState<Booking[]>([]);
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [availableRooms, setAvailableRooms] = useState<Room[]>([]);
   const [newRoomId, setNewRoomId] = useState<number | null>(null);
   const [transferDate, setTransferDate] = useState<Date | undefined>(new Date());
@@ -82,10 +183,8 @@ export default function RoomTransfer() {
     
     setIsLoading(true);
     try {
-      // This is a mock implementation as we don't have a specific search endpoint
-      // In a real application, you would have a search endpoint in your API
-      const bookings = await bookingService.getBookings();
-      const results = bookings.filter(booking => 
+      // Using mock data instead of API call
+      const results = mockBookings.filter(booking => 
         booking.guest?.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         booking.guest?.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         booking.id.toString() === searchTerm ||
@@ -106,7 +205,7 @@ export default function RoomTransfer() {
   };
 
   // Select a booking for transfer
-  const handleSelectBooking = (booking: any) => {
+  const handleSelectBooking = (booking: Booking) => {
     setSelectedBooking(booking);
     setSearchResults([]);
     setSearchTerm("");
@@ -223,7 +322,7 @@ export default function RoomTransfer() {
                         <TableCell>{new Date(booking.checkInDate).toLocaleDateString()}</TableCell>
                         <TableCell>{new Date(booking.checkOutDate).toLocaleDateString()}</TableCell>
                         <TableCell>
-                          <StatusBadge status={booking.status} />
+                          <StatusBadge status={mapBookingStatusToRoomStatus(booking.status)} />
                         </TableCell>
                         <TableCell>
                           <Button 
@@ -263,7 +362,7 @@ export default function RoomTransfer() {
                   <div>
                     <span className="font-semibold">Status:</span>
                     <span className="ml-2">
-                      <StatusBadge status={selectedBooking.status} />
+                      <StatusBadge status={mapBookingStatusToRoomStatus(selectedBooking.status)} />
                     </span>
                   </div>
                   {selectedBooking.guest?.phoneNumber && (
@@ -303,7 +402,7 @@ export default function RoomTransfer() {
                   <div>
                     <span className="font-semibold">Status:</span>
                     <span className="ml-2">
-                      <StatusBadge status={selectedBooking.room?.status || "occupied"} />
+                      <StatusBadge status={(selectedBooking.room?.status as RoomStatus) || "occupied"} />
                     </span>
                   </div>
                 </div>
