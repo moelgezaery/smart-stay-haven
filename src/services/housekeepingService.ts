@@ -1,6 +1,6 @@
 
 import { housekeepingSupabaseService } from "./housekeepingSupabaseService";
-import { HousekeepingTask, HousekeepingTaskCreate, HousekeepingTaskUpdate } from "@/types/housekeeping";
+import { HousekeepingTask, HousekeepingTaskCreate, HousekeepingTaskUpdate, HousekeepingStatus, CleaningType } from "@/types/housekeeping";
 
 export const housekeepingService = {
   getTasks: async (): Promise<HousekeepingTask[]> => {
@@ -27,15 +27,33 @@ export const housekeepingService = {
     return housekeepingSupabaseService.getTasksByRoom(roomId);
   },
 
-  getTasksByStatus: async (status: string): Promise<HousekeepingTask[]> => {
+  getTasksByStatus: async (status: HousekeepingStatus): Promise<HousekeepingTask[]> => {
     return housekeepingSupabaseService.getTasksByStatus(status);
   },
 
-  getTasksByDate: async (date: string): Promise<HousekeepingTask[]> => {
-    return housekeepingSupabaseService.getTasksByDate(date);
+  getTasksByEmployee: async (employeeId: number): Promise<HousekeepingTask[]> => {
+    return housekeepingSupabaseService.getTasksByEmployee(employeeId);
   },
 
-  getPendingTasks: async (): Promise<HousekeepingTask[]> => {
-    return housekeepingSupabaseService.getPendingTasks();
+  getTasksForToday: async (): Promise<HousekeepingTask[]> => {
+    return housekeepingSupabaseService.getTasksForToday();
+  },
+
+  completeTask: async (id: number, notes?: string): Promise<void> => {
+    const update: HousekeepingTaskUpdate = {
+      status: 'Completed',
+      completedAt: new Date().toISOString(),
+      notes: notes
+    };
+    return housekeepingSupabaseService.updateTask(id, update);
+  },
+
+  verifyTask: async (id: number, verifiedById: number, notes?: string): Promise<void> => {
+    const update: HousekeepingTaskUpdate = {
+      status: 'Verified',
+      verifiedById,
+      verificationNotes: notes
+    };
+    return housekeepingSupabaseService.updateTask(id, update);
   }
 };

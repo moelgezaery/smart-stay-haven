@@ -5,112 +5,83 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 195 100% 98%;
+    --foreground: 222 47% 11%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 222 47% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 222 47% 11%;
 
-    --primary: 262 84% 55%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 196 100% 48%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 196 100% 48%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 262 84% 55%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 196 100% 48%;
 
     --radius: 0.5rem;
 
-    --hotel-50: hsl(262, 100%, 97%);
-    --hotel-100: hsl(262, 100%, 94%);
-    --hotel-200: hsl(262, 100%, 89%);
-    --hotel-300: hsl(262, 100%, 81%);
-    --hotel-400: hsl(262, 94%, 68%);
-    --hotel-500: hsl(262, 84%, 55%);
-    --hotel-600: hsl(263, 77%, 44%);
-    --hotel-700: hsl(264, 76%, 36%);
-    --hotel-800: hsl(265, 71%, 30%);
-    --hotel-900: hsl(266, 63%, 26%);
-    --hotel-950: hsl(267, 64%, 15%);
-
-    --sidebar: 262 40% 97%;
-    --sidebar-foreground: 224 71.4% 4.1%;
-    --sidebar-foreground-muted: 215.4 16.3% 46.9%;
-    --sidebar-foreground-active: 262 84% 55%;
-    --sidebar-border: 214.3 31.8% 91.4%;
-    --sidebar-hover: 262 40% 94%;
-    --sidebar-active: 262 40% 91%;
-    --sidebar-accent: 262 40% 91%;
-
-    --sidebar-width: 260px;
-    --sidebar-width-collapsed: 72px;
-    --sidebar-header-height: 64px;
-    --sidebar-footer-height: 60px;
+    --sidebar-background: 222 24% 14%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 196 100% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 223 23% 22%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 223 23% 22%;
+    --sidebar-ring: 196 100% 45%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 222 47% 11%;
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 222 47% 11%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 222 47% 11%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 263 83% 65%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 196 100% 45%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 217.2 32.6% 17.5%;
+    --secondary: 217 33% 18%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 217 33% 18%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 217.2 32.6% 17.5%;
+    --accent: 217 33% 18%;
     --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 63% 31%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 263 83% 65%;
-
-    --hotel-50: hsl(272, 100%, 98%);
-    --hotel-100: hsl(271, 100%, 95%);
-    --hotel-200: hsl(269, 100%, 91%);
-    --hotel-300: hsl(266, 98%, 84%);
-    --hotel-400: hsl(265, 94%, 75%);
-    --hotel-500: hsl(263, 83% 65%);
-    --hotel-600: hsl(263, 67%, 54%);
-    --hotel-700: hsl(264, 60%, 44%);
-    --hotel-800: hsl(264, 56%, 36%);
-    --hotel-900: hsl(262, 51%, 30%);
-    --hotel-950: hsl(261, 59%, 17%);
-
-    --sidebar: 222.2 47.4% 11.2%;
+    --border: 217 33% 18%;
+    --input: 217 33% 18%;
+    --ring: 213 27% 84%;
+    
+    --sidebar-background: 223 24% 10%;
     --sidebar-foreground: 210 40% 98%;
-    --sidebar-foreground-muted: 215 20.2% 65.1%;
-    --sidebar-foreground-active: 263 83% 65%;
-    --sidebar-border: 217.2 32.6% 17.5%;
-    --sidebar-hover: 217.2 32.6% 17.5%;
-    --sidebar-active: 262 40% 20%;
-    --sidebar-accent: 262 40% 20%;
+    --sidebar-primary: 196 100% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 223 24% 18%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 223 24% 18%;
+    --sidebar-ring: 196 100% 45%;
   }
 }
 
@@ -118,20 +89,62 @@
   * {
     @apply border-border;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
 
-@layer utilities {
-  /* Hide scrollbar for Chrome, Safari and Opera */
-  .no-scrollbar::-webkit-scrollbar {
+  body {
+    @apply bg-background text-foreground transition-colors;
+  }
+
+  /* RTL Support */
+  html[dir="rtl"] .sidebar-menu button svg,
+  html[dir="rtl"] .rtl-flip {
+    transform: scaleX(-1);
+  }
+
+  html[dir="rtl"] .ltr-only {
     display: none;
   }
 
-  /* Hide scrollbar for IE, Edge and Firefox */
-  .no-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+  html[dir="ltr"] .rtl-only {
+    display: none;
   }
+}
+
+@layer components {
+  .status-badge {
+    @apply px-2 py-1 rounded-full text-xs font-medium inline-flex items-center gap-1.5;
+  }
+  
+  .status-badge-vacant {
+    @apply bg-status-vacant/20 text-status-vacant;
+  }
+  
+  .status-badge-occupied {
+    @apply bg-status-occupied/20 text-status-occupied;
+  }
+  
+  .status-badge-reserved {
+    @apply bg-status-reserved/20 text-status-reserved;
+  }
+  
+  .status-badge-maintenance {
+    @apply bg-status-maintenance/20 text-status-maintenance;
+  }
+  
+  .status-badge-cleaning {
+    @apply bg-status-cleaning/20 text-status-cleaning;
+  }
+  
+  .status-badge-checkout {
+    @apply bg-status-checkout/20 text-status-checkout;
+  }
+
+  /* Logo styles */
+  .app-logo {
+    @apply h-8 w-auto transition-transform hover:scale-105;
+  }
+}
+
+/* Utility classes for rtl support */
+.rtl-reverse {
+  @apply [direction:rtl];
 }

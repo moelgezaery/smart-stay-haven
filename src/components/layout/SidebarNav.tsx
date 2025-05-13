@@ -15,7 +15,6 @@ import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
 import { useNavigation } from "@/context/NavigationContext";
 import { NavigationItem } from "@/config/navigationConfig";
-import { useEffect } from "react";
 
 export function SidebarNav() {
   const location = useLocation();
@@ -72,7 +71,7 @@ export function SidebarNav() {
         </div>
       </div>
       
-      <SidebarContent className="no-scrollbar">
+      <SidebarContent>
         {allowedNavigation.map((category) => (
           <SidebarGroup key={category.key}>
             {category.key !== "home" && (

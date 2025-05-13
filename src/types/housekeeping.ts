@@ -1,38 +1,37 @@
 
+export type HousekeepingStatus = 'Pending' | 'InProgress' | 'Completed' | 'Verified';
+export type CleaningType = 'Standard' | 'Deep' | 'Turndown' | 'Checkout';
+
 export interface HousekeepingTask {
   id: number;
   roomId: number;
+  room?: unknown;
   assignedToId?: number;
-  status: string;
-  cleaningType: string;
+  assignedTo?: unknown;
+  status: HousekeepingStatus;
+  cleaningType: CleaningType;
   notes?: string;
   scheduledDate: string;
   completedAt?: string;
   createdAt: string;
   verifiedById?: number;
+  verifiedBy?: unknown;
   verificationNotes?: string;
-  room?: any;
 }
 
 export interface HousekeepingTaskCreate {
   roomId: number;
   assignedToId?: number;
-  status?: string;
-  cleaningType: string;
+  status?: HousekeepingStatus;
+  cleaningType: CleaningType;
   notes?: string;
   scheduledDate: string;
-  completedAt?: string;
-  verifiedById?: number;
-  verificationNotes?: string;
 }
 
 export interface HousekeepingTaskUpdate {
-  roomId?: number;
   assignedToId?: number;
-  status?: string;
-  cleaningType?: string;
+  status?: HousekeepingStatus;
   notes?: string;
-  scheduledDate?: string;
   completedAt?: string;
   verifiedById?: number;
   verificationNotes?: string;

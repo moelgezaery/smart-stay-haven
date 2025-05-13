@@ -19,7 +19,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { GuestProfileModal } from "@/components/guests/GuestProfileModal";
-import { AddGuestModal } from "@/components/guests/AddGuestModal";
 import { Search, Plus, UserCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { guestService } from "@/services/guestService";
@@ -31,35 +30,34 @@ export default function Guests() {
   const [loading, setLoading] = useState(true);
   const [selectedGuest, setSelectedGuest] = useState<Guest | null>(null);
   const [profileModalOpen, setProfileModalOpen] = useState(false);
-  const [addGuestModalOpen, setAddGuestModalOpen] = useState(false);
   const { toast } = useToast();
 
-  const fetchGuests = async () => {
-    try {
-      setLoading(true);
-      const guestsData = await guestService.getGuests();
-      setGuests(guestsData);
-      setLoading(false);
-    } catch (err) {
-      console.error("Error fetching guests:", err);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to load guest data. Please try again later.",
-      });
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchGuests = async () => {
+      try {
+        setLoading(true);
+        const guestsData = await guestService.getGuests();
+        setGuests(guestsData);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching guests:", err);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to load guest data. Please try again later.",
+        });
+        setLoading(false);
+      }
+    };
+
     fetchGuests();
-  }, []);
+  }, [toast]);
 
   const filteredGuests = guests.filter(
     (guest) =>
       guest.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       guest.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (guest.email && guest.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      guest.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (guest.phoneNumber &&
         guest.phoneNumber.toLowerCase().includes(searchTerm.toLowerCase()))
   );
@@ -70,11 +68,11 @@ export default function Guests() {
   };
 
   const handleAddGuest = () => {
-    setAddGuestModalOpen(true);
-  };
-
-  const handleGuestAdded = (newGuest: Guest) => {
-    setGuests((prevGuests) => [...prevGuests, newGuest]);
+    // In a real application, this would open a form to add a new guest
+    toast({
+      title: "Add Guest",
+      description: "This functionality is coming soon.",
+    });
   };
 
   return (
@@ -134,7 +132,7 @@ export default function Guests() {
                           <TableCell>
                             {guest.firstName} {guest.lastName}
                           </TableCell>
-                          <TableCell>{guest.email || "N/A"}</TableCell>
+                          <TableCell>{guest.email}</TableCell>
                           <TableCell>{guest.phoneNumber || "N/A"}</TableCell>
                           <TableCell>{guest.country || "N/A"}</TableCell>
                           <TableCell>
@@ -168,12 +166,6 @@ export default function Guests() {
         open={profileModalOpen}
         onOpenChange={setProfileModalOpen}
         guest={selectedGuest}
-      />
-      
-      <AddGuestModal
-        open={addGuestModalOpen}
-        onOpenChange={setAddGuestModalOpen}
-        onGuestAdded={handleGuestAdded}
       />
     </Layout>
   );
